@@ -1,6 +1,24 @@
+"use client";
 import Link from "next/link";
+import { useState } from "react";
 
 const GITHUB_URL = "https://github.com/elasticclaw/elasticclaw.ai";
+
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      onClick={() => {
+        navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }}
+      className="absolute top-2 right-2 px-3 py-1 text-xs rounded-md bg-zinc-700 hover:bg-zinc-600 text-zinc-300 transition-colors"
+    >
+      {copied ? "Copied!" : "Copy"}
+    </button>
+  );
+}
 
 export default function Home() {
   return (
@@ -32,13 +50,15 @@ export default function Home() {
           Linear out of the box.
         </p>
         {/* Agent-first CTA */}
-        <div className="bg-zinc-900 border border-cyan-500/30 rounded-xl px-6 py-4 max-w-xl mx-auto mb-8 text-left">
-          <p className="text-xs text-zinc-500 uppercase tracking-widest mb-2">For AI agents</p>
-          <p className="text-sm text-zinc-300 mb-3">
-            Tell your agent to follow the setup guide at:
-          </p>
-          <div className="font-mono text-sm bg-zinc-800 rounded-lg px-4 py-2 text-cyan-400 select-all">
-            https://elasticclaw.ai/agent.md
+        <div className="bg-zinc-900 border border-cyan-500/30 rounded-xl px-6 py-5 max-w-2xl mx-auto mb-8 text-left">
+          <p className="text-xs text-zinc-500 uppercase tracking-widest mb-3">For AI agents — copy &amp; paste this prompt</p>
+          <div className="relative group">
+            <div className="font-mono text-sm bg-zinc-800 rounded-lg px-4 py-3 text-zinc-200 select-all leading-relaxed">
+              Read{" "}
+              <span className="text-cyan-400">https://elasticclaw.ai/agent.md</span>
+              {" "}and set up an ElasticClaw hub. Ask me any questions you need before starting.
+            </div>
+            <CopyButton text={`Read https://elasticclaw.ai/agent.md and set up an ElasticClaw hub. Ask me any questions you need before starting.`} />
           </div>
         </div>
 
