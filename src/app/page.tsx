@@ -31,6 +31,17 @@ export default function Home() {
           environment, git access, and terminal. Integrate with GitHub and
           Linear out of the box.
         </p>
+        {/* Agent-first CTA */}
+        <div className="bg-zinc-900 border border-cyan-500/30 rounded-xl px-6 py-4 max-w-xl mx-auto mb-8 text-left">
+          <p className="text-xs text-zinc-500 uppercase tracking-widest mb-2">For AI agents</p>
+          <p className="text-sm text-zinc-300 mb-3">
+            Tell your agent to follow the setup guide at:
+          </p>
+          <div className="font-mono text-sm bg-zinc-800 rounded-lg px-4 py-2 text-cyan-400 select-all">
+            https://elasticclaw.ai/agent.md
+          </div>
+        </div>
+
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
           <Link
             href="/docs"
