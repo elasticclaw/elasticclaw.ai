@@ -5,169 +5,153 @@ You are setting up ElasticClaw — an open source platform for provisioning AI a
 ## Before you start: gather requirements
 
 **Do not proceed with installation until you have answers to these questions.**
-Ask the user (or check your context) for each item. If you already know the answer, confirm it. If not, ask.
-
-1. **Where will the hub run?**
-   The hub is a long-running server process. Options:
-   - On this machine (if it has a public IP or you can set up a tunnel)
-   - On a cloud VM (you provision it)
-   - Already running somewhere (just need to connect)
-
-2. **What VM provider will claws use?**
-   Currently supported: **Replicated CMX**. If using Replicated:
-   - What is your Replicated API token?
-   - What instance type? (default: r1.large)
-
-3. **How will the hub be reachable from claw VMs?** (Step 2 covers options)
-   Do you have any of: Tailscale, ngrok, Cloudflare Tunnel — or is this on a public IP?
-
-4. **What LLM do you want agents to use?**
-   Default: `anthropic/claude-sonnet-4-6`. Do you have an Anthropic API key?
-
-5. **GitHub access for claws?** (optional)
-   If claws need to clone/push repos, you'll need a GitHub App. Do you have one set up?
-
-**Once you have these answers, write a short plan** (3-5 bullet points) and confirm with the user before running any commands.
-
-Example plan:
-> - Install elasticclaw on this machine
-> - Use ngrok to expose port 8080 publicly
-> - Configure Replicated CMX with token `rep_abc...` for VM provisioning
-> - Set Anthropic API key for claude-sonnet-4-6
-> - Create a test claw to verify everything works
+Ask the user for each item. If you already know the answer from context, confirm it.
 
 ---
 
-## Step 1: Install ElasticClaw
+**1. Where will the hub run?**
 
-Run this on the remote server:
+The hub must run on a **persistent cloud server** — not a local laptop. It needs to be reachable 24/7 since claws connect back to it.
+
+Recommended options: Hetzner VPS, DigitalOcean Droplet, AWS EC2, GCP VM, Fly.io, exe.dev, Daytona.
+
+Ask the user: *"Where do you want to run the hub? Do you have a cloud server already, or should I provision one?"*
+
+If they don't have one, help them provision a small VPS (1 vCPU, 1GB RAM is enough) before continuing.
+
+---
+
+**2. Replicated API token**
+
+Claws run as Replicated CMX VMs. Ask:
+
+*"What is your Replicated API token?"*
+
+Do not echo the token back in plaintext in the chat. Acknowledge receipt and move on.
+
+---
+
+**3. Ingress / public URL**
+
+The hub needs a stable public HTTPS URL so claws can phone home. You will set this up — do not ask the user to choose. Pick the first option that is available on the hub server:
+
+- **Static ngrok domain** — if ngrok is installed and they have a reserved domain, use: `ngrok http --domain=their-domain.ngrok-free.app 8080`
+- **Tailscale Funnel** — if Tailscale is installed: `tailscale funnel --bg 8080`
+- **Cloudflare Tunnel** — if cloudflared is installed: `cloudflared tunnel --url http://localhost:8080`
+- **localhost.run fallback** — always available, no install needed: `ssh -R 80:localhost:8080 localhost.run`
+
+**Important:** A static/stable URL is required. `localhost.run` and free ngrok generate new random URLs on each run — only use them if you restart the tunnel process under a supervisor (e.g. systemd) so it reconnects on the same session. For production use, a static domain is strongly recommended.
+
+Once you have the URL, you are done — no need to ask the user about this.
+
+---
+
+**4. LLM API key**
+
+Ask: *"What is your Anthropic API key? (starts with sk-ant-)"*
+
+Do not echo it back. Acknowledge and continue.
+
+---
+
+**5. GitHub App for claw git access** (optional)
+
+If claws need to push/pull from GitHub repos, ask:
+
+*"Do you want claws to have GitHub access? If yes, I'll need your GitHub App credentials. Please share these securely (not in plaintext chat if possible — use a secrets manager, env var, or encrypted message). I need: App ID, and the private key PEM."*
+
+If the user says no or doesn't have a GitHub App, skip this step.
+
+---
+
+## Write your plan
+
+Once you have the answers above, write a **short 4-6 bullet plan** and confirm with the user before running any commands.
+
+Example:
+> - Provision hub on Hetzner CX11 (or use existing server at X)
+> - Use ngrok static domain `my-hub.ngrok-free.app` for ingress
+> - Configure Replicated CMX for VM provisioning
+> - Set Anthropic API key for claude-sonnet-4-6
+> - Configure GitHub App (App ID: 12345) for claw repo access
+> - Test by creating a claw
+
+---
+
+## Step 1: Install the hub
+
+SSH into the cloud server, then run:
 
 ```bash
-curl -fsSL https://elasticclaw.ai/install | bash
-```
-
-If you want to set a public URL (so claws can reach the hub from VMs):
-
-```bash
-ELASTICCLAW_PUBLIC_URL=https://your-server-hostname-or-ip:8080 \
+ELASTICCLAW_PUBLIC_URL=https://your-public-url \
   curl -fsSL https://elasticclaw.ai/install | bash
 ```
 
-The script will:
-- Download and install the `elasticclaw` binary
-- Generate `~/.elasticclaw/hub.yaml` with random tokens
-- Print the token values you will need in Step 3
+The script installs `elasticclaw` and generates `~/.elasticclaw/hub.yaml` with random tokens.
+Note the token values printed at the end — you'll need them.
 
-## Step 2: Expose the hub (pick one)
+## Step 2: Set up ingress
 
-Claws run on remote VMs and need to reach the hub. Choose whichever tunneling
-tool you have access to and set `ELASTICCLAW_PUBLIC_URL` to the resulting URL
-before running Step 1, or update `public_url` in `~/.elasticclaw/hub.yaml`.
+Pick the first available option (see requirements section above) and start the tunnel process.
+Update `~/.elasticclaw/hub.yaml` with the public URL if not already set:
 
-### Option A: Tailscale Funnel (public HTTPS)
 ```bash
-# Requires Tailscale installed and logged in
-tailscale funnel --bg 8080
-# Gives you: https://hostname.tail-xyz.ts.net
+elasticclaw hub init --force --public-url https://your-public-url
 ```
 
-### Option B: Tailscale Serve (private network only)
-Use this if your VMs are on the same Tailnet as the hub:
-```bash
-tailscale serve --bg 8080
-# Gives you: https://hostname.tail-xyz.ts.net (Tailnet-only)
-```
-Claws must also be on the Tailnet. Good for private setups.
+Set up the tunnel to restart automatically on reboot (e.g. via systemd or a process supervisor).
 
-### Option C: ngrok
-```bash
-# Requires ngrok installed and authenticated
-ngrok http 8080
-# Gives you: https://abc123.ngrok.io
-```
-For a stable URL across restarts, use a reserved domain in ngrok's dashboard.
+## Step 3: Configure providers and API keys
 
-### Option D: Cloudflare Tunnel
-```bash
-# Requires cloudflared installed and a Cloudflare account
-cloudflared tunnel --url http://localhost:8080
-# Gives you: https://random-name.trycloudflare.com
-# For a permanent URL: set up a named tunnel via the Cloudflare dashboard
+Edit `~/.elasticclaw/hub.yaml` and add:
+
+```yaml
+default_model: anthropic/claude-sonnet-4-6
+
+llm_keys:
+  anthropic: <anthropic-api-key>
+
+providers:
+  replicated:
+    token: <replicated-api-token>
+    default_instance_type: r1.large
+    default_ttl: 48h
 ```
 
-### Option E: No tunnel tool available (fallback)
-If none of the above are available, use `serveo.net` or `localhost.run` —
-both work with plain SSH and require no account or installation:
-```bash
-# serveo.net
-ssh -R 80:localhost:8080 serveo.net
-# Gives you: https://abc.serveo.net
+If GitHub access was requested:
 
-# OR localhost.run
-ssh -R 80:localhost:8080 localhost.run
-# Gives you: https://abc.lhr.life
-```
-These are public shared services — fine for testing, not for production.
-
-### After getting your URL
-
-Update your hub config:
-```bash
-# Edit ~/.elasticclaw/hub.yaml and set:
-# public_url: https://your-url-here
+```yaml
+github_apps:
+  - app_id: <github-app-id>
+    private_key_pem: |
+      -----BEGIN RSA PRIVATE KEY-----
+      ...
+      -----END RSA PRIVATE KEY-----
 ```
 
-Or re-run hub init with the URL:
-```bash
-elasticclaw hub init --force --public-url https://your-url-here
-```
-
-## Step 3: Start the hub
+## Step 4: Start the hub
 
 ```bash
 elasticclaw hub &
 ```
 
-The hub listens on `:8080` by default. Verify it's running:
+Verify it's running:
 
 ```bash
-curl http://localhost:8080/healthz
+curl https://your-public-url/healthz
 ```
 
 Expected: `{"ok":true,"status":"live"}`
 
-## Step 4: Configure providers and API keys
-
-Edit `~/.elasticclaw/hub.yaml` to add your provider and LLM config.
-The file was created in Step 1 — append these sections:
-
-```yaml
-# Default LLM for agents
-default_model: anthropic/claude-sonnet-4-6
-
-# LLM API keys
-llm_keys:
-  anthropic: sk-ant-...   # your Anthropic API key
-
-# VM provider (Replicated CMX)
-providers:
-  replicated:
-    token: rep_...          # your Replicated API token
-    default_instance_type: r1.large
-    default_ttl: 48h
-```
-
-Save the file. The hub picks up config on next start.
+Set up the hub to restart on reboot (systemd recommended).
 
 ## Step 5: Connect your client
 
-On the machine where you'll run `elasticclaw` commands, save the connection info:
+On the machine where you'll run `elasticclaw` commands:
 
 ```bash
-elasticclaw login <hub-url> --token <token-from-step-1>
+elasticclaw login https://your-public-url --token <token-from-step-1>
 ```
-
-Where `<hub-url>` is either `http://localhost:8080` (if running locally) or the public URL you set.
 
 ## Step 6: Create your first claw
 
@@ -175,17 +159,17 @@ Where `<hub-url>` is either `http://localhost:8080` (if running locally) or the 
 elasticclaw create --name my-claw --template <template-name>
 ```
 
-Templates live in `.elasticclaw/templates/<name>/` in your project, or `~/.elasticclaw/templates/<name>/` globally.
-
-## Step 7: Chat with your claw
+## Step 7: Verify
 
 ```bash
+elasticclaw list
 elasticclaw chat my-claw
 ```
 
+---
+
 ## Notes
 
-- `~/.elasticclaw/hub.yaml` contains your tokens. Keep it secret.
-- The hub must be reachable from the VM provider (configure `public_url` in hub.yaml if needed).
-- For provider setup (Replicated CMX etc): https://elasticclaw.ai/docs/providers
+- `~/.elasticclaw/hub.yaml` contains secrets. Do not share it.
 - Full documentation: https://elasticclaw.ai/docs
+- Provider setup details: https://elasticclaw.ai/docs/providers
