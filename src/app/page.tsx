@@ -196,7 +196,9 @@ export default function Home() {
           <p className="text-zinc-400 mb-8">
             Install the CLI with Homebrew, then run your first agent.
           </p>
-          <div className="bg-zinc-900 border border-zinc-700 rounded-xl px-6 py-5 font-mono text-sm text-left mb-6 shadow-xl">
+          {/* macOS */}
+          <div className="bg-zinc-900 border border-zinc-700 rounded-xl px-6 py-5 font-mono text-sm text-left mb-4 shadow-xl">
+            <div className="text-zinc-500 text-xs mb-3">macOS (Homebrew)</div>
             <div className="text-zinc-400 mb-1">
               <span className="text-zinc-600">$</span>{" "}
               <span className="text-zinc-200">brew tap elasticclaw/elasticclaw</span>
@@ -206,12 +208,30 @@ export default function Home() {
               <span className="text-zinc-200">brew install elasticclaw</span>
             </div>
           </div>
+
+          {/* Linux / agent */}
+          <div className="bg-zinc-900 border border-zinc-700 rounded-xl px-6 py-5 font-mono text-sm text-left mb-6 shadow-xl">
+            <div className="text-zinc-500 text-xs mb-3">Linux / agent-friendly</div>
+            <div className="text-zinc-400 mb-1">
+              <span className="text-zinc-600">$</span>{" "}
+              <span className="text-zinc-200">curl -fsSL https://elasticclaw.ai/install | bash</span>
+            </div>
+            <div className="text-zinc-400 text-xs mt-3 border-t border-zinc-800 pt-3">
+              <span className="text-zinc-500"># or with options:</span>
+            </div>
+            <div className="text-zinc-400 text-xs">
+              <span className="text-zinc-600">$</span>{" "}
+              <span className="text-zinc-200">ELASTICCLAW_PUBLIC_URL=https://my-server.example.com \
+  curl -fsSL https://elasticclaw.ai/install | bash</span>
+            </div>
+          </div>
+
           <div className="flex gap-4 justify-center">
             <Link
               href="/docs/installation"
               className="text-sm text-zinc-400 hover:text-cyan-400 transition-colors underline underline-offset-4"
             >
-              Other install options →
+              All install options →
             </Link>
             <Link
               href="/docs"

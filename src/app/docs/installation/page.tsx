@@ -64,6 +64,32 @@ sudo mv elasticclaw /usr/local/bin/`}</CodeBlock>
           for setup.
         </Note>
       </Section>
+
+      <Section title="Agent &amp; Script Install (Linux)">
+        <p>For non-interactive environments — agents, CI, remote servers:</p>
+        <CodeBlock lang="bash">{`curl -fsSL https://elasticclaw.ai/install | bash`}</CodeBlock>
+        <p>With options via environment variables:</p>
+        <CodeBlock lang="bash">{`ELASTICCLAW_PUBLIC_URL=https://my-server.example.com \
+  curl -fsSL https://elasticclaw.ai/install | bash`}</CodeBlock>
+        <Note>
+          The install script downloads the right binary, writes ~/.elasticclaw/hub.yaml,
+          and prints connection details. No interactive prompts — fully scriptable.
+        </Note>
+        <p>Supported environment variables:</p>
+        <CodeBlock lang="bash">{`ELASTICCLAW_PUBLIC_URL   # Public URL for this hub
+ELASTICCLAW_TOKEN        # User API token (auto-generated if unset)
+ELASTICCLAW_CLAW_TOKEN   # Claw auth token (auto-generated if unset)
+ELASTICCLAW_VERSION      # Pin a release version (default: latest)`}</CodeBlock>
+      </Section>
+
+      <Section title="Initialize Hub Config Only">
+        <p>Generate a hub.yaml without running the full install script:</p>
+        <CodeBlock lang="bash">{`elasticclaw hub init`}</CodeBlock>
+        <p>With a public URL:</p>
+        <CodeBlock lang="bash">{`elasticclaw hub init --public-url https://my-server.example.com`}</CodeBlock>
+        <p>Print to stdout without writing (useful for piping or inspection):</p>
+        <CodeBlock lang="bash">{`elasticclaw hub init --print`}</CodeBlock>
+      </Section>
     </DocsPage>
   );
 }
