@@ -44,6 +44,7 @@ echo "Installing elasticclaw ${VERSION} (${OS}/${ARCH})..."
 
 DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${VERSION}/elasticclaw-${OS}-${ARCH}"
 TMP_FILE="$(mktemp)"
+trap 'rm -f "$TMP_FILE"' EXIT
 
 curl -fsSL "$DOWNLOAD_URL" -o "$TMP_FILE"
 chmod +x "$TMP_FILE"
