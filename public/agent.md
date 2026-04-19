@@ -3,7 +3,7 @@
 You are helping a user install ElasticClaw — an open source platform for provisioning AI agent VMs (claws).
 
 ElasticClaw consists of:
-- **Hub**: a Go server that manages claws (runs on a VPS, serves the web UI)
+- **Hub**: a Go server that manages claws, with an embedded web UI (single binary)
 - **CLI**: the `elasticclaw` command (installed on the user's machine)
 - **Claws**: ephemeral VMs that run OpenClaw AI agents
 
@@ -43,29 +43,35 @@ Ask: *"What domain will you use for the hub? Make sure the DNS A record points t
 
 ### Step 4: Run the install
 
-Once the user has:
-- CLI installed
-- A VPS with SSH access
-- DNS resolving to the server
+Once the user has CLI, VPS with SSH access, and DNS resolving:
 
-Run:
 ```bash
 elasticclaw install \
   --server ssh://root@your-server-ip \
-  --domain hub.yourdomain.com \
-  --anthropic-key sk-ant-...
+  --domain hub.yourdomain.com
 ```
 
 This will:
 1. SSH into the server
-2. Download the hub binary (single binary with embedded web UI)
-3. Write `/etc/elasticclaw/hub.yaml` with generated tokens
+2. Download the hub binary (single binary — web UI is embedded, no Docker needed)
+3. Write `/etc/elasticclaw/hub.yaml` with generated tokens and a random UI password
 4. Install + start a systemd service
 5. Install Caddy with automatic TLS via Let's Encrypt
 
 At the end it prints credentials — save them.
 
-### Step 5: Configure the CLI
+### Step 5: Complete setup in the web UI
+
+Visit `https://hub.yourdomain.com` and log in with the UI password from the install output.
+
+On first login you'll be redirected to **Settings** to configure:
+
+1. **Sandbox Runtime** — add a provider (Replicated CMX or Daytona) so claws can be provisioned
+2. **LLM Keys** — add your Anthropic API key (or OpenAI) so claws can think
+
+GitHub Apps are optional — add if you want claws to access private repositories.
+
+### Step 6: Configure the CLI
 
 ```bash
 elasticclaw login \
@@ -73,7 +79,7 @@ elasticclaw login \
   --token <hub-token-from-install-output>
 ```
 
-### Step 6: Create a claw
+### Step 7: Create a claw
 
 ```bash
 elasticclaw create --template elasticclaw --name my-claw
@@ -87,7 +93,6 @@ elasticclaw create --template elasticclaw --name my-claw
 |---|---|
 | `--server` | SSH URI, e.g. `ssh://root@1.2.3.4` or `ssh://root@1.2.3.4:2222` |
 | `--domain` | FQDN for the hub (must resolve to server IP) |
-| `--anthropic-key` | Anthropic API key for claws (can be added to hub.yaml later) |
 | `--version` | Hub version to install (default: latest) |
 | `--skip-caddy` | Skip Caddy install (if you have your own reverse proxy) |
 | `--ui-password` | Web UI login password (auto-generated if not set) |
@@ -114,9 +119,13 @@ sudo elasticclaw hub service install
 sudo elasticclaw hub caddy install --domain hub.yourdomain.com
 ```
 
+Then visit the web UI and configure providers + LLM keys in Settings.
+
 ## Troubleshooting
 
 - **TLS not working**: DNS must resolve before Caddy requests a cert. Wait for propagation.
 - **Hub not starting**: Check `journalctl -u elasticclaw -f`
 - **Can't connect**: Check `systemctl status elasticclaw`
-- **Web UI blank**: Binary may not have web UI embedded — ensure you're running a tagged release, not a dev build
+- **Web UI blank**: Binary may not have web UI embedded — ensure you're running a tagged release
+- **"admin" warning in logs**: Set `ui_password:` in `/etc/elasticclaw/hub.yaml` and restart
+- **No claws appearing after create**: Check Settings → Sandbox Runtimes is configured
