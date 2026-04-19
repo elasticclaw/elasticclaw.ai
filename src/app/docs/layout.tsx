@@ -14,7 +14,6 @@ const NAV_ITEMS = [
   { href: "/docs/hub", label: "Hub Config" },
   { href: "/docs/templates", label: "Templates" },
   { href: "/docs/github-integration", label: "GitHub Integration" },
-  { href: "/docs/linear-integration", label: "Linear Integration" },
   { href: "/docs/web-ui", label: "Web UI" },
   { href: "/docs/providers", label: "Providers" },
 ];

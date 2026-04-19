@@ -61,7 +61,6 @@ web:
             { field: "defaults", desc: "Default VM instance type, region, and TTL for all agents." },
             { field: "templates", desc: "List of agent templates. Each entry points to a directory with an elasticclaw-config.yaml." },
             { field: "integrations.github", desc: "GitHub App credentials for issue/PR integration." },
-            { field: "integrations.linear", desc: "Linear API token and team ID for ticket sync." },
             { field: "web", desc: "Web dashboard config — enable, port, and auth token." },
           ].map((row) => (
             <div key={row.field} className="flex gap-4">

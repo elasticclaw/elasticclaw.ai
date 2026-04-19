@@ -20,7 +20,7 @@ export default function DocsOverviewPage() {
           ElasticClaw lets you spin up AI agent VMs on demand. Each agent is a
           real virtual machine running your bootstrap template. Agents connect
           to your AI provider, can read and write files, run commands, and
-          integrate with GitHub and Linear.
+          integrate with GitHub.
         </p>
         <p>
           The core components are:

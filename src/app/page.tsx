@@ -47,7 +47,6 @@ export default function Home() {
         <p className="text-xl text-zinc-400 max-w-2xl mx-auto mb-10">
           Spin up ephemeral AI agent VMs in seconds. Each agent gets its own
           environment, git access, and terminal. Integrate with GitHub and
-          Linear out of the box.
         </p>
         {/* Agent-first CTA */}
         <div className="bg-zinc-900 border border-cyan-500/30 rounded-xl px-6 py-5 max-w-2xl mx-auto mb-8 text-left">
@@ -132,7 +131,7 @@ export default function Home() {
               {
                 icon: "🔗",
                 title: "Native Integrations",
-                desc: "GitHub and Linear built in. Agents read issues, open PRs, and leave comments without extra glue.",
+                desc: "GitHub built in. Agents read issues, open PRs, and leave comments without extra glue.",
               },
             ].map((item) => (
               <div
@@ -169,7 +168,7 @@ export default function Home() {
               {
                 step: "03",
                 title: "Chat",
-                desc: "Connect via the web UI or SSH terminal. Stream conversations in real time, assign GitHub issues, link Linear tickets.",
+                desc: "Connect via the web UI or SSH terminal. Stream conversations in real time and assign GitHub issues.",
                 cmd: "elasticclaw chat my-agent",
               },
             ].map((item, i) => (
@@ -204,7 +203,6 @@ export default function Home() {
               { icon: "🌐", title: "Web dashboard", desc: "Manage agents, view logs, and chat from the browser." },
               { icon: "🖥️", title: "SSH terminal", desc: "Drop into any agent's VM with a full interactive shell." },
               { icon: "🐙", title: "GitHub integration", desc: "Assign issues, review PRs, and auto-comment on progress." },
-              { icon: "📐", title: "Linear integration", desc: "Sync tickets and agent tasks bidirectionally." },
               { icon: "🔓", title: "OSS & self-hosted", desc: "Run on your own infra. No vendor lock-in, ever." },
             ].map((f) => (
               <div
