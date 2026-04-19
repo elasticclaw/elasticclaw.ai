@@ -1,175 +1,122 @@
 # ElasticClaw Setup Instructions for Agents
 
-You are setting up ElasticClaw — an open source platform for provisioning AI agent VMs.
+You are helping a user install ElasticClaw — an open source platform for provisioning AI agent VMs (claws).
 
-## Before you start: gather requirements
+ElasticClaw consists of:
+- **Hub**: a Go server that manages claws (runs on a VPS, serves the web UI)
+- **CLI**: the `elasticclaw` command (installed on the user's machine)
+- **Claws**: ephemeral VMs that run OpenClaw AI agents
 
-**Do not proceed with installation until you have answers to these questions.**
-Ask the user for each item. If you already know the answer from context, confirm it.
+## Recommended install path
 
----
+### Step 1: Install the CLI on the user's machine
 
-**1. Where will the hub run?**
+**macOS (recommended):**
+```bash
+brew install elasticclaw/elasticclaw/elasticclaw
+```
 
-The hub must run on a **persistent cloud server** — not a local laptop. It needs to be reachable 24/7 since claws connect back to it.
+**Linux/macOS alternative:**
+```bash
+curl -fsSL https://elasticclaw.ai/install | bash
+```
 
-Recommended options: Hetzner VPS, DigitalOcean Droplet, AWS EC2, GCP VM, Fly.io, exe.dev, Daytona.
+### Step 2: Get a VPS
 
-Ask the user: *"Where do you want to run the hub? Do you have a cloud server already, or should I provision one?"*
+The hub needs a **persistent cloud server** — not a local laptop. It runs 24/7.
 
-If they don't have one, help them provision a small VPS (1 vCPU, 1GB RAM is enough) before continuing.
+Recommended: **Hetzner VPS** (CX22, ~€4/month) or DigitalOcean/AWS/GCP equivalent.
+- OS: Ubuntu 24.04
+- Min specs: 1 vCPU, 2GB RAM
+- Needs: SSH root access, ports 80 + 443 open
 
----
+Ask the user: *"Do you have a cloud server with SSH access? If not, I can help you provision a Hetzner VPS."*
 
-**2. Replicated API token**
+### Step 3: Set up DNS
 
-Claws run as Replicated CMX VMs. Ask:
+The user needs a domain (or subdomain) pointing to the server IP.
 
-*"What is your Replicated API token?"*
+- Create an A record: `hub.yourdomain.com` → server IP
+- DNS must resolve before running the install (Caddy needs it for TLS)
 
-Do not echo the token back in plaintext in the chat. Acknowledge receipt and move on.
+Ask: *"What domain will you use for the hub? Make sure the DNS A record points to your server IP."*
 
----
+### Step 4: Run the install
 
-**3. Ingress / public URL**
+Once the user has:
+- CLI installed
+- A VPS with SSH access
+- DNS resolving to the server
 
-The hub needs a stable public HTTPS URL so claws can phone home. You will set this up — do not ask the user to choose. Pick the first option that is available on the hub server:
+Run:
+```bash
+elasticclaw install \
+  --server ssh://root@your-server-ip \
+  --domain hub.yourdomain.com \
+  --anthropic-key sk-ant-...
+```
 
-- **Static ngrok domain** — if ngrok is installed and they have a reserved domain, use: `ngrok http --domain=their-domain.ngrok-free.app 8080`
-- **Tailscale Funnel** — if Tailscale is installed: `tailscale funnel --bg 8080`
-- **Cloudflare Tunnel** — if cloudflared is installed: `cloudflared tunnel --url http://localhost:8080`
-- **localhost.run fallback** — always available, no install needed: `ssh -R 80:localhost:8080 localhost.run`
+This will:
+1. SSH into the server
+2. Download the hub binary (single binary with embedded web UI)
+3. Write `/etc/elasticclaw/hub.yaml` with generated tokens
+4. Install + start a systemd service
+5. Install Caddy with automatic TLS via Let's Encrypt
 
-**Important:** A static/stable URL is required. `localhost.run` and free ngrok generate new random URLs on each run — only use them if you restart the tunnel process under a supervisor (e.g. systemd) so it reconnects on the same session. For production use, a static domain is strongly recommended.
+At the end it prints credentials — save them.
 
-Once you have the URL, you are done — no need to ask the user about this.
-
----
-
-**4. LLM API key**
-
-Ask: *"What is your Anthropic API key? (starts with sk-ant-)"*
-
-Do not echo it back. Acknowledge and continue.
-
----
-
-**5. GitHub App for claw git access** (optional)
-
-If claws need to push/pull from GitHub repos, ask:
-
-*"Do you want claws to have GitHub access? If yes, I'll need your GitHub App credentials. Please share these securely (not in plaintext chat if possible — use a secrets manager, env var, or encrypted message). I need: App ID, and the private key PEM."*
-
-If the user says no or doesn't have a GitHub App, skip this step.
-
----
-
-## Write your plan
-
-Once you have the answers above, write a **short 4-6 bullet plan** and confirm with the user before running any commands.
-
-Example:
-> - Provision hub on Hetzner CX11 (or use existing server at X)
-> - Use ngrok static domain `my-hub.ngrok-free.app` for ingress
-> - Configure Replicated CMX for VM provisioning
-> - Set Anthropic API key for claude-sonnet-4-6
-> - Configure GitHub App (App ID: 12345) for claw repo access
-> - Test by creating a claw
-
----
-
-## Step 1: Install the hub
-
-SSH into the cloud server, then run:
+### Step 5: Configure the CLI
 
 ```bash
-ELASTICCLAW_PUBLIC_URL=https://your-public-url \
-  curl -fsSL https://elasticclaw.ai/install | bash
+elasticclaw login \
+  --hub https://hub.yourdomain.com \
+  --token <hub-token-from-install-output>
 ```
 
-The script installs `elasticclaw` and generates `~/.elasticclaw/hub.yaml` with random tokens.
-Note the token values printed at the end — you'll need them.
-
-## Step 2: Set up ingress
-
-Pick the first available option (see requirements section above) and start the tunnel process.
-Update `~/.elasticclaw/hub.yaml` with the public URL if not already set:
+### Step 6: Create a claw
 
 ```bash
-elasticclaw hub init --force --public-url https://your-public-url
-```
-
-Set up the tunnel to restart automatically on reboot (e.g. via systemd or a process supervisor).
-
-## Step 3: Configure providers and API keys
-
-Edit `~/.elasticclaw/hub.yaml` and add:
-
-```yaml
-default_model: anthropic/claude-sonnet-4-6
-
-llm_keys:
-  anthropic: <anthropic-api-key>
-
-providers:
-  replicated:
-    token: <replicated-api-token>
-    default_instance_type: r1.large
-    default_ttl: 48h
-```
-
-If GitHub access was requested:
-
-```yaml
-github_apps:
-  - app_id: <github-app-id>
-    private_key_pem: |
-      -----BEGIN RSA PRIVATE KEY-----
-      ...
-      -----END RSA PRIVATE KEY-----
-```
-
-## Step 4: Start the hub
-
-```bash
-elasticclaw hub &
-```
-
-Verify it's running:
-
-```bash
-curl https://your-public-url/healthz
-```
-
-Expected: `{"ok":true,"status":"live"}`
-
-Set up the hub to restart on reboot (systemd recommended).
-
-## Step 5: Connect your client
-
-On the machine where you'll run `elasticclaw` commands:
-
-```bash
-elasticclaw login https://your-public-url --token <token-from-step-1>
-```
-
-## Step 6: Create your first claw
-
-```bash
-elasticclaw create --name my-claw --template <template-name>
-```
-
-## Step 7: Verify
-
-```bash
-elasticclaw list
-elasticclaw chat my-claw
+elasticclaw create --template elasticclaw --name my-claw
 ```
 
 ---
 
-## Notes
+## Flags reference
 
-- `~/.elasticclaw/hub.yaml` contains secrets. Do not share it.
-- Full documentation: https://elasticclaw.ai/docs
-- Provider setup details: https://elasticclaw.ai/docs/providers
+| Flag | Description |
+|---|---|
+| `--server` | SSH URI, e.g. `ssh://root@1.2.3.4` or `ssh://root@1.2.3.4:2222` |
+| `--domain` | FQDN for the hub (must resolve to server IP) |
+| `--anthropic-key` | Anthropic API key for claws (can be added to hub.yaml later) |
+| `--version` | Hub version to install (default: latest) |
+| `--skip-caddy` | Skip Caddy install (if you have your own reverse proxy) |
+| `--ui-password` | Web UI login password (auto-generated if not set) |
+| `--token` | Hub API token (auto-generated if not set) |
+
+## Manual install (advanced)
+
+If you prefer to configure the server yourself:
+
+```bash
+# On the server
+curl -fsSL https://github.com/elasticclaw/elasticclaw/releases/latest/download/elasticclaw-linux-amd64 \
+  -o /usr/local/bin/elasticclaw && chmod +x /usr/local/bin/elasticclaw
+
+mkdir -p /etc/elasticclaw
+cat > /etc/elasticclaw/hub.yaml << EOF
+token: your-token
+claw_token: your-claw-token
+ui_password: your-password
+public_url: https://hub.yourdomain.com
+EOF
+
+sudo elasticclaw hub service install
+sudo elasticclaw hub caddy install --domain hub.yourdomain.com
+```
+
+## Troubleshooting
+
+- **TLS not working**: DNS must resolve before Caddy requests a cert. Wait for propagation.
+- **Hub not starting**: Check `journalctl -u elasticclaw -f`
+- **Can't connect**: Check `systemctl status elasticclaw`
+- **Web UI blank**: Binary may not have web UI embedded — ensure you're running a tagged release, not a dev build
