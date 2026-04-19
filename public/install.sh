@@ -47,7 +47,7 @@ TMP_FILE="$(mktemp)"
 trap 'rm -f "$TMP_FILE"' EXIT
 
 curl -fsSL "$DOWNLOAD_URL" -o "$TMP_FILE"
-chmod +x "$TMP_FILE"
+chmod 755 "$TMP_FILE"
 
 if [[ -w "$INSTALL_DIR" ]]; then
   mv "$TMP_FILE" "${INSTALL_DIR}/${BINARY_NAME}"
