@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-const GITHUB_URL = "https://github.com/elasticclaw/elasticclaw.ai";
+const GITHUB_URL = "https://github.com/elasticclaw/elasticclaw";
 
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);

@@ -35,7 +35,7 @@ export default function DocsLayout({
           <span className="text-zinc-400 text-sm">docs</span>
         </div>
         <a
-          href="https://github.com/elasticclaw/elasticclaw.ai"
+          href="https://github.com/elasticclaw/elasticclaw"
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm text-zinc-400 hover:text-cyan-400 transition-colors"
