@@ -61,5 +61,7 @@ echo ""
 echo "Get started:"
 echo "  elasticclaw install --server ssh://root@your-server --domain hub.example.com"
 echo ""
-echo "Or on macOS, use Homebrew:"
-echo "  brew install elasticclaw/elasticclaw/elasticclaw"
+if [[ "$OS" == "darwin" ]]; then
+  echo "Or on macOS, use Homebrew:"
+  echo "  brew install elasticclaw/elasticclaw/elasticclaw"
+fi
