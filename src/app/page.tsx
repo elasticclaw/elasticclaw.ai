@@ -46,7 +46,7 @@ export default function Home() {
         </h1>
         <p className="text-xl text-zinc-400 max-w-2xl mx-auto mb-10">
           Spin up ephemeral AI agent VMs in seconds. Each agent gets its own
-          environment, git access, and terminal. Integrate with GitHub and
+          environment, git access, and terminal. Integrate with GitHub.
         </p>
         {/* Agent-first CTA */}
         <div className="bg-zinc-900 border border-cyan-500/30 rounded-xl px-6 py-5 max-w-2xl mx-auto mb-8 text-left">
