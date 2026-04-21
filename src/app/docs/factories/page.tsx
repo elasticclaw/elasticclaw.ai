@@ -7,158 +7,150 @@ export default function FactoriesPage() {
   return (
     <DocsPage
       title="Factories"
-      description="Factories automatically spawn and terminate claws in response to external events — like a Linear issue entering a status."
+      description="Automatically spawn and terminate claws based on Linear or Shortcut issue status changes."
     >
       <Note>
-        Factories are currently in beta. The Linear factory is the first
-        supported trigger. More triggers (GitHub, webhooks, cron) are planned.
+        Factories are in beta. Linear and Shortcut are supported. GitHub Issues
+        and cron triggers are planned.
       </Note>
 
       <Section title="How factories work">
         <p>
-          A factory watches an external system for events. When a trigger
-          condition is met, it spawns a new claw pre-loaded with context from
-          that event. When the condition is no longer met (or the claw signals
-          it&apos;s done), the factory terminates the claw.
+          A factory watches an external system for events. When a trigger condition
+          is met (e.g. an issue enters a status), it spawns a new claw pre-loaded
+          with context from that event. When the claw sends{" "}
+          <code>[DONE] &lt;pr-url&gt;</code>, the factory moves the issue to the
+          done status and keeps the claw alive to watch for CI failures and review
+          comments. The claw terminates automatically when the PR is merged or closed.
         </p>
         <p className="mt-2">
-          For Linear: a factory watches for issues entering a specific status
-          (e.g. <code>In Progress</code>). It creates a claw with the issue
-          title, description, and metadata injected into{" "}
-          <code>CONTEXT.md</code>. When the claw sends{" "}
-          <code>[DONE]</code> in a message, the factory moves the Linear issue
-          to a completion status and terminates the claw.
+          If <code>terminate_on_leave: true</code> is set, dragging the issue back
+          out of the trigger status will immediately kill the claw and its VM.
         </p>
       </Section>
 
-      <Section title="Setting up a Linear factory">
-        <h3 className="text-sm font-semibold text-zinc-200 mb-2">
-          1. Get your webhook URL
-        </h3>
+      <Section title="Linear factory setup">
+        <h3 className="text-sm font-semibold text-zinc-200 mb-2">1. Get the webhook URL</h3>
         <p>
-          Your hub exposes a webhook endpoint for Linear. The URL is:
+          Find it in <strong>Settings → Factories</strong> in the hub web UI, or construct it:
         </p>
-        <CodeBlock lang="bash">{`https://<your-hub-domain>/api/integrations/linear/webhook`}</CodeBlock>
-        <p className="mt-2">
-          You can also find this in the <strong>Settings → Factories</strong>{" "}
-          page of your hub web UI.
-        </p>
+        <CodeBlock lang="bash">{`https://your-hub.example.com/api/integrations/linear/webhook`}</CodeBlock>
 
-        <h3 className="text-sm font-semibold text-zinc-200 mt-6 mb-2">
-          2. Create a Linear webhook
-        </h3>
+        <h3 className="text-sm font-semibold text-zinc-200 mt-6 mb-2">2. Create a Linear webhook</h3>
         <ol className="list-decimal list-inside space-y-2 text-sm text-zinc-400">
-          <li>
-            Go to <strong>Linear → Settings → API → Webhooks</strong>
-          </li>
-          <li>
-            Click <strong>New webhook</strong>
-          </li>
-          <li>
-            Paste your webhook URL
-          </li>
-          <li>
-            Under <strong>Data change events</strong>, check <strong>Issues</strong>
-          </li>
-          <li>
-            Copy the <strong>Signing secret</strong> — you&apos;ll need it for{" "}
-            <code>hub.yaml</code>
-          </li>
-          <li>
-            Click <strong>Create webhook</strong>
-          </li>
+          <li>Go to <strong>Linear → Settings → API → Webhooks</strong></li>
+          <li>Click <strong>New webhook</strong>, paste the URL above</li>
+          <li>Check <strong>Issues</strong> under Data change events</li>
+          <li>Copy the <strong>Signing secret</strong></li>
         </ol>
 
-        <h3 className="text-sm font-semibold text-zinc-200 mt-6 mb-2">
-          3. Get a Linear API key
-        </h3>
-        <p>
-          The factory needs a Linear API token to move issues and read state
-          names.
-        </p>
-        <ol className="list-decimal list-inside space-y-2 text-sm text-zinc-400">
-          <li>
-            Go to <strong>Linear → Settings → API → Personal API Keys</strong>
-          </li>
-          <li>Click <strong>Create key</strong>, name it <em>elasticclaw</em></li>
-          <li>Copy the key</li>
-        </ol>
+        <h3 className="text-sm font-semibold text-zinc-200 mt-6 mb-2">3. Get a Linear API key</h3>
+        <p>Go to <strong>Linear → Settings → API → Personal API Keys</strong> and create a key.</p>
 
-        <h3 className="text-sm font-semibold text-zinc-200 mt-6 mb-2">
-          4. Configure hub.yaml
-        </h3>
-        <p>
-          Add the integration and factory config to{" "}
-          <code>/etc/elasticclaw/hub.yaml</code> (system install) or{" "}
-          <code>~/.elasticclaw/hub.yaml</code> (local install):
-        </p>
+        <h3 className="text-sm font-semibold text-zinc-200 mt-6 mb-2">4. Configure hub.yaml</h3>
         <CodeBlock lang="yaml">{`integrations:
   linear:
-    - workspace: your-workspace-name   # Linear workspace URL slug
-      api_key: lin_api_...             # Linear API key
-      webhook_secret: whsec_...        # Signing secret from step 2
+    - workspace: my-company
+      api_key: lin_api_...
+      # webhook_secret is per-factory (set in Settings → Factories)
 
 factories:
   - name: feature-factory
-    trigger:
-      type: linear
-      workspace: your-workspace-name
-      trigger_status: "In Progress"    # Issue status that spawns a claw
-      done_status: "Done"              # Issue status to set when claw finishes
-    template: base                     # elasticclaw template to use`}</CodeBlock>
+    integration: linear
+    workspace: my-company
+    team: ELA                        # optional — filter by team key
+    trigger_status: "Ready for Agent"
+    done_status: "In Review"
+    terminate_on_leave: true
+    template: base
+    webhook_secret: whsec_...        # signing secret from step 2
+    tags:                            # optional — applied to created claws
+      - linear
+    color: teal`}</CodeBlock>
+      </Section>
 
-        <Note>
-          Restart the hub after editing hub.yaml:{" "}
-          <code>sudo systemctl restart elasticclaw</code>
-        </Note>
-
-        <h3 className="text-sm font-semibold text-zinc-200 mt-6 mb-2">
-          5. Test it
-        </h3>
+      <Section title="Shortcut factory setup">
         <p>
-          Move a Linear issue into your trigger status. Within a few seconds, a
-          new claw should appear in your dashboard with the issue details in its
-          context.
+          See the <a href="/docs/shortcut-integration" className="text-cyan-400 hover:underline">Shortcut Integration</a> guide
+          for full setup instructions.
         </p>
-        <p className="mt-2">
-          The claw&apos;s <code>CONTEXT.md</code> will contain:
-        </p>
-        <CodeBlock lang="markdown">{`# Linear Issue Context
+        <CodeBlock lang="yaml">{`integrations:
+  shortcut:
+    - workspace: my-company
+      token: YOUR_SHORTCUT_TOKEN
 
-**Title:** Fix login redirect bug
-**ID:** ENG-123
-**Status:** In Progress
-**URL:** https://linear.app/your-workspace/issue/ENG-123
-
-## Description
-Users are being redirected to /404 after login when...`}</CodeBlock>
+factories:
+  - name: sc-factory
+    integration: shortcut
+    workspace: my-company
+    trigger_status: "In Development"
+    done_status: "In Review"
+    terminate_on_leave: true
+    template: base`}</CodeBlock>
       </Section>
 
       <Section title="The [DONE] signal">
         <p>
-          When a claw is finished with its task, it sends{" "}
-          <code>[DONE]</code> as a message. The factory engine:
+          When an agent finishes its task, it sends <code>[DONE]</code> followed by the
+          PR URL as a chat message:
         </p>
+        <CodeBlock lang="text">{`[DONE] https://github.com/org/repo/pull/42`}</CodeBlock>
+        <p className="mt-2">The hub then:</p>
         <ol className="list-decimal list-inside space-y-1 text-sm text-zinc-400 mt-2">
-          <li>Moves the Linear issue to <code>done_status</code></li>
-          <li>Terminates the claw</li>
+          <li>Validates the PR is open</li>
+          <li>Moves the issue/story to <code>done_status</code></li>
+          <li>Keeps the claw alive to watch for CI failures and bugbot comments</li>
+          <li>Terminates the claw when the PR is merged or closed</li>
         </ol>
-        <p className="mt-2">
-          Your agent template should be instructed to send{" "}
-          <code>[DONE]</code> when finished. Add this to your{" "}
-          <code>AGENTS.md</code> or <code>SOUL.md</code>:
+        <p className="mt-3 text-sm text-zinc-400">
+          Add this to your agent&apos;s <code>AGENTS.md</code>:
         </p>
-        <CodeBlock lang="markdown">{`When you have completed the assigned task, send exactly:
-[DONE]
-This signals the factory to close the Linear issue and terminate this session.`}</CodeBlock>
+        <CodeBlock lang="markdown">{`When your task is complete, open a PR and send:
+[DONE] https://github.com/org/repo/pull/N
+
+This moves the issue and keeps you alive to watch CI and review comments.
+You'll terminate automatically when the PR merges.`}</CodeBlock>
       </Section>
 
-      <Section title="One claw per issue">
+      <Section title="Auto-watching CI and bugbot">
         <p>
-          The factory enforces a 1:1 mapping between Linear issues and claws.
-          If an issue is already assigned to a claw and enters the trigger
-          status again (e.g. re-opened), a new claw will not be spawned. The
-          existing claw continues.
+          While a claw is in the watching state (after <code>[DONE]</code>), the hub
+          polls the PR every 2 minutes for:
+        </p>
+        <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400 mt-2">
+          <li><strong>CI failures</strong> — failed check runs inject a message telling the agent to fix them</li>
+          <li><strong>Bugbot comments</strong> — new Cursor bugbot comments are injected as user messages</li>
+          <li><strong>PR merged/closed</strong> — terminates the claw and destroys the VM</li>
+        </ul>
+        <p className="mt-3 text-sm text-zinc-400">
+          You can disable per-template with:
+        </p>
+        <CodeBlock lang="yaml">{`# in elasticclaw-config.yaml
+auto_watch_ci: false
+auto_watch_bugbot: false`}</CodeBlock>
+        <p className="text-sm text-zinc-400 mt-2">
+          Or toggle per-claw from the dashboard card back.
+        </p>
+      </Section>
+
+      <Section title="Activity log">
+        <p>
+          Every webhook event is logged for 4 hours. Click <strong>Activity</strong> next to
+          any factory in Settings to see:
+        </p>
+        <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400 mt-2">
+          <li><code>claw_created</code> — issue entered trigger status, claw spawned</li>
+          <li><code>claw_terminated</code> — issue left trigger status, claw killed</li>
+          <li><code>error</code> — provisioning failed</li>
+          <li><code>not_actionable</code> — webhook received but status didn&apos;t match</li>
+        </ul>
+      </Section>
+
+      <Section title="1:1 enforcement">
+        <p>
+          Each issue/story can only have one active claw at a time. If the same issue
+          is moved into the trigger status again while a claw already exists, a new
+          one will not be created.
         </p>
       </Section>
     </DocsPage>

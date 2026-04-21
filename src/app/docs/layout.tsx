@@ -17,6 +17,7 @@ const NAV_ITEMS = [
   { href: "/docs/web-ui", label: "Web UI" },
   { href: "/docs/providers", label: "Providers" },
   { href: "/docs/factories", label: "Factories" },
+  { href: "/docs/shortcut-integration", label: "Shortcut Integration" },
 ];
 
 export default function DocsLayout({
