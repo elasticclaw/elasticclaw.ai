@@ -20,36 +20,68 @@ export default function HubPage() {
       </Section>
 
       <Section title="Example hub.yaml">
-        <CodeBlock lang="yaml">{`version: "1"
+        <CodeBlock lang="yaml">{`# Hub connection
+url: http://localhost:8080
+public_url: https://hub.example.com   # URL claws use to connect back
+token: your-hub-token                  # CLI login token
+claw_token: your-claw-token           # token for claw registration
+ui_password: coral-tiger-42           # web UI login password
 
-provider:
-  type: replicated-cmx
-  endpoint: https://api.replicated.com
-  token: \${REPLICATED_API_TOKEN}
+# VM providers
+providers:
+  replicated:
+    token: your-replicated-token
+    default_instance_type: r1.large
+    default_ttl: 48h
+  daytona:
+    api_url: https://app.daytona.io
+    api_key: your-daytona-key
+    default_snapshot: daytona-large
 
-defaults:
-  instance_type: r1.small
-  region: us-east-1
-  ttl: 24h
+# LLM API keys (multiple providers supported)
+llm_keys:
+  - name: anthropic-prod
+    provider: anthropic
+    api_key: sk-ant-...
+    default: true
+  - name: fireworks-kimi
+    provider: fireworks
+    api_key: fw-...
 
-templates:
-  - name: my-template
-    source: ./templates/my-template
-    description: "General purpose dev agent"
+# Default model (provider/model format)
+default_model: anthropic/claude-sonnet-4-6
 
+# GitHub App (for repo access and token minting)
+github_apps:
+  - app_id: 123456
+    private_key_pem: |
+      -----BEGIN RSA PRIVATE KEY-----
+      ...
+
+# Integrations (for factories)
 integrations:
-  github:
-    app_id: \${GITHUB_APP_ID}
-    private_key_path: ./github-app.pem
-    installation_id: \${GITHUB_INSTALLATION_ID}
   linear:
-    token: \${LINEAR_API_TOKEN}
-    team_id: \${LINEAR_TEAM_ID}
+    - workspace: my-company
+      api_key: lin_api_...
+  shortcut:
+    - workspace: my-company
+      token: sc-token-...
 
-web:
-  enabled: true
-  port: 8080
-  auth_token: \${ELASTICCLAW_WEB_TOKEN}
+# Factories (auto-spawn claws from issue status changes)
+factories:
+  - name: feature-factory
+    integration: linear
+    workspace: my-company
+    trigger_status: "Ready for Agent"
+    done_status: "In Review"
+    terminate_on_leave: true
+    template: base
+    webhook_secret: whsec_...
+
+# Branding (optional white-label)
+branding:
+  app_name: My Platform
+  logo_url: https://example.com/logo.png
 `}</CodeBlock>
       </Section>
 

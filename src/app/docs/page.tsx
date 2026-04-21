@@ -26,10 +26,11 @@ export default function DocsOverviewPage() {
           The core components are:
         </p>
         <ul className="list-disc list-inside space-y-1 mt-2 text-zinc-400">
-          <li><strong className="text-zinc-200">elasticclaw CLI</strong> — create, manage, and chat with agents</li>
-          <li><strong className="text-zinc-200">hub.yaml</strong> — your central config: providers, templates, secrets</li>
+          <li><strong className="text-zinc-200">elasticclaw CLI</strong> — create, manage, chat, and upgrade agents</li>
+          <li><strong className="text-zinc-200">hub.yaml</strong> — your central config: providers, LLM keys, integrations, factories</li>
           <li><strong className="text-zinc-200">elasticclaw-config.yaml</strong> — per-template bootstrap definition</li>
-          <li><strong className="text-zinc-200">elasticclaw-web</strong> — optional web dashboard with real-time streaming</li>
+          <li><strong className="text-zinc-200">Web dashboard</strong> — embedded in the hub binary, no separate server needed</li>
+          <li><strong className="text-zinc-200">Factories</strong> — auto-spawn agents from Linear/Shortcut issue status changes</li>
         </ul>
       </Section>
 

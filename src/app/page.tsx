@@ -131,7 +131,12 @@ export default function Home() {
               {
                 icon: "🔗",
                 title: "Native Integrations",
-                desc: "GitHub built in. Agents read issues, open PRs, and leave comments without extra glue.",
+                desc: "GitHub, Linear, and Shortcut built in. Agents read issues, open PRs, and leave comments without extra glue.",
+              },
+              {
+                icon: "🏭",
+                title: "Factories",
+                desc: "Connect Linear or Shortcut to auto-spawn agents when issues enter a status. Agents signal done, move issues, and self-terminate when PRs merge.",
               },
             ].map((item) => (
               <div
@@ -203,6 +208,8 @@ export default function Home() {
               { icon: "🌐", title: "Web dashboard", desc: "Manage agents, view logs, and chat from the browser." },
               { icon: "🖥️", title: "SSH terminal", desc: "Drop into any agent's VM with a full interactive shell." },
               { icon: "🐙", title: "GitHub integration", desc: "Assign issues, review PRs, and auto-comment on progress." },
+              { icon: "🏭", title: "Factories", desc: "Auto-spawn agents from Linear or Shortcut issue status changes. Claws terminate when PRs merge." },
+              { icon: "⚙️", title: "Settings UI", desc: "Configure providers, LLM keys, integrations, and factories from the web dashboard." },
               { icon: "🔓", title: "OSS & self-hosted", desc: "Run on your own infra. No vendor lock-in, ever." },
             ].map((f) => (
               <div
@@ -276,7 +283,7 @@ export default function Home() {
       <footer className="border-t border-zinc-800 py-10">
         <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <span className="text-zinc-500 text-sm">
-            © {new Date().getFullYear()} ElasticClaw. Open source under MIT.
+            © {new Date().getFullYear()} ElasticClaw. Apache 2.0 open source.
           </span>
           <div className="flex gap-6 text-sm text-zinc-500">
             <Link href="/docs" className="hover:text-cyan-400 transition-colors">
