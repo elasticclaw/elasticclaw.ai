@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   { href: "/docs/github-integration", label: "GitHub Integration" },
   { href: "/docs/web-ui", label: "Web UI" },
   { href: "/docs/providers", label: "Providers" },
+  { href: "/docs/factories", label: "Factories" },
 ];
 
 export default function DocsLayout({
