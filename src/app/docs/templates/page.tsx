@@ -31,11 +31,17 @@ export default function TemplatesPage() {
 name: my-template
 description: "General purpose dev agent"
 
-vm:
-  instance_type: r1.small
-  os: ubuntu-22.04
-  disk_gb: 20
+# VM resources
+provider: daytona                    # override hub default provider
+instance_type: r1.small
+image: ubuntu-22.04
+ttl: 24h
 
+# Model and LLM key
+llm_key: anthropic-prod             # named key from hub.yaml
+default_model: anthropic/claude-sonnet-4-6
+
+# Bootstrap
 bootstrap:
   env:
     NODE_ENV: development
@@ -62,6 +68,7 @@ bootstrap:
         - src: files/.env.example
           dest: /workspace/.env
 
+# Agent behavior
 agent:
   model: gpt-4o
   system_prompt: |
@@ -73,7 +80,30 @@ agent:
     - file_read
     - file_write
     - git
-`}</CodeBlock>
+
+# Template features
+nix: false                          # install Determinate Systems Nix
+docker: false                       # install Docker Engine
+tags: ["backend", "typescript"]    # static tags for all claws
+color: teal                         # UI accent color
+
+# Secrets to inject
+secrets:
+  - type: linear
+    workspace: my-company
+  - type: custom
+    name: my_api_key
+    as: MY_API_KEY
+
+# MCP servers to start
+mcps:
+  - name: github
+    config:
+      repository: "my-org/my-repo"
+
+# Auto-watch settings
+auto_watch_ci: true                 # detect CI failures and inject fix messages
+auto_watch_bugbot: true             # detect Cursor bugbot comments and inject`}</CodeBlock>
       </Section>
 
       <Section title="Bootstrap Steps">
@@ -84,6 +114,54 @@ agent:
           <li><code className="text-cyan-300">copy</code> — copy files from template into the VM</li>
           <li><code className="text-cyan-300">env</code> — environment variables for this step</li>
         </ul>
+      </Section>
+
+      <Section title="Template fields">
+        <div className="space-y-3 text-sm text-zinc-400">
+          <p><code className="text-cyan-300">provider</code> — Override the hub default provider for this template</p>
+          <p><code className="text-cyan-300">instance_type</code> — VM size (provider-specific, e.g. <code>r1.small</code>)</p>
+          <p><code className="text-cyan-300">image</code> — OS image</p>
+          <p><code className="text-cyan-300">ttl</code> — Auto-destroy after this duration</p>
+          <p><code className="text-cyan-300">llm_key</code> — Named LLM key from hub.yaml to use</p>
+          <p><code className="text-cyan-300">default_model</code> — Override hub default model (provider/model format)</p>
+          <p><code className="text-cyan-300">nix</code> — Install Determinate Systems Nix (~2-3 min extra bootstrap)</p>
+          <p><code className="text-cyan-300">docker</code> — Install Docker Engine via official apt repo</p>
+          <p><code className="text-cyan-300">tags</code> — Static labels applied to every claw from this template</p>
+          <p><code className="text-cyan-300">color</code> — UI accent color. One of: slate, red, orange, amber, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, pink, rose</p>
+          <p><code className="text-cyan-300">secrets</code> — Secret references to inject as env vars. See Secrets docs.</p>
+          <p><code className="text-cyan-300">mcps</code> — MCP servers to start in the claw. See MCP Servers docs.</p>
+          <p><code className="text-cyan-300">auto_watch_ci</code> — Auto-detect CI failures and inject fix messages (default: true)</p>
+          <p><code className="text-cyan-300">auto_watch_bugbot</code> — Auto-detect Cursor bugbot comments and inject (default: true)</p>
+          <p><code className="text-cyan-300">github.repos</code> — GitHub repos the claw needs access to</p>
+          <p><code className="text-cyan-300">linear.workspace</code> — Linear workspace for the claw</p>
+        </div>
+      </Section>
+
+      <Section title="Template markdown files">
+        <p>
+          ElasticClaw generates several markdown files that are injected into the claw's
+          context. You can customize these by including them in your template directory:
+        </p>
+        <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
+          <li><code>SOUL.md</code> — Agent personality and behavior guidelines</li>
+          <li><code>AGENTS.md</code> — Instructions for the agent (how to signal done, etc.)</li>
+          <li><code>TOOLS.md</code> — Tool usage guidelines and conventions</li>
+          <li><code>IDENTITY.md</code> — Identity/persona configuration</li>
+          <li><code>USER.md</code> — Information about the human user</li>
+          <li><code>MEMORY.md</code> — Long-term memory for the agent</li>
+          <li><code>BOOTSTRAP.md</code> — Bootstrap instructions (auto-generated from factory context)</li>
+          <li><code>HEARTBEAT.md</code> — Periodic check instructions</li>
+        </ul>
+        <p className="text-sm text-zinc-400 mt-2">
+          If not present in the template, the hub generates defaults. Factory-created claws
+          get a <code>BOOTSTRAP.md</code> with issue context injected automatically.
+        </p>
+      </Section>
+
+      <Section title="Pushing templates">
+        <CodeBlock lang="bash">{`elasticclaw template push my-template    # push to hub
+elasticclaw template rm my-template      # remove from hub
+elasticclaw template show my-template    # show config`}</CodeBlock>
       </Section>
 
       <Note>

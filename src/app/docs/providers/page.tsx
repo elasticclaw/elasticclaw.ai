@@ -7,14 +7,17 @@ export default function ProvidersPage() {
   return (
     <DocsPage
       title="Providers"
-      description="ElasticClaw supports pluggable VM providers. The primary supported provider is Replicated CMX."
+      description="ElasticClaw supports pluggable VM providers. Choose the right provider for your workload."
     >
       <Section title="Supported Providers">
         <div className="space-y-3">
           {[
-            { name: "Replicated CMX", status: "Supported", desc: "Cloud-hosted VM infrastructure via Replicated's Compatibility Matrix (CMX). Recommended for production." },
-            { name: "Local (Docker)", status: "Experimental", desc: "Run agent containers locally using Docker. Good for development and testing." },
-            { name: "Custom", status: "Planned", desc: "Bring your own VM provider via the provider interface. AWS, GCP, Hetzner, etc." },
+            { name: "Replicated CMX", status: "Supported", desc: "Cloud-hosted VM infrastructure via Replicated's Compatibility Matrix. Recommended for production.", type: "ephemeral" },
+            { name: "Daytona", status: "Supported", desc: "Cloud dev environments with snapshot support. Good for persistent workspaces.", type: "ephemeral" },
+            { name: "Vercel", status: "Supported", desc: "Serverless sandbox environments. Good for quick, short-lived tasks.", type: "ephemeral" },
+            { name: "Sprites", status: "Supported", desc: "Stateful VMs with hibernate and snapshot capabilities.", type: "stateful" },
+            { name: "exe.dev", status: "Supported", desc: "Ephemeral execution environments.", type: "ephemeral" },
+            { name: "Local (Docker)", status: "Experimental", desc: "Run agent containers locally. Good for development and testing.", type: "stateful" },
           ].map((p) => (
             <div key={p.name} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
               <div className="flex items-center gap-3 mb-1">
@@ -22,6 +25,7 @@ export default function ProvidersPage() {
                 <span className={`text-xs px-2 py-0.5 rounded-full ${p.status === "Supported" ? "bg-cyan-900 text-cyan-300" : p.status === "Experimental" ? "bg-yellow-900 text-yellow-300" : "bg-zinc-800 text-zinc-400"}`}>
                   {p.status}
                 </span>
+                <span className="text-xs text-zinc-500">{p.type}</span>
               </div>
               <p className="text-zinc-400 text-sm">{p.desc}</p>
             </div>
@@ -51,16 +55,36 @@ export default function ProvidersPage() {
         </ol>
         <CodeBlock lang="bash">{`export REPLICATED_API_TOKEN=your-token-here`}</CodeBlock>
         <p>Configure in <code className="text-cyan-300">hub.yaml</code>:</p>
-        <CodeBlock lang="yaml">{`provider:
-  type: replicated-cmx
-  endpoint: https://api.replicated.com
-  token: \${REPLICATED_API_TOKEN}
-  app_slug: my-elasticclaw-app   # your Replicated app slug
+        <CodeBlock lang="yaml">{`providers:
+  replicated:
+    token: \${REPLICATED_API_TOKEN}
+    default_instance_type: r1.small
+    default_ttl: 24h`}</CodeBlock>
+      </Section>
 
-defaults:
-  instance_type: r1.small        # CMX instance type
-  region: us-east-1
-  ttl: 24h                       # auto-destroy after 24 hours`}</CodeBlock>
+      <Section title="Daytona Setup">
+        <p>
+          Daytona provides cloud dev environments with snapshot support.
+        </p>
+        <CodeBlock lang="yaml">{`providers:
+  daytona:
+    api_url: https://app.daytona.io
+    api_key: \${DAYTONA_API_KEY}
+    default_snapshot: daytona-large`}</CodeBlock>
+        <p className="text-sm text-zinc-400 mt-2">
+          Templates can override the snapshot with <code>snapshot: daytona-medium</code>.
+        </p>
+      </Section>
+
+      <Section title="Vercel Setup">
+        <p>
+          Vercel provider runs agents in serverless sandbox environments.
+        </p>
+        <CodeBlock lang="yaml">{`providers:
+  vercel:
+    access_token: \${VERCEL_TOKEN}
+    team_id: team_xxx      # optional
+    project_id: prj_xxx    # optional`}</CodeBlock>
       </Section>
 
       <Section title="Instance Types (CMX)">
@@ -93,6 +117,18 @@ defaults:
             </tbody>
           </table>
         </div>
+      </Section>
+
+      <Section title="Provider capabilities">
+        <div className="space-y-2 text-sm text-zinc-400">
+          <p><code className="text-cyan-300">exec</code> — Execute commands in the VM (all providers)</p>
+          <p><code className="text-cyan-300">snapshot</code> — Save/restore VM state (Daytona, Sprites)</p>
+          <p><code className="text-cyan-300">hibernate</code> — Pause/resume VM (Sprites)</p>
+        </div>
+      </Section>
+
+      <Section title="Listing providers">
+        <CodeBlock lang="bash">{`elasticclaw provider list`}</CodeBlock>
       </Section>
 
       <Note>
