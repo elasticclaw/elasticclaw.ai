@@ -12,12 +12,8 @@ export default function ProvidersPage() {
       <Section title="Supported Providers">
         <div className="space-y-3">
           {[
-            { name: "Replicated CMX", status: "Supported", desc: "Cloud-hosted sandbox infrastructure via Replicated's Compatibility Matrix. Recommended for production.", type: "ephemeral" },
             { name: "Daytona", status: "Supported", desc: "Cloud dev environments with snapshot support. Good for persistent workspaces.", type: "ephemeral" },
-            { name: "Vercel", status: "Supported", desc: "Serverless sandbox environments. Good for quick, short-lived tasks.", type: "ephemeral" },
-            { name: "Sprites", status: "Supported", desc: "Stateful sandboxes with hibernate and snapshot capabilities.", type: "stateful" },
-            { name: "exe.dev", status: "Supported", desc: "Ephemeral execution environments.", type: "ephemeral" },
-            { name: "Local (Docker)", status: "Experimental", desc: "Run agent containers locally. Good for development and testing.", type: "stateful" },
+            { name: "Replicated CMX", status: "Supported", desc: "Cloud-hosted sandbox infrastructure via Replicated's Compatibility Matrix. Recommended for production.", type: "ephemeral" },
           ].map((p) => (
             <div key={p.name} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
               <div className="flex items-center gap-3 mb-1">
