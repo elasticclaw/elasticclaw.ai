@@ -23,9 +23,9 @@ const NAV_ITEMS: NavItem[] = [
     label: "Concepts",
     children: [
       { href: "/docs/concepts", label: "Architecture" },
-      { href: "/docs/factories", label: "Factories" },
-      { href: "/docs/pipelines", label: "Pipelines" },
-      { href: "/docs/templates", label: "Templates" },
+      { href: "/docs/concepts/factories", label: "Factories" },
+      { href: "/docs/concepts/pipelines", label: "Pipelines" },
+      { href: "/docs/concepts/templates", label: "Templates" },
     ],
   },
   {
