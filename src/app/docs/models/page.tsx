@@ -25,11 +25,7 @@ export default function ModelsPage() {
   - name: fireworks-kimi
     provider: fireworks
     api_key: \${FIREWORKS_API_KEY}
-    default_model: fireworks/accounts/fireworks/models/kimi-k2p6
-
-  - name: moonshot
-    provider: moonshot
-    api_key: \${MOONSHOT_API_KEY}`}</CodeBlock>
+    default_model: fireworks/accounts/fireworks/models/kimi-k2p6`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
           The <code>default_model</code> field uses the <code>provider/model</code> format
           (e.g. <code>anthropic/claude-opus-4-5</code>).
@@ -75,8 +71,6 @@ llm_key: fireworks-kimi`}</CodeBlock>
         <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
           <li><code>anthropic</code> → <code>ANTHROPIC_API_KEY</code></li>
           <li><code>fireworks</code> → <code>FIREWORKS_API_KEY</code></li>
-          <li><code>moonshot</code> → <code>MOONSHOT_API_KEY</code></li>
-          <li>Others → <code>{"{PROVIDER}_API_KEY"}</code> (uppercased)</li>
         </ul>
       </Section>
     </DocsPage>
