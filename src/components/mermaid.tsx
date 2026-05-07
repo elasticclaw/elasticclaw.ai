@@ -1,13 +1,41 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+
+let initialized = false;
+
+async function initMermaid() {
+  if (initialized) return;
+  const mermaid = await import("mermaid");
+  mermaid.default.initialize({
+    startOnLoad: false,
+    theme: "dark",
+    themeVariables: {
+      primaryColor: "#18181b",
+      primaryTextColor: "#e4e4e7",
+      primaryBorderColor: "#3f3f46",
+      lineColor: "#71717a",
+      secondaryColor: "#27272a",
+      tertiaryColor: "#09090b",
+      fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+      fontSize: "13px",
+    },
+    flowchart: {
+      curve: "basis",
+      padding: 16,
+    },
+    stateDiagram: {
+      padding: 16,
+    } as any,
+  });
+  initialized = true;
+}
 
 interface MermaidProps {
   chart: string;
 }
 
 export default function MermaidChart({ chart }: MermaidProps) {
-  const ref = useRef<HTMLDivElement>(null);
   const [svg, setSvg] = useState<string>("");
   const [error, setError] = useState<string>("");
 
@@ -16,28 +44,8 @@ export default function MermaidChart({ chart }: MermaidProps) {
 
     async function render() {
       try {
+        await initMermaid();
         const mermaid = await import("mermaid");
-        mermaid.default.initialize({
-          startOnLoad: false,
-          theme: "dark",
-          themeVariables: {
-            primaryColor: "#18181b",
-            primaryTextColor: "#e4e4e7",
-            primaryBorderColor: "#3f3f46",
-            lineColor: "#71717a",
-            secondaryColor: "#27272a",
-            tertiaryColor: "#09090b",
-            fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
-            fontSize: "13px",
-          },
-          flowchart: {
-            curve: "basis",
-            padding: 16,
-          },
-          stateDiagram: {
-            padding: 16,
-          } as any,
-        });
 
         const id = `mermaid-${Math.random().toString(36).slice(2)}`;
         const { svg: renderedSvg } = await mermaid.default.render(id, chart.trim());
@@ -77,7 +85,6 @@ export default function MermaidChart({ chart }: MermaidProps) {
 
   return (
     <div
-      ref={ref}
       className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden my-4"
       dangerouslySetInnerHTML={{ __html: svg }}
     />
