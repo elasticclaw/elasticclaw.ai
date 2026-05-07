@@ -25,6 +25,7 @@ url: http://localhost:8080
 public_url: https://hub.example.com   # URL claws use to connect back
 token: your-hub-token                  # CLI login token
 claw_token: your-claw-token           # token for claw registration
+ui_password: ${UI_PASSWORD}           # web UI password (defaults to 'admin' if unset)
 
 # VM providers
 providers:

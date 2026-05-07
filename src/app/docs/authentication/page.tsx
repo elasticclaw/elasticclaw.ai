@@ -42,11 +42,16 @@ export default function AuthenticationPage() {
 
         <h3 className="text-sm font-semibold text-zinc-200 mt-4 mb-2">Allowlist behavior</h3>
         <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
-          <li>If all lists are empty, any authenticated GitHub user can access the hub</li>
           <li><code>allowed_users</code> — only these specific GitHub logins</li>
           <li><code>allowed_orgs</code> — any member of these orgs</li>
           <li><code>allowed_teams</code> — any member of these specific teams (format: <code>org/team</code>)</li>
         </ul>
+        <Note>
+          If <strong>all three allowlists are empty</strong>, any authenticated
+          GitHub user can access the hub. This is the default and a common
+          misconfiguration — populate at least one list before deploying to
+          production.
+        </Note>
       </Section>
 
       <Section title="Tag-based access control">
