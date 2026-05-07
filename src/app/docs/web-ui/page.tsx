@@ -74,7 +74,7 @@ elasticclaw serve --config /path/to/hub.yaml`}</CodeBlock>
 
       <Note>
         Do not expose the web UI publicly without TLS and a strong auth token.
-        The terminal access is equivalent to SSH into your agent VMs.
+        The terminal access is equivalent to SSH into your agent sandboxes.
       </Note>
     </DocsPage>
   );

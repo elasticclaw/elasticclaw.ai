@@ -24,7 +24,7 @@ export default function FactoriesPage() {
         </p>
         <p className="mt-2">
           If <code>terminate_on_leave: true</code> is set, dragging the issue back
-          out of the trigger status will immediately kill the claw and its VM.
+          out of the trigger status will immediately kill the claw and its sandbox.
         </p>
       </Section>
 
@@ -59,89 +59,6 @@ export default function FactoriesPage() {
         </div>
       </Section>
 
-      <Section title="Linear factory setup">
-        <h3 className="text-sm font-semibold text-zinc-200 mb-2">1. Get the webhook URL</h3>
-        <p>
-          Find it in <strong>Settings → Factories</strong> in the hub web UI, or construct it:
-        </p>
-        <CodeBlock lang="bash">{`https://your-hub.example.com/api/integrations/linear/webhook`}</CodeBlock>
-
-        <h3 className="text-sm font-semibold text-zinc-200 mt-6 mb-2">2. Create a Linear webhook</h3>
-        <ol className="list-decimal list-inside space-y-2 text-sm text-zinc-400">
-          <li>Go to <strong>Linear → Settings → API → Webhooks</strong></li>
-          <li>Click <strong>New webhook</strong>, paste the URL above</li>
-          <li>Check <strong>Issues</strong> under Data change events</li>
-          <li>Copy the <strong>Signing secret</strong></li>
-        </ol>
-
-        <h3 className="text-sm font-semibold text-zinc-200 mt-6 mb-2">3. Get a Linear API key</h3>
-        <p>Go to <strong>Linear → Settings → API → Personal API Keys</strong> and create a key.</p>
-
-        <h3 className="text-sm font-semibold text-zinc-200 mt-6 mb-2">4. Configure hub.yaml</h3>
-        <CodeBlock lang="yaml">{`integrations:
-  linear:
-    - workspace: my-company
-      api_key: \${LINEAR_API_TOKEN}
-      # webhook_secret is per-factory (set in Settings → Factories)
-
-factories:
-  - name: feature-factory
-    integration: linear
-    workspace: my-company
-    team: ELA                        # optional — filter by team key
-    trigger_status: "Ready for Agent"
-    done_status: "In Review"
-    terminate_on_leave: true
-    template: base
-    webhook_secret_ref: linear_webhook_secret
-    tags:                            # optional — applied to created claws
-      - linear
-    color: teal`}</CodeBlock>
-      </Section>
-
-      <Section title="Shortcut factory setup">
-        <p>
-          See the <a href="/docs/shortcut-integration" className="text-cyan-400 hover:underline">Shortcut Integration</a> guide
-          for full setup instructions.
-        </p>
-        <CodeBlock lang="yaml">{`integrations:
-  shortcut:
-    - workspace: my-company
-      token: \${SHORTCUT_TOKEN}
-
-factories:
-  - name: sc-factory
-    integration: shortcut
-    workspace: my-company
-    trigger_status: "In Development"
-    done_status: "In Review"
-    terminate_on_leave: true
-    template: base`}</CodeBlock>
-      </Section>
-
-      <Section title="GitHub Issues factory setup">
-        <p>
-          See the <a href="/docs/github-issues" className="text-cyan-400 hover:underline">GitHub Issues</a> guide
-          for full setup instructions.
-        </p>
-        <CodeBlock lang="yaml">{`integrations:
-  github_issues:
-    - workspace: my-org
-      token: \${GITHUB_TOKEN}
-      webhook_secret: \${GITHUB_WEBHOOK_SECRET}
-
-factories:
-  - name: bugfix-bot
-    integration: github-issues
-    workspace: my-org
-    trigger_status: "open"
-    labels: [bug, claw-ready]
-    assigned_to: "@octocat"
-    terminate_on_leave: true
-    template: base
-    webhook_secret_ref: github_webhook_secret`}</CodeBlock>
-      </Section>
-
       <Section title="The [DONE] signal">
         <p>
           When an agent finishes its task, it sends <code>[DONE]</code> followed by the
@@ -173,7 +90,7 @@ You'll terminate automatically when the PR merges.`}</CodeBlock>
         <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400 mt-2">
           <li><strong>CI failures</strong> — failed check runs inject a message telling the agent to fix them</li>
           <li><strong>Bugbot comments</strong> — new Cursor bugbot comments are injected as user messages</li>
-          <li><strong>PR merged/closed</strong> — terminates the claw and destroys the VM</li>
+          <li><strong>PR merged/closed</strong> — terminates the claw and destroys the sandbox</li>
         </ul>
         <p className="mt-3 text-sm text-zinc-400">
           You can disable per-template with:

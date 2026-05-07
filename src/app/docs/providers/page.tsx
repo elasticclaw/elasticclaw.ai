@@ -7,17 +7,13 @@ export default function ProvidersPage() {
   return (
     <DocsPage
       title="Providers"
-      description="ElasticClaw supports pluggable VM providers. Choose the right provider for your workload."
+      description="ElasticClaw supports pluggable sandbox providers. Choose the right provider for your workload."
     >
       <Section title="Supported Providers">
         <div className="space-y-3">
           {[
-            { name: "Replicated CMX", status: "Supported", desc: "Cloud-hosted VM infrastructure via Replicated's Compatibility Matrix. Recommended for production.", type: "ephemeral" },
             { name: "Daytona", status: "Supported", desc: "Cloud dev environments with snapshot support. Good for persistent workspaces.", type: "ephemeral" },
-            { name: "Vercel", status: "Supported", desc: "Serverless sandbox environments. Good for quick, short-lived tasks.", type: "ephemeral" },
-            { name: "Sprites", status: "Supported", desc: "Stateful VMs with hibernate and snapshot capabilities.", type: "stateful" },
-            { name: "exe.dev", status: "Supported", desc: "Ephemeral execution environments.", type: "ephemeral" },
-            { name: "Local (Docker)", status: "Experimental", desc: "Run agent containers locally. Good for development and testing.", type: "stateful" },
+            { name: "Replicated CMX", status: "Supported", desc: "Cloud-hosted sandbox infrastructure via Replicated's Compatibility Matrix. Recommended for production.", type: "ephemeral" },
           ].map((p) => (
             <div key={p.name} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
               <div className="flex items-center gap-3 mb-1">
@@ -121,9 +117,9 @@ export default function ProvidersPage() {
 
       <Section title="Provider capabilities">
         <div className="space-y-2 text-sm text-zinc-400">
-          <p><code className="text-cyan-300">exec</code> — Execute commands in the VM (all providers)</p>
-          <p><code className="text-cyan-300">snapshot</code> — Save/restore VM state (Daytona, Sprites)</p>
-          <p><code className="text-cyan-300">hibernate</code> — Pause/resume VM (Sprites)</p>
+          <p><code className="text-cyan-300">exec</code> — Execute commands in the sandbox (all providers)</p>
+          <p><code className="text-cyan-300">snapshot</code> — Save/restore sandbox state (Daytona, Sprites)</p>
+          <p><code className="text-cyan-300">hibernate</code> — Pause/resume sandbox (Sprites)</p>
         </div>
       </Section>
 

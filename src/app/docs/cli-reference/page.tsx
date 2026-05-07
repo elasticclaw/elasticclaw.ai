@@ -105,7 +105,7 @@ elasticclaw ls --json`}</CodeBlock>
       </Section>
 
       <Section title="elasticclaw kill">
-        <p>Terminate an agent and destroy its VM.</p>
+        <p>Terminate an agent and destroy its sandbox.</p>
         <CodeBlock lang="bash">{`elasticclaw kill my-agent`}</CodeBlock>
       </Section>
 
@@ -128,7 +128,7 @@ elasticclaw factory rm my-factory          # remove from hub`}</CodeBlock>
       </Section>
 
       <Section title="elasticclaw provider">
-        <p>List available VM providers.</p>
+        <p>List available sandbox providers.</p>
         <CodeBlock lang="bash">{`elasticclaw provider list`}</CodeBlock>
       </Section>
 

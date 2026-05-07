@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import MermaidChart from "./mermaid";
 
 export function DocsPage({
   title,
@@ -64,4 +65,8 @@ export function Note({ children }: { children: ReactNode }) {
       {children}
     </div>
   );
+}
+
+export function MermaidDiagram({ children }: { children: string }) {
+  return <MermaidChart chart={children} />;
 }

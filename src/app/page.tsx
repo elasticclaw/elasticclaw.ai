@@ -1,24 +1,7 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
 
 const GITHUB_URL = "https://github.com/elasticclaw/elasticclaw";
-
-function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false);
-  return (
-    <button
-      onClick={() => {
-        navigator.clipboard.writeText(text);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      }}
-      className="absolute top-2 right-2 px-3 py-1 text-xs rounded-md bg-zinc-700 hover:bg-zinc-600 text-zinc-300 transition-colors"
-    >
-      {copied ? "Copied!" : "Copy"}
-    </button>
-  );
-}
 
 export default function Home() {
   return (
@@ -41,26 +24,14 @@ export default function Home() {
           Open source · Self-hosted
         </div>
         <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
-          Provision AI agents.{" "}
-          <span style={{ color: "#22d3ee" }}>Ship faster.</span>
+          AI agents that{" "}
+          <span style={{ color: "#22d3ee" }}>ship code.</span>
         </h1>
         <p className="text-xl text-zinc-400 max-w-2xl mx-auto mb-10">
-          Spin up ephemeral AI agent VMs in seconds. Each agent gets its own
-          environment, git access, and terminal. Integrate with GitHub.
+          ElasticClaw provisions isolated AI agents from your issue tracker.
+          A ticket enters <span className="text-zinc-200">Ready for Agent</span> — a sandbox
+          spins up, implements the fix, opens a PR, and shuts down when it merges.
         </p>
-        {/* Agent-first CTA */}
-        <div className="bg-zinc-900 border border-cyan-500/30 rounded-xl px-6 py-5 max-w-2xl mx-auto mb-8 text-left">
-          <p className="text-xs text-zinc-500 uppercase tracking-widest mb-3">For AI agents — copy &amp; paste this prompt</p>
-          <div className="relative group">
-            <div className="font-mono text-sm bg-zinc-800 rounded-lg px-4 py-3 text-zinc-200 select-all leading-relaxed">
-              Read{" "}
-              <span className="text-cyan-400">https://elasticclaw.ai/agent.md</span>
-              {" "}and set up an ElasticClaw hub. Ask me any questions you need before starting.
-            </div>
-            <CopyButton text={`Read https://elasticclaw.ai/agent.md and set up an ElasticClaw hub. Ask me any questions you need before starting.`} />
-          </div>
-        </div>
-
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
           <Link
             href="/docs"
@@ -79,7 +50,7 @@ export default function Home() {
           </a>
         </div>
 
-        {/* Terminal snippet */}
+        {/* Terminal snippet — factory workflow */}
         <div className="max-w-2xl mx-auto bg-zinc-900 border border-zinc-700 rounded-xl overflow-hidden text-left shadow-2xl">
           <div className="flex items-center gap-2 px-4 py-3 border-b border-zinc-800">
             <span className="w-3 h-3 rounded-full bg-red-500"></span>
@@ -88,17 +59,29 @@ export default function Home() {
             <span className="ml-2 text-xs text-zinc-500">terminal</span>
           </div>
           <div className="px-5 py-4 font-mono text-sm">
-            <div className="text-zinc-500">$ <span className="text-zinc-200">elasticclaw create \</span></div>
-            <div className="text-zinc-500 ml-4"><span className="text-zinc-200">--name my-agent \</span></div>
-            <div className="text-zinc-500 ml-4"><span className="text-zinc-200">--template my-template</span></div>
+            <div className="text-zinc-500">$ <span className="text-zinc-200">brew install elasticclaw</span></div>
+            <div className="text-zinc-500">$ <span className="text-zinc-200">elasticclaw install --server ssh://root@my-server.com --domain hub.example.com</span></div>
             <div className="mt-3 text-zinc-400">
-              <span style={{ color: "#22d3ee" }}>✓</span> Creating agent <span className="text-white">my-agent</span>...
+              <span style={{ color: "#22d3ee" }}>✓</span> Hub installed with systemd + Caddy
             </div>
             <div className="text-zinc-400">
-              <span style={{ color: "#22d3ee" }}>✓</span> Bootstrapping environment...
+              <span style={{ color: "#22d3ee" }}>✓</span> Web UI at <span className="text-white">https://hub.example.com</span>
+            </div>
+            <div className="mt-3 text-zinc-500">$ <span className="text-zinc-200">elasticclaw factory create --name bugfix --integration linear</span></div>
+            <div className="mt-3 text-zinc-400">
+              <span style={{ color: "#22d3ee" }}>→</span> Linear webhook configured
             </div>
             <div className="text-zinc-400">
-              <span style={{ color: "#22d3ee" }}>✓</span> Agent ready at <span className="text-white">https://my-agent.elasticclaw.local</span>
+              <span style={{ color: "#22d3ee" }}>→</span> Issue <span className="text-white">ENG-42</span> moved to <span className="text-white">Ready for Agent</span>
+            </div>
+            <div className="text-zinc-400">
+              <span style={{ color: "#22d3ee" }}>✓</span> Claw <span className="text-white">bugfix-eng-42</span> provisioned
+            </div>
+            <div className="text-zinc-400">
+              <span style={{ color: "#22d3ee" }}>✓</span> PR opened: <span className="text-white">https://github.com/acme/app/pull/1337</span>
+            </div>
+            <div className="text-zinc-400">
+              <span style={{ color: "#22d3ee" }}>✓</span> Issue moved to <span className="text-white">In Review</span>, claw terminated
             </div>
             <div className="mt-2 text-zinc-500">$<span className="animate-pulse">▋</span></div>
           </div>
@@ -110,33 +93,43 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-3xl font-bold mb-4">What is ElasticClaw?</h2>
           <p className="text-zinc-400 text-lg max-w-3xl mb-10">
-            ElasticClaw is an open source platform for provisioning AI agents as
-            ephemeral virtual machines. Rather than running agents in shared
-            sandboxes, each agent lives in its own isolated environment with
-            full git access, a real terminal, and persistent state — spun up
-            and torn down on demand.
+            ElasticClaw is a self-hosted platform that turns your issue tracker
+            into an autonomous engineering team. Connect Linear, GitHub Issues,
+            or Shortcut — when a ticket hits the right status, an isolated AI
+            agent sandbox spins up, implements the fix, opens a PR, and cleans up
+            when the work is done.
           </p>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
+                icon: "🏭",
+                title: "Factories",
+                desc: "Auto-spawn agents from issue status changes. Linear → Ready for Agent → sandbox provisioned → PR opened → issue moved → claw terminated."
+              },
+              {
                 icon: "🖥️",
-                title: "Ephemeral VMs",
-                desc: "Each agent gets a real VM — isolated, reproducible, and disposable. No shared state, no surprises.",
+                title: "Ephemeral Sandboxes",
+                desc: "Each agent gets a real, isolated sandbox — not a shared environment. Full terminal, git access, and persistent state for the lifetime of the task."
               },
               {
                 icon: "🔧",
                 title: "Full Environment",
-                desc: "Git access, file system, terminal, running processes. Agents can do what developers do.",
+                desc: "Agents clone repos, install dependencies, run tests, and push branches. They do what developers do, in a real environment.",
               },
               {
-                icon: "🔗",
-                title: "Native Integrations",
-                desc: "GitHub, Linear, and Shortcut built in. Agents read issues, open PRs, and leave comments without extra glue.",
+                icon: "🐙",
+                title: "GitHub-native",
+                desc: "Open PRs, link them to issues, watch CI, respond to review comments, and merge. Works with your existing GitHub workflow.",
               },
               {
-                icon: "🏭",
-                title: "Factories",
-                desc: "Connect Linear or Shortcut to auto-spawn agents when issues enter a status. Agents signal done, move issues, and self-terminate when PRs merge.",
+                icon: "⚙️",
+                title: "Templates & Secrets",
+                desc: "Define reusable templates with bootstrap scripts, secrets, MCP servers, and model configs. One template, infinite agents.",
+              },
+              {
+                icon: "🔓",
+                title: "Self-hosted",
+                desc: "Run on your own infra with your own API keys. No third-party access to your code, issues, or secrets.",
               },
             ].map((item) => (
               <div
@@ -152,33 +145,39 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How it works */}
+      {/* Factory workflow deep-dive */}
       <section className="py-20">
         <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-12 text-center">How it works</h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <h2 className="text-3xl font-bold mb-4 text-center">How factories work</h2>
+          <p className="text-zinc-400 text-center max-w-2xl mx-auto mb-12">
+            Set it up once. Every ticket that matches your trigger gets its own
+            agent, start to finish.
+          </p>
+          <div className="grid md:grid-cols-4 gap-6">
             {[
               {
                 step: "01",
-                title: "Create",
-                desc: "Run `elasticclaw create` with a name and template. The CLI provisions a fresh VM from your hub configuration.",
-                cmd: "elasticclaw create --name my-agent",
+                title: "Connect",
+                desc: "Link Linear, GitHub Issues, or Shortcut. Configure which status triggers an agent.",
               },
               {
                 step: "02",
-                title: "Bootstrap",
-                desc: "The agent VM runs your bootstrap script — installing deps, cloning repos, configuring secrets, spinning up services.",
-                cmd: "→ Runs elasticclaw-config.yaml",
+                title: "Trigger",
+                desc: "A ticket moves to Ready for Agent. ElasticClaw receives the webhook and checks your filters.",
               },
               {
                 step: "03",
-                title: "Chat",
-                desc: "Connect via the web UI or SSH terminal. Stream conversations in real time and assign GitHub issues.",
-                cmd: "elasticclaw chat my-agent",
+                title: "Implement",
+                desc: "A sandbox spins up with the issue context. The agent explores the codebase, writes the fix, and opens a PR."
+              },
+              {
+                step: "04",
+                title: "Wrap",
+                desc: "The agent signals [DONE]. The issue moves to In Review, and the sandbox terminates when the PR merges."
               },
             ].map((item, i) => (
               <div key={item.step} className="relative">
-                {i < 2 && (
+                {i < 3 && (
                   <div className="hidden md:block absolute top-6 left-full w-8 border-t border-dashed border-zinc-700 -translate-x-4"></div>
                 )}
                 <div
@@ -187,78 +186,38 @@ export default function Home() {
                 >
                   {item.step}
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <p className="text-zinc-400 text-sm mb-4">{item.desc}</p>
-                <code className="block bg-zinc-900 border border-zinc-800 rounded px-3 py-2 text-xs text-zinc-300 font-mono">
-                  {item.cmd}
-                </code>
+                <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
+                <p className="text-zinc-400 text-sm">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Features grid */}
+      {/* Getting started */}
       <section className="border-t border-zinc-800 py-20">
-        <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-12 text-center">Features</h2>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {[
-              { icon: "⚡", title: "Real-time streaming", desc: "Stream agent output token by token over WebSocket." },
-              { icon: "🌐", title: "Web dashboard", desc: "Manage agents, view logs, and chat from the browser." },
-              { icon: "🖥️", title: "SSH terminal", desc: "Drop into any agent's VM with a full interactive shell." },
-              { icon: "🐙", title: "GitHub integration", desc: "Assign issues, review PRs, and auto-comment on progress." },
-              { icon: "🏭", title: "Factories", desc: "Auto-spawn agents from Linear or Shortcut issue status changes. Claws terminate when PRs merge." },
-              { icon: "⚙️", title: "Settings UI", desc: "Configure providers, LLM keys, integrations, and factories from the web dashboard." },
-              { icon: "🔓", title: "OSS & self-hosted", desc: "Run on your own infra. No vendor lock-in, ever." },
-            ].map((f) => (
-              <div
-                key={f.title}
-                className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 hover:border-zinc-600 transition-colors"
-              >
-                <div className="text-2xl mb-2">{f.icon}</div>
-                <h3 className="font-semibold text-white text-sm mb-1">{f.title}</h3>
-                <p className="text-zinc-500 text-xs">{f.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Install */}
-      <section className="py-20">
         <div className="max-w-3xl mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold mb-4">Get started in seconds</h2>
+          <h2 className="text-3xl font-bold mb-4">Get started in minutes</h2>
           <p className="text-zinc-400 mb-8">
-            Install the CLI with Homebrew, then run your first agent.
+            Install the CLI, deploy a hub, and connect your first factory.
           </p>
-          {/* macOS */}
-          <div className="bg-zinc-900 border border-zinc-700 rounded-xl px-6 py-5 font-mono text-sm text-left mb-4 shadow-xl">
-            <div className="text-zinc-500 text-xs mb-3">macOS (Homebrew)</div>
+
+          <div className="bg-zinc-900 border border-zinc-700 rounded-xl px-6 py-5 font-mono text-sm text-left mb-6 shadow-xl">
+            <div className="text-zinc-500 text-xs mb-3">macOS / Linux</div>
             <div className="text-zinc-400 mb-1">
               <span className="text-zinc-600">$</span>{" "}
-              <span className="text-zinc-200">brew tap elasticclaw/elasticclaw</span>
+              <span className="text-zinc-200">brew tap elasticclaw/elasticclaw && brew install elasticclaw</span>
             </div>
             <div className="text-zinc-400">
               <span className="text-zinc-600">$</span>{" "}
-              <span className="text-zinc-200">brew install elasticclaw</span>
+              <span className="text-zinc-200">elasticclaw install --server ssh://root@my-server.com --domain hub.example.com</span>
             </div>
-          </div>
-
-          {/* Linux / agent */}
-          <div className="bg-zinc-900 border border-zinc-700 rounded-xl px-6 py-5 font-mono text-sm text-left mb-6 shadow-xl">
-            <div className="text-zinc-500 text-xs mb-3">Linux / agent-friendly</div>
-            <div className="text-zinc-400 mb-1">
-              <span className="text-zinc-600">$</span>{" "}
-              <span className="text-zinc-200">curl -fsSL https://elasticclaw.ai/install | bash</span>
-            </div>
-            <div className="text-zinc-400 text-xs mt-3 border-t border-zinc-800 pt-3">
-              <span className="text-zinc-500"># or with options:</span>
+            <div className="mt-3 text-zinc-500 text-xs border-t border-zinc-800 pt-3">
+              # Or install the hub binary directly on any Linux server
             </div>
             <div className="text-zinc-400 text-xs">
               <span className="text-zinc-600">$</span>{" "}
-              <span className="text-zinc-200">ELASTICCLAW_PUBLIC_URL=https://my-server.example.com \
-  curl -fsSL https://elasticclaw.ai/install | bash</span>
+              <span className="text-zinc-200">curl -fsSL https://elasticclaw.ai/install | bash</span>
             </div>
           </div>
 
@@ -267,13 +226,13 @@ export default function Home() {
               href="/docs/installation"
               className="text-sm text-zinc-400 hover:text-cyan-400 transition-colors underline underline-offset-4"
             >
-              All install options →
+              Full install guide →
             </Link>
             <Link
-              href="/docs"
+              href="/docs/factories"
               className="text-sm text-zinc-400 hover:text-cyan-400 transition-colors underline underline-offset-4"
             >
-              Full documentation →
+              Factory setup →
             </Link>
           </div>
         </div>

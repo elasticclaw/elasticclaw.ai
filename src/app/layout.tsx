@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "ElasticClaw — Provision AI agents. Ship faster.",
   description:
-    "Open source platform for provisioning AI agents as ephemeral VMs. Each agent has its own environment, git access, and terminal.",
+    "Open source platform for provisioning AI agents as ephemeral sandboxes. Each agent has its own environment, git access, and terminal.",
   openGraph: {
     title: "ElasticClaw",
     description: "Provision AI agents. Ship faster.",

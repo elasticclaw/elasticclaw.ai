@@ -1,32 +1,118 @@
+"use client";
 import Link from "next/link";
-import type { Metadata } from "next";
+import { usePathname } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: {
-    template: "%s — ElasticClaw Docs",
-    default: "ElasticClaw Docs",
-  },
+type NavItem = {
+  href: string;
+  label: string;
+  children?: NavItem[];
 };
 
-const NAV_ITEMS = [
+const NAV_ITEMS: NavItem[] = [
   { href: "/docs", label: "Overview" },
-  { href: "/docs/installation", label: "Installation" },
-  { href: "/docs/cli-reference", label: "CLI Reference" },
-  { href: "/docs/hub", label: "Hub Config" },
-  { href: "/docs/templates", label: "Templates" },
-  { href: "/docs/models", label: "Models & LLM Keys" },
-  { href: "/docs/providers", label: "Providers" },
-  { href: "/docs/factories", label: "Factories" },
-  { href: "/docs/pipelines", label: "Pipelines" },
-  { href: "/docs/secrets", label: "Secrets" },
-  { href: "/docs/mcp-servers", label: "MCP Servers" },
-  { href: "/docs/authentication", label: "Authentication" },
-  { href: "/docs/github-integration", label: "GitHub Integration" },
-  { href: "/docs/github-issues", label: "GitHub Issues" },
-  { href: "/docs/linear-integration", label: "Linear Integration" },
-  { href: "/docs/shortcut-integration", label: "Shortcut Integration" },
+  {
+    href: "/docs/installation",
+    label: "Getting Started",
+    children: [
+      { href: "/docs/installation", label: "Installation" },
+      { href: "/docs/cli-reference", label: "CLI Reference" },
+    ],
+  },
+  {
+    href: "/docs/concepts",
+    label: "Concepts",
+    children: [
+      { href: "/docs/concepts", label: "Architecture" },
+    ],
+  },
+  {
+    href: "/docs/hub",
+    label: "Configuration",
+    children: [
+      { href: "/docs/hub", label: "Hub Config" },
+      { href: "/docs/providers", label: "Providers" },
+      { href: "/docs/models", label: "Models & LLM Keys" },
+      { href: "/docs/secrets", label: "Secrets" },
+      { href: "/docs/mcp-servers", label: "MCP Servers" },
+      { href: "/docs/authentication", label: "Authentication" },
+    ],
+  },
+  {
+    href: "/docs/factories",
+    label: "Factories",
+    children: [
+      { href: "/docs/factories", label: "Overview" },
+      { href: "/docs/linear-integration", label: "Linear" },
+      { href: "/docs/github-issues", label: "GitHub Issues" },
+      { href: "/docs/shortcut-integration", label: "Shortcut" },
+    ],
+  },
+  {
+    href: "/docs/examples",
+    label: "Examples",
+    children: [
+      { href: "/docs/examples/bugfix-linear", label: "Bug fixes (Linear)" },
+      { href: "/docs/examples/feature-github", label: "Feature work (GitHub)" },
+      { href: "/docs/examples/dependabot", label: "Dependabot auto-merge" },
+    ],
+  },
+  {
+    href: "/docs/github-integration",
+    label: "Integrations",
+    children: [
+      { href: "/docs/github-integration", label: "GitHub App" },
+    ],
+  },
   { href: "/docs/web-ui", label: "Web UI" },
 ];
+
+function isActive(pathname: string, href: string): boolean {
+  if (pathname === href) return true;
+  if (href !== "/docs" && pathname.startsWith(href)) return true;
+  return false;
+}
+
+function isSectionActive(pathname: string, item: NavItem): boolean {
+  if (isActive(pathname, item.href)) return true;
+  if (item.children) {
+    return item.children.some((child) => isActive(pathname, child.href));
+  }
+  return false;
+}
+
+function NavLink({
+  item,
+  depth = 0,
+}: {
+  item: NavItem;
+  depth?: number;
+}) {
+  const pathname = usePathname();
+  const active = isActive(pathname, item.href);
+  const sectionOpen = item.children ? isSectionActive(pathname, item) : false;
+
+  return (
+    <div>
+      <Link
+        href={item.href}
+        className={`block rounded-lg text-sm transition-colors ${
+          active
+            ? "text-cyan-400 font-medium"
+            : "text-zinc-400 hover:text-white"
+        } ${depth > 0 ? "px-3 py-1.5 ml-3 text-xs" : "px-3 py-2"}`}
+      >
+        {item.label}
+      </Link>
+      {item.children && sectionOpen && (
+        <div className="mt-1 space-y-0.5 border-l border-zinc-800 ml-3">
+          {item.children.map((child) => (
+            <NavLink key={child.href} item={child} depth={depth + 1} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function DocsLayout({
   children,
@@ -62,13 +148,7 @@ export default function DocsLayout({
           </p>
           <nav className="space-y-1">
             {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="block px-3 py-2 rounded-lg text-sm text-zinc-400 hover:text-white hover:bg-zinc-800/60 transition-colors"
-              >
-                {item.label}
-              </Link>
+              <NavLink key={item.href} item={item} />
             ))}
           </nav>
         </aside>
