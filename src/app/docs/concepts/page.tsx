@@ -199,7 +199,7 @@ flowchart TD
     D -->|no| Z
     D -->|yes| E{Labels present? AND}
     E -->|no| Z
-    E -->|yes| F{Assignee filter?}
+    E -->|yes| F{Assignee filter passes?}
     F -->|no| Z
     F -->|yes| G{1:1 check — existing claw?}
     G -->|yes| Z
