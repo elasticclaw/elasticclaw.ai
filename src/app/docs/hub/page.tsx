@@ -69,6 +69,8 @@ integrations:
   linear:
     - workspace: my-company
       api_key: \${LINEAR_API_TOKEN}
+      # webhook_secret is a shared default for all Linear webhooks.
+      # Each factory can override with webhook_secret_ref (preferred).
       webhook_secret: \${LINEAR_WEBHOOK_SECRET}
   shortcut:
     - workspace: my-company
@@ -76,6 +78,7 @@ integrations:
   github_issues:
     - workspace: my-org
       token: \${GITHUB_TOKEN}
+      # Same pattern: integration-level default, factory-level override.
       webhook_secret: \${GITHUB_WEBHOOK_SECRET}
 
 # Factories
@@ -87,6 +90,8 @@ factories:
     done_status: "In Review"
     terminate_on_leave: true
     template: base
+    # Per-factory override — takes precedence over integration-level secret.
+    # Remove this to fall back to the integration webhook_secret.
     webhook_secret_ref: linear_webhook_secret
 
 # Secrets
