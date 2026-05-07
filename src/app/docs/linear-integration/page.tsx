@@ -49,8 +49,16 @@ export default function LinearIntegrationPage() {
       <Section title="3. Configure hub.yaml">
         <CodeBlock lang="yaml">{`integrations:
   linear:
-    token: \${LINEAR_API_TOKEN}
-    team_id: \${LINEAR_TEAM_ID}   # e.g. d513e4f1-4d0c-463e-b9a1-200d2f628309`}</CodeBlock>
+    - workspace: my-company
+      token: \${LINEAR_API_TOKEN}
+      webhook_secret: \${LINEAR_WEBHOOK_SECRET}`}</CodeBlock>
+        <Note>
+          The integration-level <code>webhook_secret</code> is a shared default
+          used to validate all incoming webhooks for this integration. Each factory
+          can override it with <code>webhook_secret_ref</code> (preferred) to use a
+          per-factory secret from the hub <code>secrets</code> map. If both are set,
+          the factory-level <code>webhook_secret_ref</code> takes precedence.
+        </Note>
       </Section>
 
       <Section title="Linking an Agent to a Ticket">
@@ -64,6 +72,20 @@ export default function LinearIntegrationPage() {
         <p>
           The agent will read the issue on startup and post updates as it
           works.
+        </p>
+      </Section>
+
+      <Section title="Template integration">
+        <p>
+          Templates can specify which Linear workspace to use:
+        </p>
+        <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
+linear:
+  workspace: my-company
+  team: ELA`}</CodeBlock>
+        <p className="text-sm text-zinc-400 mt-2">
+          The workspace matches against <code>integrations.linear[].workspace</code>
+          to resolve the right API token.
         </p>
       </Section>
 

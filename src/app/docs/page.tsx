@@ -27,10 +27,12 @@ export default function DocsOverviewPage() {
         </p>
         <ul className="list-disc list-inside space-y-1 mt-2 text-zinc-400">
           <li><strong className="text-zinc-200">elasticclaw CLI</strong> — create, manage, chat, and upgrade agents</li>
-          <li><strong className="text-zinc-200">hub.yaml</strong> — your central config: providers, LLM keys, integrations, factories</li>
+          <li><strong className="text-zinc-200">hub.yaml</strong> — your central config: providers, LLM keys, integrations, factories, secrets, MCP servers, auth</li>
           <li><strong className="text-zinc-200">elasticclaw-config.yaml</strong> — per-template bootstrap definition</li>
           <li><strong className="text-zinc-200">Web dashboard</strong> — embedded in the hub binary, no separate server needed</li>
-          <li><strong className="text-zinc-200">Factories</strong> — auto-spawn agents from Linear/Shortcut issue status changes</li>
+          <li><strong className="text-zinc-200">Factories</strong> — auto-spawn agents from Linear, Shortcut, or GitHub Issues events</li>
+          <li><strong className="text-zinc-200">Pipelines</strong> — state machines that drive agents through their lifecycle</li>
+          <li><strong className="text-zinc-200">MCP Servers</strong> — external tool servers registered as agent tools</li>
         </ul>
       </Section>
 
@@ -49,13 +51,19 @@ elasticclaw chat my-agent`}</CodeBlock>
             <Link href="/docs/installation" className="text-cyan-400 hover:underline">
               Installation
             </Link>{" "}
-            — all install methods
+            — all install methods, upgrade, remote server setup
+          </li>
+          <li>
+            <Link href="/docs/cli-reference" className="text-cyan-400 hover:underline">
+              CLI Reference
+            </Link>{" "}
+            — complete command reference
           </li>
           <li>
             <Link href="/docs/hub" className="text-cyan-400 hover:underline">
               Hub Config
             </Link>{" "}
-            — configure providers and templates
+            — configure providers, templates, auth, secrets, MCP servers
           </li>
           <li>
             <Link href="/docs/templates" className="text-cyan-400 hover:underline">
@@ -64,10 +72,22 @@ elasticclaw chat my-agent`}</CodeBlock>
             — build your own agent template
           </li>
           <li>
-            <Link href="/docs/github-integration" className="text-cyan-400 hover:underline">
-              GitHub Integration
+            <Link href="/docs/factories" className="text-cyan-400 hover:underline">
+              Factories
             </Link>{" "}
-            — connect your repos
+            — auto-spawn agents from issue trackers
+          </li>
+          <li>
+            <Link href="/docs/pipelines" className="text-cyan-400 hover:underline">
+              Pipelines
+            </Link>{" "}
+            — agent lifecycle state machines
+          </li>
+          <li>
+            <Link href="/docs/mcp-servers" className="text-cyan-400 hover:underline">
+              MCP Servers
+            </Link>{" "}
+            — external tool servers for agents
           </li>
         </ul>
       </Section>

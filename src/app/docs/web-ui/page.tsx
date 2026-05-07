@@ -7,13 +7,14 @@ export default function WebUIPage() {
   return (
     <DocsPage
       title="Web UI"
-      description="elasticclaw-web is an optional real-time dashboard for managing agents, streaming conversations, and accessing terminals."
+      description="The hub includes an embedded real-time dashboard for managing agents, streaming conversations, and accessing terminals. No separate server needed."
     >
       <Section title="Overview">
         <p>
-          The web UI provides a browser-based interface for everything you can
-          do with the CLI — plus real-time streaming of agent output, an
-          in-browser SSH terminal, and a conversation history view.
+          The web UI is embedded in the hub binary — no separate installation needed.
+          It provides a browser-based interface for everything you can do with the CLI,
+          plus real-time streaming of agent output, an in-browser SSH terminal, and
+          conversation history.
         </p>
         <p>Features:</p>
         <ul className="list-disc list-inside space-y-1 text-sm mt-2">
@@ -22,14 +23,8 @@ export default function WebUIPage() {
           <li>In-browser SSH terminal via xterm.js</li>
           <li>View agent logs and status</li>
           <li>Create and destroy agents via the UI</li>
+          <li>Settings page — configure providers, LLM keys, integrations, factories, secrets, MCP servers, auth</li>
         </ul>
-      </Section>
-
-      <Section title="Installation">
-        <CodeBlock lang="bash">{`brew install elasticclaw/elasticclaw/elasticclaw-web
-
-# or via npm
-npm install -g @elasticclaw/web`}</CodeBlock>
       </Section>
 
       <Section title="Configuration">
@@ -51,17 +46,30 @@ npm install -g @elasticclaw/web`}</CodeBlock>
 
       <Section title="Starting the Server">
         <CodeBlock lang="bash">{`# Start with hub config in current directory
-elasticclaw-web start
+elasticclaw serve
 
 # Or point to a specific hub config
-elasticclaw-web start --hub /path/to/hub.yaml
-
-# With the main CLI (if web is enabled in hub.yaml)
-elasticclaw serve`}</CodeBlock>
+elasticclaw serve --config /path/to/hub.yaml`}</CodeBlock>
         <p>
           Open <code className="text-cyan-300">http://localhost:8080</code> and
           authenticate with your token.
         </p>
+      </Section>
+
+      <Section title="Settings page">
+        <p>
+          The Settings page provides a UI for configuring all hub.yaml fields:
+        </p>
+        <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
+          <li><strong>Providers</strong> — Daytona, Vercel, Replicated CMX</li>
+          <li><strong>LLM Keys</strong> — Named API keys with default model</li>
+          <li><strong>GitHub Apps</strong> — App credentials with live permission checks</li>
+          <li><strong>Integrations</strong> — Linear, Shortcut, GitHub Issues</li>
+          <li><strong>Factories</strong> — Create, edit, enable/disable factories</li>
+          <li><strong>Secrets</strong> — Manage secret values (names only in UI, values hidden)</li>
+          <li><strong>MCP Servers</strong> — Configure npx/uvx/docker/sse tool servers</li>
+          <li><strong>Authentication</strong> — GitHub OAuth, tag-based ACLs</li>
+        </ul>
       </Section>
 
       <Note>

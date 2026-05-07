@@ -11,13 +11,21 @@ export const metadata: Metadata = {
 const NAV_ITEMS = [
   { href: "/docs", label: "Overview" },
   { href: "/docs/installation", label: "Installation" },
+  { href: "/docs/cli-reference", label: "CLI Reference" },
   { href: "/docs/hub", label: "Hub Config" },
   { href: "/docs/templates", label: "Templates" },
-  { href: "/docs/github-integration", label: "GitHub Integration" },
-  { href: "/docs/web-ui", label: "Web UI" },
+  { href: "/docs/models", label: "Models & LLM Keys" },
   { href: "/docs/providers", label: "Providers" },
   { href: "/docs/factories", label: "Factories" },
+  { href: "/docs/pipelines", label: "Pipelines" },
+  { href: "/docs/secrets", label: "Secrets" },
+  { href: "/docs/mcp-servers", label: "MCP Servers" },
+  { href: "/docs/authentication", label: "Authentication" },
+  { href: "/docs/github-integration", label: "GitHub Integration" },
+  { href: "/docs/github-issues", label: "GitHub Issues" },
+  { href: "/docs/linear-integration", label: "Linear Integration" },
   { href: "/docs/shortcut-integration", label: "Shortcut Integration" },
+  { href: "/docs/web-ui", label: "Web UI" },
 ];
 
 export default function DocsLayout({

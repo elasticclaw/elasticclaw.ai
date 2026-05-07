@@ -55,8 +55,8 @@ export default function ShortcutIntegrationPage() {
       <Section title="3. Configure hub.yaml">
         <CodeBlock lang="yaml">{`integrations:
   shortcut:
-    - workspace: my-company   # human label
-      token: YOUR_TOKEN
+    - workspace: my-company
+      token: \${SHORTCUT_TOKEN}
 
 factories:
   - name: shortcut-factory
