@@ -7,7 +7,7 @@ let initialized = false;
 async function initMermaid() {
   if (initialized) return;
   const mermaid = await import("mermaid");
-  mermaid.default.initialize({
+  (mermaid.default.initialize as any)({
     startOnLoad: false,
     theme: "dark",
     themeVariables: {
@@ -26,7 +26,7 @@ async function initMermaid() {
     },
     stateDiagram: {
       padding: 16,
-    } as any,
+    },
   });
   initialized = true;
 }
