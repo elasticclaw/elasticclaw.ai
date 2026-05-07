@@ -91,8 +91,8 @@ function NavLink({
         href={item.href}
         className={`block rounded-lg text-sm transition-colors ${
           active
-            ? "text-white bg-zinc-800 font-medium"
-            : "text-zinc-400 hover:text-white hover:bg-zinc-800/60"
+            ? "text-cyan-400 font-medium"
+            : "text-zinc-400 hover:text-white"
         } ${depth > 0 ? "px-3 py-1.5 ml-3 text-xs" : "px-3 py-2"}`}
       >
         {item.label}
