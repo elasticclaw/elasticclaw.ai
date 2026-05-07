@@ -1,14 +1,6 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: {
-    template: "%s — ElasticClaw Docs",
-    default: "ElasticClaw Docs",
-  },
-};
 
 type NavItem = {
   href: string;
