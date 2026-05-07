@@ -12,10 +12,10 @@ export default function ProvidersPage() {
       <Section title="Supported Providers">
         <div className="space-y-3">
           {[
-            { name: "Replicated CMX", status: "Supported", desc: "Cloud-hosted sandbox infrastructure via Replicated's Compatibility Matrix. Recommended for production.", type: "ephemeral" }
+            { name: "Replicated CMX", status: "Supported", desc: "Cloud-hosted sandbox infrastructure via Replicated's Compatibility Matrix. Recommended for production.", type: "ephemeral" },
             { name: "Daytona", status: "Supported", desc: "Cloud dev environments with snapshot support. Good for persistent workspaces.", type: "ephemeral" },
             { name: "Vercel", status: "Supported", desc: "Serverless sandbox environments. Good for quick, short-lived tasks.", type: "ephemeral" },
-            { name: "Sprites", status: "Supported", desc: "Stateful sandboxes with hibernate and snapshot capabilities.", type: "stateful" }
+            { name: "Sprites", status: "Supported", desc: "Stateful sandboxes with hibernate and snapshot capabilities.", type: "stateful" },
             { name: "exe.dev", status: "Supported", desc: "Ephemeral execution environments.", type: "ephemeral" },
             { name: "Local (Docker)", status: "Experimental", desc: "Run agent containers locally. Good for development and testing.", type: "stateful" },
           ].map((p) => (
