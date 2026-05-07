@@ -44,10 +44,19 @@ const NAV_ITEMS: NavItem[] = [
     href: "/docs/factories",
     label: "Factories",
     children: [
-      { href: "/docs/factories", label: "Overview & Examples" },
+      { href: "/docs/factories", label: "Overview" },
       { href: "/docs/linear-integration", label: "Linear" },
       { href: "/docs/github-issues", label: "GitHub Issues" },
       { href: "/docs/shortcut-integration", label: "Shortcut" },
+    ],
+  },
+  {
+    href: "/docs/examples",
+    label: "Examples",
+    children: [
+      { href: "/docs/examples/bugfix-linear", label: "Bug fixes (Linear)" },
+      { href: "/docs/examples/feature-github", label: "Feature work (GitHub)" },
+      { href: "/docs/examples/dependabot", label: "Dependabot auto-merge" },
     ],
   },
   {
