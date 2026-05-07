@@ -45,13 +45,22 @@ name: bugfix-bot
 integration: github-issues
 workspace: my-org
 trigger_status: "open"          # issue state or label name
-done_status: "closed"
+done_status: "in-review"        # or "closed" — see note below
 terminate_on_leave: true
 template: base
 # labels: [bug, claw-ready]     # all must be present (AND)
 # assigned_to: "@octocat"        # @user, !@user, any, none
 webhook_secret_ref: bugfix_bot_webhook_secret
 name_pattern: "{issue_id}"       # or: "{repo}-{issue_number}"`}</CodeBlock>
+        <Note>
+          <code>done_status</code> is applied when the claw sends{" "}
+          <code>[DONE]</code> — i.e., when the PR is <strong>opened</strong>, not
+          when it merges. If you want the issue to stay open until merge, use a
+          label or project-board column (e.g.,{" "}
+          <code>done_status: "in-review"</code>) instead of{" "}
+          <code>"closed"</code>. The default <code>"closed"</code> follows the
+          Linear/Shortcut convention of marking work complete at PR-open time.
+        </Note>
       </Section>
 
       <Section title="3. Set up the webhook">

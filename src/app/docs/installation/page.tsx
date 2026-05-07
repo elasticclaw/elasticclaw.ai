@@ -57,7 +57,7 @@ sudo mv elasticclaw /usr/local/bin/`}</CodeBlock>
 
       <Section title="Initial Setup">
         <p>After installing, initialize your hub config:</p>
-        <CodeBlock lang="bash">{`elasticclaw init`}</CodeBlock>
+        <CodeBlock lang="bash">{`elasticclaw hub init`}</CodeBlock>
         <p>
           This creates a <code className="text-cyan-300">hub.yaml</code> in
           your current directory. See{" "}
