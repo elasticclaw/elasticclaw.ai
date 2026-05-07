@@ -46,15 +46,15 @@ export default function ConceptsPage() {
         <MermaidDiagram>{`
 graph TD
     A[Issue enters trigger status] -->|webhook| B{Factory filters}
-    B -->|labels match<br/>assignee match<br/>status match| C[Template selected]
+    B -->|labels match assignee match status match| C[Template selected]
     B -->|no match| D[Ignore event]
     C --> E[Sandbox provisioned]
     E --> F[Agent receives CONTEXT.md]
     F --> G[Agent implements fix]
     G --> H[Agent opens PR]
-    H --> I[Agent sends [DONE]]
+    H --> I["Agent sends DONE"]
     I --> J[Issue moved to done_status]
-    J --> K[Claw watches CI & reviews]
+    J --> K[Claw watches CI and reviews]
     K -->|PR merged| L[Sandbox terminated]
     K -->|PR closed| L
         `}</MermaidDiagram>
