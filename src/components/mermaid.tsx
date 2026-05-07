@@ -36,7 +36,7 @@ export default function MermaidChart({ chart }: MermaidProps) {
           },
           stateDiagram: {
             padding: 16,
-          },
+          } as any,
         });
 
         const id = `mermaid-${Math.random().toString(36).slice(2)}`;
