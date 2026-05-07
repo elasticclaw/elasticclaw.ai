@@ -65,3 +65,9 @@ export function Note({ children }: { children: ReactNode }) {
     </div>
   );
 }
+
+import MermaidChart from "./mermaid";
+
+export function MermaidDiagram({ children }: { children: string }) {
+  return <MermaidChart chart={children} />;
+}

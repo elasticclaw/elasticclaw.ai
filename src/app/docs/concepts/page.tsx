@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DocsPage, Section, Note } from "@/components/docs-page";
+import { DocsPage, Section, Note, MermaidDiagram } from "@/components/docs-page";
 
 export const metadata: Metadata = { title: "Concepts" };
 
@@ -42,6 +42,22 @@ export default function ConceptsPage() {
           A factory is a pipeline that connects triggers to templates. Think of
           it as a rule: <em>when this happens, create that</em>.
         </p>
+
+        <MermaidDiagram>{`
+graph TD
+    A[Issue enters trigger status] -->|webhook| B{Factory filters}
+    B -->|labels match<br/>assignee match<br/>status match| C[Template selected]
+    B -->|no match| D[Ignore event]
+    C --> E[Sandbox provisioned]
+    E --> F[Agent receives CONTEXT.md]
+    F --> G[Agent implements fix]
+    G --> H[Agent opens PR]
+    H --> I[Agent sends [DONE]]
+    I --> J[Issue moved to done_status]
+    J --> K[Claw watches CI & reviews]
+    K -->|PR merged| L[Sandbox terminated]
+    K -->|PR closed| L
+        `}</MermaidDiagram>
 
         <div className="mt-4 space-y-4">
           <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
@@ -104,6 +120,99 @@ export default function ConceptsPage() {
             </p>
           </div>
         </div>
+      </Section>
+
+      <Section title="Claw Lifecycle">
+        <p className="text-zinc-400">
+          A claw moves through distinct states from creation to termination.
+          Understanding these states helps debug why a claw is stuck or
+          failed.
+        </p>
+
+        <MermaidDiagram>{`
+stateDiagram-v2
+    [*] --> Pending: concurrency limit reached
+    [*] --> Provisioning: slot available
+    Pending --> Provisioning: slot freed
+    Pending --> Deleted: issue closed / claw killed
+    Provisioning --> Starting: sandbox running
+    Provisioning --> Error: provider failure
+    Starting --> Connected: bridge registered
+    Starting --> Error: bootstrap failed
+    Connected --> Running: agent active
+    Running --> Idle: [DONE] received
+    Idle --> Deleted: PR merged
+    Idle --> Error: claw killed
+    Error --> [*]
+    Deleted --> [*]
+        `}</MermaidDiagram>
+
+        <div className="grid grid-cols-2 gap-3 mt-4 text-sm">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
+            <span className="text-yellow-400 font-medium">Pending</span>
+            <p className="text-zinc-500 text-xs mt-1">Waiting for a free slot (concurrency limit)</p>
+          </div>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
+            <span className="text-cyan-400 font-medium">Provisioning</span>
+            <p className="text-zinc-500 text-xs mt-1">Sandbox being created by the provider</p>
+          </div>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
+            <span className="text-blue-400 font-medium">Starting</span>
+            <p className="text-zinc-500 text-xs mt-1">Bootstrap running, bridge connecting</p>
+          </div>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
+            <span className="text-green-400 font-medium">Connected</span>
+            <p className="text-zinc-500 text-xs mt-1">Bridge registered, agent ready</p>
+          </div>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
+            <span className="text-white font-medium">Running</span>
+            <p className="text-zinc-500 text-xs mt-1">Agent actively working</p>
+          </div>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
+            <span className="text-purple-400 font-medium">Idle</span>
+            <p className="text-zinc-500 text-xs mt-1">[DONE] sent, watching CI/reviews</p>
+          </div>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
+            <span className="text-red-400 font-medium">Error</span>
+            <p className="text-zinc-500 text-xs mt-1">Provisioning or bootstrap failed</p>
+          </div>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
+            <span className="text-zinc-500 font-medium">Deleted</span>
+            <p className="text-zinc-500 text-xs mt-1">Cleaned up, sandbox destroyed</p>
+          </div>
+        </div>
+      </Section>
+
+      <Section title="How a Factory Decides">
+        <p className="text-zinc-400">
+          When a webhook arrives, the factory evaluates multiple filters in
+          sequence. All must pass for a claw to spawn.
+        </p>
+
+        <MermaidDiagram>{`
+flowchart TD
+    A[Webhook arrives] --> B{Integration match?}
+    B -->|no| Z[Ignore]
+    B -->|yes| C{Factory enabled?}
+    C -->|no| Z
+    C -->|yes| D{Status matches trigger_status?}
+    D -->|no| Z
+    D -->|yes| E{Labels present? AND}
+    E -->|no| Z
+    E -->|yes| F{Assignee filter?}
+    F -->|no| Z
+    F -->|yes| G{1:1 check — existing claw?}
+    G -->|yes| Z
+    G -->|no| H{Concurrency limit?}
+    H -->|at capacity| I[Queue as Pending]
+    H -->|slot free| J[Spawn claw]
+        `}</MermaidDiagram>
+
+        <p className="text-sm text-zinc-400 mt-3">
+          Each filter is a gate. The first failure stops evaluation — no claw
+          is created, and the event is logged as{" "}
+          <code className="text-cyan-300">not_actionable</code>.
+        </p>
       </Section>
 
       <Section title="Key Terms">
