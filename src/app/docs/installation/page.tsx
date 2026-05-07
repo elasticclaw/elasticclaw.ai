@@ -68,7 +68,7 @@ sudo mv elasticclaw /usr/local/bin/`}</CodeBlock>
         </p>
         <Note>
           You&apos;ll need a provider account (e.g., Replicated CMX) to actually
-          provision VMs. See{" "}
+          provision sandboxes. See{" "}
           <a href="/docs/providers" className="text-cyan-400 hover:underline">
             Providers
           </a>{" "}

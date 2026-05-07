@@ -29,7 +29,7 @@ export default function Home() {
         </h1>
         <p className="text-xl text-zinc-400 max-w-2xl mx-auto mb-10">
           ElasticClaw provisions isolated AI agents from your issue tracker.
-          A ticket enters <span className="text-zinc-200">Ready for Agent</span> — a VM
+          A ticket enters <span className="text-zinc-200">Ready for Agent</span> — a sandbox
           spins up, implements the fix, opens a PR, and shuts down when it merges.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -96,7 +96,7 @@ export default function Home() {
             ElasticClaw is a self-hosted platform that turns your issue tracker
             into an autonomous engineering team. Connect Linear, GitHub Issues,
             or Shortcut — when a ticket hits the right status, an isolated AI
-            agent VM spins up, implements the fix, opens a PR, and cleans up
+            agent sandbox spins up, implements the fix, opens a PR, and cleans up
             when the work is done.
           </p>
           <div className="grid md:grid-cols-3 gap-6">
@@ -104,12 +104,12 @@ export default function Home() {
               {
                 icon: "🏭",
                 title: "Factories",
-                desc: "Auto-spawn agents from issue status changes. Linear → Ready for Agent → claw provisioned → PR opened → issue moved → claw terminated.",
+                desc: "Auto-spawn agents from issue status changes. Linear → Ready for Agent → sandbox provisioned → PR opened → issue moved → claw terminated."
               },
               {
                 icon: "🖥️",
-                title: "Ephemeral VMs",
-                desc: "Each agent gets a real, isolated VM — not a shared sandbox. Full terminal, git access, and persistent state for the lifetime of the task.",
+                title: "Ephemeral Sandboxes",
+                desc: "Each agent gets a real, isolated sandbox — not a shared environment. Full terminal, git access, and persistent state for the lifetime of the task."
               },
               {
                 icon: "🔧",
@@ -168,12 +168,12 @@ export default function Home() {
               {
                 step: "03",
                 title: "Implement",
-                desc: "A VM spins up with the issue context. The agent explores the codebase, writes the fix, and opens a PR.",
+                desc: "A sandbox spins up with the issue context. The agent explores the codebase, writes the fix, and opens a PR."
               },
               {
                 step: "04",
                 title: "Wrap",
-                desc: "The agent signals [DONE]. The issue moves to In Review, and the VM terminates when the PR merges.",
+                desc: "The agent signals [DONE]. The issue moves to In Review, and the sandbox terminates when the PR merges."
               },
             ].map((item, i) => (
               <div key={item.step} className="relative">

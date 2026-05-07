@@ -13,7 +13,7 @@ export default function MCPServersPage() {
         <p>
           MCP (Model Context Protocol) servers are external tool servers that expose
           capabilities to your agents via a standardized protocol. ElasticClaw can
-          start MCP servers as subprocesses inside each agent VM and register their
+          start MCP servers as subprocesses inside each agent sandbox and register their
           tools with the agent's gateway.
         </p>
         <p>Supported sources:</p>

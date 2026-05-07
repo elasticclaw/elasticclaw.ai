@@ -8,7 +8,7 @@ export default function DocsOverviewPage() {
   return (
     <DocsPage
       title="Overview"
-      description="ElasticClaw provisions AI agents as ephemeral VMs — isolated environments with full git access, a terminal, and real-time streaming."
+      description="ElasticClaw provisions AI agents as ephemeral sandboxes — isolated environments with full git access, a terminal, and real-time streaming."
     >
       <Note>
         ElasticClaw is early-stage open source software. Expect rough edges and
@@ -17,7 +17,7 @@ export default function DocsOverviewPage() {
 
       <Section title="What is ElasticClaw?">
         <p>
-          ElasticClaw lets you spin up AI agent VMs on demand. Each agent is a
+          ElasticClaw lets you spin up AI agent sandboxes on demand. Each agent is a
           real virtual machine running your bootstrap template. Agents connect
           to your AI provider, can read and write files, run commands, and
           integrate with GitHub.

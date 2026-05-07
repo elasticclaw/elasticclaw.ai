@@ -24,7 +24,7 @@ export default function FactoriesPage() {
         </p>
         <p className="mt-2">
           If <code>terminate_on_leave: true</code> is set, dragging the issue back
-          out of the trigger status will immediately kill the claw and its VM.
+          out of the trigger status will immediately kill the claw and its sandbox.
         </p>
       </Section>
 
@@ -173,7 +173,7 @@ You'll terminate automatically when the PR merges.`}</CodeBlock>
         <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400 mt-2">
           <li><strong>CI failures</strong> — failed check runs inject a message telling the agent to fix them</li>
           <li><strong>Bugbot comments</strong> — new Cursor bugbot comments are injected as user messages</li>
-          <li><strong>PR merged/closed</strong> — terminates the claw and destroys the VM</li>
+          <li><strong>PR merged/closed</strong> — terminates the claw and destroys the sandbox</li>
         </ul>
         <p className="mt-3 text-sm text-zinc-400">
           You can disable per-template with:

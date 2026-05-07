@@ -14,7 +14,7 @@ export default function HubPage() {
           The hub config lives at <code className="text-cyan-300">hub.yaml</code>{" "}
           in your project root (or at{" "}
           <code className="text-cyan-300">~/.elasticclaw/hub.yaml</code> for
-          global config). It tells ElasticClaw where to provision VMs, which
+          global config). It tells ElasticClaw where to provision sandboxes, which
           templates to use, and how to connect integrations.
         </p>
       </Section>
@@ -27,7 +27,7 @@ token: your-hub-token                  # CLI login token
 claw_token: your-claw-token           # token for claw registration
 ui_password: \${UI_PASSWORD}           # web UI password (defaults to 'admin' if unset)
 
-# VM providers
+# Sandbox providers
 providers:
   daytona:
     api_url: https://app.daytona.io
@@ -123,7 +123,7 @@ branding:
   app_name: My Platform
   logo_url: https://example.com/logo.png
 
-# SSH keys added to every VM
+# SSH keys added to every sandbox
 ssh_public_keys:
   - ssh-ed25519 AAAAC3NzaC...`}</CodeBlock>
       </Section>
@@ -132,11 +132,11 @@ ssh_public_keys:
         <div className="space-y-4">
           {[
             { field: "url", desc: "Hub URL for CLI connections." },
-            { field: "public_url", desc: "URL claws use to connect back from remote VMs. Falls back to url if not set." },
+            { field: "public_url", desc: "URL claws use to connect back from remote sandboxes. Falls back to url if not set." },
             { field: "token", desc: "CLI authentication token." },
             { field: "claw_token", desc: "Token for claw registration. Auto-generated if unset." },
             { field: "ui_password", desc: "Web UI login password. Defaults to 'admin' if not set." },
-            { field: "providers", desc: "VM provider configs. See Providers docs." },
+            { field: "providers", desc: "Sandbox provider configs. See Providers docs." },
             { field: "llm_keys", desc: "Named LLM API keys. One can be marked default:true." },
             { field: "default_model", desc: "Global default model (provider/model format)." },
             { field: "github_apps", desc: "GitHub App credentials for repo access and token minting." },
@@ -146,7 +146,7 @@ ssh_public_keys:
             { field: "mcp_servers", desc: "MCP server configs available to claws." },
             { field: "auth", desc: "GitHub OAuth and tag-based access control for the web UI." },
             { field: "branding", desc: "White-label: app_name, logo_url." },
-            { field: "ssh_public_keys", desc: "Extra SSH keys injected into every provisioned VM." },
+            { field: "ssh_public_keys", desc: "Extra SSH keys injected into every provisioned sandbox." },
             { field: "bridge_image", desc: "OCI artifact reference for claw-bridge. Defaults to ghcr.io/elasticclaw/claw-bridge:latest." },
           ].map((row) => (
             <div key={row.field} className="flex gap-4">

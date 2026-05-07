@@ -7,7 +7,7 @@ export default function TemplatesPage() {
   return (
     <DocsPage
       title="Templates"
-      description="Agent templates define what runs inside the VM — dependencies, repos, services, and the agent's bootstrap behavior."
+      description="Agent templates define what runs inside the sandbox — dependencies, repos, services, and the agent's bootstrap behavior."
     >
       <Section title="Template Directory Structure">
         <p>
@@ -18,20 +18,20 @@ export default function TemplatesPage() {
   my-template/
     elasticclaw-config.yaml   # required — bootstrap spec
     bootstrap.sh              # optional — custom bootstrap script
-    files/                    # optional — files copied into the VM
+    files/                    # optional — files copied into the sandbox
       .env.example
       config.toml`}</CodeBlock>
       </Section>
 
       <Section title="elasticclaw-config.yaml">
         <p>
-          This file defines how the VM is bootstrapped when an agent is created.
+          This file defines how the sandbox is bootstrapped when an agent is created.
         </p>
         <CodeBlock lang="yaml">{`version: "1"
 name: my-template
 description: "General purpose dev agent"
 
-# VM resources
+# Sandbox resources
 provider: daytona                    # override hub default provider
 instance_type: r1.small
 image: ubuntu-22.04
@@ -111,7 +111,7 @@ auto_watch_bugbot: true             # detect Cursor bugbot comments and inject`}
         <ul className="list-disc list-inside space-y-1 text-sm">
           <li><code className="text-cyan-300">name</code> — display name for the step</li>
           <li><code className="text-cyan-300">run</code> — shell commands to execute</li>
-          <li><code className="text-cyan-300">copy</code> — copy files from template into the VM</li>
+          <li><code className="text-cyan-300">copy</code> — copy files from template into the sandbox</li>
           <li><code className="text-cyan-300">env</code> — environment variables for this step</li>
         </ul>
       </Section>
@@ -119,7 +119,7 @@ auto_watch_bugbot: true             # detect Cursor bugbot comments and inject`}
       <Section title="Template fields">
         <div className="space-y-3 text-sm text-zinc-400">
           <p><code className="text-cyan-300">provider</code> — Override the hub default provider for this template</p>
-          <p><code className="text-cyan-300">instance_type</code> — VM size (provider-specific, e.g. <code>r1.small</code>)</p>
+          <p><code className="text-cyan-300">instance_type</code> — Sandbox size (provider-specific, e.g. <code>r1.small</code>)</p>
           <p><code className="text-cyan-300">image</code> — OS image</p>
           <p><code className="text-cyan-300">ttl</code> — Auto-destroy after this duration</p>
           <p><code className="text-cyan-300">llm_key</code> — Named LLM key from hub.yaml to use</p>
@@ -165,7 +165,7 @@ elasticclaw template show my-template    # show config`}</CodeBlock>
       </Section>
 
       <Note>
-        Bootstrap runs as root inside the VM. The workspace is typically
+        Bootstrap runs as root inside the sandbox. The workspace is typically
         mounted at <code>/workspace</code>.
       </Note>
     </DocsPage>
