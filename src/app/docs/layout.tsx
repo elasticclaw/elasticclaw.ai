@@ -23,9 +23,6 @@ const NAV_ITEMS: NavItem[] = [
     label: "Concepts",
     children: [
       { href: "/docs/concepts", label: "Architecture" },
-      { href: "/docs/concepts/factories", label: "Factories" },
-      { href: "/docs/concepts/pipelines", label: "Pipelines" },
-      { href: "/docs/concepts/templates", label: "Templates" },
     ],
   },
   {

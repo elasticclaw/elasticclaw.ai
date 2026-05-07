@@ -78,10 +78,10 @@ elasticclaw chat my-agent`}</CodeBlock>
             — auto-spawn agents from issue trackers
           </li>
           <li>
-            <Link href="/docs/pipelines" className="text-cyan-400 hover:underline">
-              Pipelines
+            <Link href="/docs/concepts" className="text-cyan-400 hover:underline">
+              Concepts
             </Link>{" "}
-            — agent lifecycle state machines
+            — architecture, factory pipeline, claw lifecycle
           </li>
           <li>
             <Link href="/docs/mcp-servers" className="text-cyan-400 hover:underline">
