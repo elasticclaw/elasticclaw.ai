@@ -52,11 +52,13 @@ export default function LinearIntegrationPage() {
     - workspace: my-company
       token: \${LINEAR_API_TOKEN}
       webhook_secret: \${LINEAR_WEBHOOK_SECRET}`}</CodeBlock>
-        <p className="text-sm text-zinc-400 mt-2">
-          The <code>webhook_secret</code> is used for factory webhook validation.
-          Each factory can also use <code>webhook_secret_ref</code> to reference a
-          secret from the hub <code>secrets</code> map.
-        </p>
+        <Note>
+          The integration-level <code>webhook_secret</code> is a shared default
+          used to validate all incoming webhooks for this integration. Each factory
+          can override it with <code>webhook_secret_ref</code> (preferred) to use a
+          per-factory secret from the hub <code>secrets</code> map. If both are set,
+          the factory-level <code>webhook_secret_ref</code> takes precedence.
+        </Note>
       </Section>
 
       <Section title="Linking an Agent to a Ticket">

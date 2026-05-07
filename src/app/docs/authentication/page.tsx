@@ -60,10 +60,13 @@ export default function AuthenticationPage() {
     admins: []                          # GitHub logins — bypass all tag checks
     view_requires_tags: ["frontend"]    # must have at least one matching tag to view
     interact_requires_tags: ["frontend"]`}</CodeBlock>
-        <p className="text-sm text-zinc-400 mt-2">
-          Users who don't match the tag requirements can still see claws in the list,
-          but cannot open their chat or terminal. Admins bypass all checks.
-        </p>
+        <Note>
+          Tag-based access control restricts <strong>interaction</strong> (chat and
+          terminal), not <strong>visibility</strong>. Users who don't match the tag
+          requirements will still see restricted claws in the list — they just
+          can't open them. If you need full hiding, use separate hub instances or
+          tenant isolation. Admins bypass all checks.
+        </Note>
       </Section>
 
       <Section title="Disabling password auth">
