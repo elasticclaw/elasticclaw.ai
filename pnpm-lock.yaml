@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@types/prismjs':
-        specifier: ^1.26.6
-        version: 1.26.6
       mermaid:
         specifier: ^11.14.0
         version: 11.14.0
@@ -33,6 +30,9 @@ importers:
       '@types/node':
         specifier: ^20
         version: 20.19.39
+      '@types/prismjs':
+        specifier: ^1.26.6
+        version: 1.26.6
       '@types/react':
         specifier: ^19
         version: 19.2.14

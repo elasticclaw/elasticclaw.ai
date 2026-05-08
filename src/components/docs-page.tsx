@@ -15,8 +15,8 @@ import "prismjs/components/prism-python";
 import "prismjs/components/prism-rust";
 import "prismjs/components/prism-sql";
 import "prismjs/components/prism-toml";
-import "prismjs/components/prism-jsx"; // tsx extends tsx which extends jsx — jsx already loaded
 import "prismjs/components/prism-jsx";
+import "prismjs/components/prism-tsx";
 import "prismjs/components/prism-css";
 import "prismjs/components/prism-scss";
 import { useEffect, useRef } from "react";
@@ -77,7 +77,7 @@ export function CodeBlock({
       : lang === "md" || lang === "markdown"
       ? "markdown"
       : lang === "text" || lang === "txt" || lang === "log"
-      ? "textile"
+      ? undefined
       : lang === "diff"
       ? "diff"
       : lang === "go" || lang === "golang"
