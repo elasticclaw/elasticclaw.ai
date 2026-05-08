@@ -102,7 +102,7 @@ export function CodeBlock({
           {lang}
         </div>
       )}
-      <pre className="px-5 py-4 text-sm font-mono overflow-x-auto whitespace-pre">
+      <pre className="px-5 py-4 text-sm font-mono overflow-x-auto whitespace-pre text-zinc-200">
         <code
           className={prismLang ? `language-${prismLang}` : undefined}
           dangerouslySetInnerHTML={
