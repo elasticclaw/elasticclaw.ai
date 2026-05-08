@@ -91,7 +91,13 @@ export function CodeBlock({
   const highlighted = useMemo(() => {
     if (!prismLang) return children;
     const grammar = Prism.languages[prismLang];
-    if (!grammar) return children;
+    if (!grammar) {
+      // Escape HTML entities so raw code is displayed literally, not rendered as markup.
+      return children
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
     return Prism.highlight(children, grammar, prismLang);
   }, [children, prismLang]);
 
