@@ -61,6 +61,7 @@ const NAV_ITEMS: NavItem[] = [
     label: "Integrations",
     children: [
       { href: "/docs/github-integration", label: "GitHub App" },
+      { href: "/docs/github-actions", label: "GitHub Actions" },
     ],
   },
   { href: "/docs/web-ui", label: "Web UI" },
