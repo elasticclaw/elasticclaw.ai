@@ -1,5 +1,25 @@
+"use client";
+
 import type { ReactNode } from "react";
 import MermaidChart from "./mermaid";
+import Prism from "prismjs";
+import "prismjs/components/prism-yaml";
+import "prismjs/components/prism-bash";
+import "prismjs/components/prism-json";
+import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-markdown";
+import "prismjs/components/prism-diff";
+import "prismjs/components/prism-go";
+import "prismjs/components/prism-python";
+import "prismjs/components/prism-rust";
+import "prismjs/components/prism-sql";
+import "prismjs/components/prism-toml";
+import "prismjs/components/prism-jsx"; // tsx extends tsx which extends jsx — jsx already loaded
+import "prismjs/components/prism-jsx";
+import "prismjs/components/prism-css";
+import "prismjs/components/prism-scss";
+import { useEffect, useRef } from "react";
 
 export function DocsPage({
   title,
@@ -30,6 +50,52 @@ export function CodeBlock({
   children: string;
   lang?: string;
 }) {
+  const codeRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (codeRef.current) {
+      Prism.highlightElement(codeRef.current);
+    }
+  }, [children, lang]);
+
+  // Map common lang aliases to Prism grammar names
+  const prismLang =
+    lang === "yaml" || lang === "yml"
+      ? "yaml"
+      : lang === "bash" || lang === "sh" || lang === "shell" || lang === "zsh"
+      ? "bash"
+      : lang === "js" || lang === "javascript"
+      ? "javascript"
+      : lang === "ts"
+      ? "typescript"
+      : lang === "tsx"
+      ? "tsx"
+      : lang === "jsx"
+      ? "jsx"
+      : lang === "json"
+      ? "json"
+      : lang === "md" || lang === "markdown"
+      ? "markdown"
+      : lang === "text" || lang === "txt" || lang === "log"
+      ? "textile"
+      : lang === "diff"
+      ? "diff"
+      : lang === "go" || lang === "golang"
+      ? "go"
+      : lang === "py" || lang === "python"
+      ? "python"
+      : lang === "rs" || lang === "rust"
+      ? "rust"
+      : lang === "sql"
+      ? "sql"
+      : lang === "toml"
+      ? "toml"
+      : lang === "css"
+      ? "css"
+      : lang === "scss"
+      ? "scss"
+      : lang;
+
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden my-4">
       {lang && (
@@ -37,8 +103,13 @@ export function CodeBlock({
           {lang}
         </div>
       )}
-      <pre className="px-5 py-4 text-sm text-zinc-200 font-mono overflow-x-auto whitespace-pre">
-        <code>{children}</code>
+      <pre className="px-5 py-4 text-sm font-mono overflow-x-auto whitespace-pre">
+        <code
+          ref={codeRef}
+          className={prismLang ? `language-${prismLang}` : undefined}
+        >
+          {children}
+        </code>
       </pre>
     </div>
   );
