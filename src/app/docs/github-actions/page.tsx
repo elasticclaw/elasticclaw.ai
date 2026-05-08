@@ -155,26 +155,45 @@ jobs:
         <p>
           The publish workflow includes <code>workflow_dispatch</code> so you can
           trigger it manually from the GitHub Actions tab. Add the same trigger to
-          the validate workflow if you want to run validation on demand:
+          the validate workflow if you want to run validation on demand.
+        </p>
+        <p className="text-sm text-zinc-400 mt-2">
+          Use separate inputs for factory and template paths, or call the right
+          action based on the path contents:
         </p>
         <CodeBlock lang="yaml">{`on:
   workflow_dispatch:
     inputs:
-      path:
-        description: 'Path to factory/template'
-        required: true
+      factory_path:
+        description: 'Path to factory directory'
+        required: false
         default: '.elasticclaw/factories/my-factory'
+      template_path:
+        description: 'Path to template directory'
+        required: false
+        default: '.elasticclaw/templates/my-template'
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: elasticclaw/actions/publish-factory@main
+
+      - name: Publish factory
+        if: \${{ inputs.factory_path != '' }}
+        uses: elasticclaw/actions/publish-factory@main
         with:
           hub-endpoint: https://factory.elasticclaw.ai
           token: \${{ secrets.ELASTICCLAW_TOKEN }}
-          path: \${{ inputs.path }}`}</CodeBlock>
+          path: \${{ inputs.factory_path }}
+
+      - name: Publish template
+        if: \${{ inputs.template_path != '' }}
+        uses: elasticclaw/actions/publish-template@main
+        with:
+          hub-endpoint: https://factory.elasticclaw.ai
+          token: \${{ secrets.ELASTICCLAW_TOKEN }}
+          path: \${{ inputs.template_path }}`}</CodeBlock>
       </Section>
 
       <Note>
