@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import DocsSearch from "@/components/docs-search";
 
 type NavItem = {
   href: string;
@@ -131,14 +132,17 @@ export default function DocsLayout({
           <span className="text-zinc-600">/</span>
           <span className="text-zinc-400 text-sm">docs</span>
         </div>
-        <a
-          href="https://github.com/elasticclaw/elasticclaw"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm text-zinc-400 hover:text-cyan-400 transition-colors"
-        >
-          GitHub →
-        </a>
+        <div className="flex items-center gap-4">
+          <DocsSearch />
+          <a
+            href="https://github.com/elasticclaw/elasticclaw"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-zinc-400 hover:text-cyan-400 transition-colors"
+          >
+            GitHub →
+          </a>
+        </div>
       </nav>
 
       <div className="flex flex-1">
