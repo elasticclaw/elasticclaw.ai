@@ -19,7 +19,7 @@ import "prismjs/components/prism-jsx";
 import "prismjs/components/prism-tsx";
 import "prismjs/components/prism-css";
 import "prismjs/components/prism-scss";
-import { useEffect, useRef } from "react";
+import { useMemo } from "react";
 
 export function DocsPage({
   title,
@@ -50,14 +50,6 @@ export function CodeBlock({
   children: string;
   lang?: string;
 }) {
-  const codeRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    if (codeRef.current) {
-      Prism.highlightElement(codeRef.current);
-    }
-  }, [children, lang]);
-
   // Map common lang aliases to Prism grammar names
   const prismLang =
     lang === "yaml" || lang === "yml"
@@ -96,6 +88,13 @@ export function CodeBlock({
       ? "scss"
       : lang;
 
+  const highlighted = useMemo(() => {
+    if (!prismLang) return children;
+    const grammar = Prism.languages[prismLang];
+    if (!grammar) return children;
+    return Prism.highlight(children, grammar, prismLang);
+  }, [children, prismLang]);
+
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden my-4">
       {lang && (
@@ -105,10 +104,12 @@ export function CodeBlock({
       )}
       <pre className="px-5 py-4 text-sm font-mono overflow-x-auto whitespace-pre">
         <code
-          ref={codeRef}
           className={prismLang ? `language-${prismLang}` : undefined}
+          dangerouslySetInnerHTML={
+            prismLang ? { __html: highlighted } : undefined
+          }
         >
-          {children}
+          {!prismLang ? children : null}
         </code>
       </pre>
     </div>
