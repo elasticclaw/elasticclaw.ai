@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface SearchDoc {
   title: string;
@@ -61,6 +62,7 @@ function score(query: string, doc: SearchDoc): number {
 }
 
 export default function DocsSearch() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(0);
@@ -78,7 +80,7 @@ export default function DocsSearch() {
 
   useEffect(() => {
     setSelected(0);
-  }, [results.length]);
+  }, [results]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -108,7 +110,7 @@ export default function DocsSearch() {
       e.preventDefault();
       setSelected((s) => Math.max(s - 1, 0));
     } else if (e.key === "Enter" && results[selected]) {
-      window.location.href = results[selected].href;
+      router.push(results[selected].href);
       setOpen(false);
     }
   }
