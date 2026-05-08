@@ -153,8 +153,9 @@ jobs:
 
       <Section title="Manual trigger">
         <p>
-          Both workflows include <code>workflow_dispatch</code> (or can be added)
-          so you can trigger them manually from the GitHub Actions tab:
+          The publish workflow includes <code>workflow_dispatch</code> so you can
+          trigger it manually from the GitHub Actions tab. Add the same trigger to
+          the validate workflow if you want to run validation on demand:
         </p>
         <CodeBlock lang="yaml">{`on:
   workflow_dispatch:
@@ -162,7 +163,18 @@ jobs:
       path:
         description: 'Path to factory/template'
         required: true
-        default: '.elasticclaw/factories/my-factory'`}</CodeBlock>
+        default: '.elasticclaw/factories/my-factory'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: elasticclaw/actions/publish-factory@main
+        with:
+          hub-endpoint: https://factory.elasticclaw.ai
+          token: \${{ secrets.ELASTICCLAW_TOKEN }}
+          path: \${{ inputs.path }}`}</CodeBlock>
       </Section>
 
       <Note>
