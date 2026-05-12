@@ -48,11 +48,19 @@ template: base`}</CodeBlock>
 
       <Section title="Referencing secrets in templates">
         <p>
-          Templates can request secrets via <code className="text-cyan-300">secrets</code>
-          in <code>elasticclaw-config.yaml</code>. Each entry resolves the right secret
-          and maps it to the correct environment variable name.
+          Templates can request secrets via <code className="text-cyan-300">secret_refs</code>
+          in <code>elasticclaw-config.yaml</code>. This maps environment variable names
+          to hub secret names — simple and explicit.
         </p>
         <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
+secret_refs:
+  LINEAR_API_KEY: linear_token        # injects secrets.linear_token as LINEAR_API_KEY
+  MY_CUSTOM_KEY: my_custom_key        # injects secrets.my_custom_key as MY_CUSTOM_KEY`}</CodeBlock>
+        <p>
+          The legacy <code className="text-cyan-300">secrets</code> list format is still
+          supported but deprecated. It uses typed objects that resolve secrets indirectly:
+        </p>
+        <CodeBlock lang="yaml">{`# DEPRECATED — still works, but migrate to secret_refs
 secrets:
   - type: linear
     workspace: my-company    # resolves integrations.linear[].token
@@ -61,7 +69,7 @@ secrets:
   - type: custom
     name: my_custom_key
     as: MY_API_KEY            # optional: override env var name`}</CodeBlock>
-        <p>Supported types and their default env var names:</p>
+        <p>Supported types and their default env var names (legacy format):</p>
         <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
           <li><code>linear</code> → <code>LINEAR_API_KEY</code></li>
           <li><code>shortcut</code> → <code>SHORTCUT_API_KEY</code></li>
@@ -69,6 +77,11 @@ secrets:
           <li><code>github</code> → <code>GITHUB_TOKEN</code></li>
           <li><code>custom</code> → uppercase of the secret name (override with <code>as</code>)</li>
         </ul>
+        <Note>
+          The Doctor dashboard will warn you if any templates still use the deprecated
+          <code>secrets:</code> list format. Migrate to <code>secret_refs:</code> for
+          consistency with factory-level secret references.
+        </Note>
       </Section>
 
       <Section title="Referencing secrets in MCP servers">

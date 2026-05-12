@@ -88,12 +88,9 @@ tags: ["backend", "typescript"]    # static tags for all claws
 color: teal                         # UI accent color
 
 # Secrets to inject
-secrets:
-  - type: linear
-    workspace: my-company
-  - type: custom
-    name: my_api_key
-    as: MY_API_KEY
+secret_refs:
+  LINEAR_API_KEY: linear_token
+  MY_API_KEY: my_api_key
 
 # MCP servers to start
 mcps:
@@ -128,7 +125,8 @@ auto_watch_bugbot: true             # detect Cursor bugbot comments and inject`}
           <p><code className="text-cyan-300">docker</code> — Install Docker Engine via official apt repo</p>
           <p><code className="text-cyan-300">tags</code> — Static labels applied to every claw from this template</p>
           <p><code className="text-cyan-300">color</code> — UI accent color. One of: slate, red, orange, amber, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, pink, rose</p>
-          <p><code className="text-cyan-300">secrets</code> — Secret references to inject as env vars. See Secrets docs.</p>
+          <p><code className="text-cyan-300">secret_refs</code> — Secret references to inject as env vars (map of env var → hub secret name). See Secrets docs.</p>
+          <p><code className="text-cyan-300">secrets</code> — <strong>Deprecated</strong> — legacy list format for secret references. Migrate to <code>secret_refs</code>.</p>
           <p><code className="text-cyan-300">mcps</code> — MCP servers to start in the claw. See MCP Servers docs.</p>
           <p><code className="text-cyan-300">auto_watch_ci</code> — Auto-detect CI failures and inject fix messages (default: true)</p>
           <p><code className="text-cyan-300">auto_watch_bugbot</code> — Auto-detect Cursor bugbot comments and inject (default: true)</p>
