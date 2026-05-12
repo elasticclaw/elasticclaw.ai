@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DocsPage, Section, CodeBlock } from "@/components/docs-page";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 
 interface ReleaseDetail {
   version: string;
@@ -46,8 +45,7 @@ export default async function ReleasePage({ params }: { params: Promise<{ versio
         href="/docs/release-notes"
         className="inline-flex items-center gap-1 text-sm text-cyan-400 hover:text-cyan-300 mb-6"
       >
-        <ArrowLeft className="size-3" />
-        All releases
+        ← All releases
       </Link>
 
       {release.whatsNew.length > 0 && (
