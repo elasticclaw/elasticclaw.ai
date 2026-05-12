@@ -38,6 +38,13 @@ export default function TroubleshootingPage() {
           magic — just explicit name-to-name mapping.
         </p>
         <Note>
+          Before migrating, make sure the referenced secret exists in{" "}
+          <code>hub.yaml secrets:</code>. The old <code>type: linear</code> format
+          resolved tokens from <code>integrations.linear[].token</code> — the new
+          format reads from <code>secrets:</code> instead. If the secret is not
+          there, Doctor will report a missing reference immediately after migration.
+        </Note>
+        <Note>
           The old <code>secrets:</code> list format still works for backward
           compatibility, but you should migrate. The Doctor will continue to warn
           until you update.
@@ -62,7 +69,7 @@ export default function TroubleshootingPage() {
   linear_token: \${LINEAR_API_TOKEN}`}</CodeBlock>
       </Section>
 
-      <Section title="Webhook secret not validated">
+      <Section title="Webhooks not triggering factories">
         <p>
           If webhooks from Linear, GitHub Issues, or Shortcut are not triggering
           factories, check that the factory has a webhook secret configured:
