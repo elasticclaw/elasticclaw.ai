@@ -67,6 +67,7 @@ const NAV_ITEMS: NavItem[] = [
   },
   { href: "/docs/web-ui", label: "Web UI" },
   { href: "/docs/troubleshooting", label: "Troubleshooting" },
+  { href: "/docs/release-notes", label: "Release Notes" },
 ];
 
 function isActive(pathname: string, href: string): boolean {
