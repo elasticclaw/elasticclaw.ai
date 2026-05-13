@@ -14,6 +14,12 @@ interface Release {
 // This array is updated by the release automation workflow.
 // Newest first.
 const RELEASES: Release[] = [
+  {
+    version: "2026.5.13",
+    date: "2026-05-13",
+    title: "The One With the Codex and the Claws",
+    summary: "Codex joins the LLM lineup, Greptile reviews surface in‑app, and manual factory triggers get a UI makeover—all while tightening security and squashing a host of bugs.",
+  },
   // Example entry — removed by automation on first real release
   // {
   //   version: "2026.5.12",
