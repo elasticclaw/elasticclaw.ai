@@ -15,6 +15,31 @@ interface ReleaseDetail {
 
 // This map is updated by the release automation workflow.
 const RELEASE_DETAILS: Record<string, ReleaseDetail> = {
+  "2026.5.15": {
+    version: "2026.5.15",
+    date: "2026-05-15",
+    title: "The One With the New Factory",
+    whatsNew: [
+    "Added a brand‑new factory publishing workflow, letting you push ready‑made factories straight to the ElasticClaw registry.",
+    "Introduced validation of factories and their templates during the push process, catching missing fields before they hit production.",
+    "Rolled out a context‑window usage display, so you can see at a glance how much of the model’s context is being consumed.",
+    "Added repository support to the factory system, enabling factories to declare and use external repos directly.",
+    ],
+    improvements: [
+    "Fixed token handling so authentication tokens are now applied consistently across all API calls.",
+    "Refined the repository addition process, streamlining how repos are attached to factories.",
+    "Enhanced internal bug‑research tooling around factories, giving developers faster insight when something goes awry.",
+    ],
+    fixes: [
+    "Resolved shortcut polling issues that caused intermittent timeouts.",
+    "Corrected pipeline “move_issue” logic to correctly resolve the issue tracker via factory integration.",
+    "Fixed the stories/search shortcut to return a plain array instead of a wrapped `{data: [...]}` object.",
+    "Ensured settings export now carries the analytics section in static builds.",
+    "Added required ‘repos’ field validation for GitHub‑issues factories, preventing malformed configurations.",
+    "Updated the bridge protocol from version 3 to 4, aligning with the latest server expectations.",
+    ],
+    rawChangelog: "fa9ec97 fix: shortcut polling and pipeline move_issue (#227) (Marc Campbell)\n67c93c8 Revert \"fix(shortcut): stories/search returns array, not {data: [...]} wrapper\" (Marc Campbell)\n6f2ea7c Revert \"fix(pipeline): use factory integration to determine issue tracker for move_issue\" (Marc Campbell)\nab33c57 fix(pipeline): use factory integration to determine issue tracker for move_issue (Marc Campbell)\n2ee26b1 fix(shortcut): stories/search returns array, not {data: [...]} wrapper (Marc Campbell)\nb8142bb bump (Marc Campbell)\n0b58487 publish new factory (Marc Campbell)\n0d000ce bug research factory (Marc Campbell)\n89ab449 feat: validate factory and template during push (#222) (elasticclaw-factory[bot])\n357bfd4 feat: implement context window usage display (#219) (elasticclaw-factory[bot])\n5da3bc8 fix(settings): include analytics section in static export params (#221) (Marc Campbell)\n07d6e13 properly use the token (Marc Campbell)\n6934c12 fix(poll): require 'repos' for github-issues factories (#218) (Marc Campbell)\ncbb8cc1 fix(bridge): upgrade protocol version from 3 to 4 (#217) (Marc Campbell)\nb8ba24c adding repos (Marc Campbell)\na13a5db adding repos to the factory (Marc Campbell)",
+  },
   "2026.5.14": {
     version: "2026.5.14",
     date: "2026-05-15",
