@@ -15,6 +15,35 @@ interface ReleaseDetail {
 
 // This map is updated by the release automation workflow.
 const RELEASE_DETAILS: Record<string, ReleaseDetail> = {
+  "2026.5.14": {
+    version: "2026.5.14",
+    date: "2026-05-15",
+    title: "Claw Wars: The Sandbox Strikes Back",
+    whatsNew: [
+    "Added exe.dev as a new sandbox provider, letting you spin up isolated environments directly from the exe.dev platform.",
+    "Introduced a factory analytics dashboard with built‑in tracking, so you can see usage, success rates, and latency at a glance.",
+    "Added WorkingStatus and FinishedStatus enums to the agent lifecycle, giving pipelines clearer visibility into running and completed jobs.",
+    "Now logs the explicit reason why a claw was started, making audit trails easier to follow.",
+    "When a sandbox terminates early, ElasticClaw automatically posts a comment on the linked issue, keeping stakeholders in the loop.",
+    "Added the “Design” factory, a ready‑made template for UI/UX design workflows.",
+    ],
+    improvements: [
+    "Bumped the bundled OpenClaw runtime to version 2026.5.12 for better compatibility and security patches.",
+    "Enhanced pipeline YAML parsing errors with richer logs and actionable hints, cutting down debugging time.",
+    "Refreshed the Design factory UI and documentation for a smoother onboarding experience.",
+    ],
+    fixes: [
+    "Bridge now sends WebSocket ping frames on the status channel to stop idle disconnects.",
+    "elasticclaw‑config.yaml is now correctly included when loading template files.",
+    "Every repository clone attempt and its result are logged, helping diagnose visibility issues.",
+    "Bridge’s working directory is set to the workspace, so agents can locate cloned repos reliably.",
+    "Universal Daytona keep‑alive and status‑channel handling were hardened, improving overall claw reliability.",
+    "Guarded against double‑claw creation when webhooks fire in rapid succession.",
+    "Fixed the Shortcut workflow API and several shortcut‑related bugs (move_issue, manual trigger title prefixes, and other integration issues).",
+    "Updated shortcut.go and related integration poller code to resolve lingering edge‑case failures.",
+    ],
+    rawChangelog: "e0cf99e feat: add support for exe.dev sandbox provider (#134) (#185) (elasticclaw-factory[bot])\n9d82146 chore: update pinned openclaw version to 2026.5.12 (#214) (elasticclaw-factory[bot])\n339e8eb feat: factory analytics tracking and dashboard (#193) (elasticclaw-factory[bot])\ne7a7fac fix(bridge): send WebSocket ping frames on status channel to prevent idle disconnects (#212) (Marc Campbell)\n864dd6a fix(config): include elasticclaw-config.yaml in template file loading (#211) (Marc Campbell)\n7f9ac03 fix(daytona): log every clone attempt and result to diagnose repo visibility (#210) (Marc Campbell)\n807cc63 fix(daytona): set bridge cwd to workspace so agent can find cloned repos (#209) (Marc Campbell)\n461dbc5 fix: claw reliability — universal Daytona keepalive, status channel w… (#208) (Marc Campbell)\nf71e57d feat: Add WorkingStatus and FinishedStatus for agent lifecycle (#202) (#207) (elasticclaw-factory[bot])\ne5ce232 fix: prevent double claw creation from rapid webhooks (#206) (Marc Campbell)\n72e8dea fix: better logging and hints for pipeline YAML parse errors (#205) (Marc Campbell)\nd4710db feat: log reason for starting a claw (#204) (elasticclaw-factory[bot])\n1e64211 Merge pull request #199 from elasticclaw/fix-shortcut-workflow-api (Noah Campbell)\n1336265 Update shortcut.go (Noah Campbell)\n5f5efc0 chore: fix whitespace from greptile review (ElasticClaw Bot)\n53809a3 Update pkg/hub/shortcut.go (Noah Campbell)\n20df251 Update pkg/hub/integration_poller.go (Noah Campbell)\n95728c6 greptile (Noah Campbell)\nefa18a8 Update shortcut.go (Noah Campbell)\n26e4d84 Update shortcut.go (Noah Campbell)\nbcd7bcf Update shortcut.go (Noah Campbell)\n989a7d0 Update shortcut.go (Noah Campbell)\nc82f45d feat: comment on linked issue when sandbox terminates early (#197) (elasticclaw-factory[bot])\n525c19c fix: move_issue not working for manual factory triggers (#195) (Marc Campbell)\na6cec82 fix: drop factory name prefix from manual trigger claw titles (#194) (Marc Campbell)\nc539c8e update design factory (Marc Campbell)\n96b0a05 add design factory (Marc Campbell)",
+  },
   "2026.5.13": {
     version: "2026.5.13",
     date: "2026-05-13",

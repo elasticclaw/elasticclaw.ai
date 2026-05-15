@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.5.14",
+    date: "2026-05-15",
+    title: "Claw Wars: The Sandbox Strikes Back",
+    summary: "A sandbox‑powered upgrade that adds new providers, analytics, and a Design factory while tightening reliability and fixing a slew of integration quirks.",
+  },
+  {
     version: "2026.5.13",
     date: "2026-05-13",
     title: "The One With the Codex and the Claws",
