@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.5.15",
+    date: "2026-05-15",
+    title: "The One With the New Factory",
+    summary: "New factories, smarter context view, and a slew of under‑the‑hood fixes.",
+  },
+  {
     version: "2026.5.14",
     date: "2026-05-15",
     title: "Claw Wars: The Sandbox Strikes Back",
