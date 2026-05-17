@@ -14,6 +14,7 @@ export default function ProvidersPage() {
           {[
             { name: "Daytona", status: "Supported", desc: "Cloud dev environments with snapshot support. Good for persistent workspaces.", type: "ephemeral" },
             { name: "Replicated CMX", status: "Supported", desc: "Cloud-hosted sandbox infrastructure via Replicated's Compatibility Matrix. Recommended for production.", type: "ephemeral" },
+            { name: "exe.dev", status: "Supported", desc: "Persistent VMs with SSH access. No cloud account needed — just SSH key authentication.", type: "stateful" },
           ].map((p) => (
             <div key={p.name} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
               <div className="flex items-center gap-3 mb-1">
@@ -120,6 +121,7 @@ export default function ProvidersPage() {
           <p><code className="text-cyan-300">exec</code> — Execute commands in the sandbox (all providers)</p>
           <p><code className="text-cyan-300">snapshot</code> — Save/restore sandbox state (Daytona, Sprites)</p>
           <p><code className="text-cyan-300">hibernate</code> — Pause/resume sandbox (Sprites)</p>
+          <p><code className="text-cyan-300">ssh</code> — Direct SSH access (exe.dev)</p>
         </div>
       </Section>
 
@@ -127,10 +129,24 @@ export default function ProvidersPage() {
         <CodeBlock lang="bash">{`elasticclaw provider list`}</CodeBlock>
       </Section>
 
+      <Section title="exe.dev Setup">
+        <p>
+          exe.dev provides persistent VMs accessible via SSH. No cloud account
+          needed — just SSH key authentication. See the{" "}
+          <a href="/docs/exe-dev" className="text-cyan-400 hover:underline">
+            exe.dev setup guide
+          </a>{" "}
+          for details.
+        </p>
+        <CodeBlock lang="yaml">{`providers:
+  exedev:
+    ssh_key_path: ~/.ssh/exedev    # optional; uses SSH agent if omitted`}</CodeBlock>
+      </Section>
+
       <Note>
-        TTL-based auto-destroy helps control costs. Set a reasonable TTL in
-        your defaults and override per-agent with{" "}
-        <code>elasticclaw create --ttl 4h</code>.
+        TTL-based auto-destroy helps control costs for ephemeral providers
+        (Daytona, Vercel, CMX). exe.dev VMs are persistent and not subject to
+        TTL — delete them explicitly when no longer needed.
       </Note>
     </DocsPage>
   );
