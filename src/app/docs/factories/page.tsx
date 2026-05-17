@@ -127,7 +127,7 @@ auto_watch_bugbot: false`}</CodeBlock>
           <li><strong>PRs opened</strong> — number of PRs created by factory claws</li>
           <li><strong>PR merge rate</strong> — percentage of opened PRs that merged</li>
           <li><strong>By trigger status</strong> — breakdown of which statuses triggered creation</li>
-          <li><strong>Recent events</strong> — last 50 events with timestamps</li>
+          <li><strong>Recent events</strong> — last 50 events with timestamps (retained for up to 1 year, unlike the 4-hour Activity log)</li>
         </ul>
         <p className="mt-2 text-sm text-zinc-400">
           Analytics data is retained for up to 1 year. Use the time range selector to
