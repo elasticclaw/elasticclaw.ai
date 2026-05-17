@@ -17,7 +17,7 @@ interface ReleaseDetail {
 const RELEASE_DETAILS: Record<string, ReleaseDetail> = {
   "2026.5.16": {
     version: "2026.5.16",
-    date: "2026-05-17",
+    date: "2026-05-16",
     title: "Mission: Possible – The SSH Key Heist",
     whatsNew: [
     "Auto‑generated SSH keys for the exe.dev provider, eliminating manual key creation.",
