@@ -116,6 +116,25 @@ auto_watch_bugbot: false`}</CodeBlock>
         </ul>
       </Section>
 
+      <Section title="Analytics">
+        <p>
+          The hub tracks persistent analytics for each factory. Navigate to{" "}
+          <strong>Settings → Analytics</strong> to view:
+        </p>
+        <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400 mt-2">
+          <li><strong>Total triggers</strong> — how many times the factory fired</li>
+          <li><strong>Success rate</strong> — percentage of claw creations that succeeded</li>
+          <li><strong>PRs opened</strong> — number of PRs created by factory claws</li>
+          <li><strong>PR merge rate</strong> — percentage of opened PRs that merged</li>
+          <li><strong>By trigger status</strong> — breakdown of which statuses triggered creation</li>
+          <li><strong>Recent events</strong> — last 50 events with timestamps (retained for up to 1 year, unlike the 4-hour Activity log)</li>
+        </ul>
+        <p className="mt-2 text-sm text-zinc-400">
+          Analytics data is retained for up to 1 year. Use the time range selector to
+          view data for the last 7, 30, or 90 days.
+        </p>
+      </Section>
+
       <Section title="1:1 enforcement">
         <p>
           Each issue/story can only have one active claw at a time. If the same issue
