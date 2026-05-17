@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { DocsPage, CodeBlock, Section, Note } from "@/components/docs-page";
+import {
+  DocsPage,
+  CodeBlock,
+  Section,
+  Note,
+  VideoPlaceholder,
+} from "@/components/docs-page";
 
 export const metadata: Metadata = { title: "Overview" };
 
@@ -14,6 +20,11 @@ export default function DocsOverviewPage() {
         ElasticClaw is early-stage open source software. Expect rough edges and
         breaking changes until v1.0.
       </Note>
+
+      <VideoPlaceholder
+        title="ElasticClaw overview"
+        description="A short launch walkthrough will be embedded here."
+      />
 
       <Section title="What is ElasticClaw?">
         <p>
@@ -43,6 +54,37 @@ brew install elasticclaw`}</CodeBlock>
         <p>Create your first agent:</p>
         <CodeBlock lang="bash">{`elasticclaw create --name my-agent --template my-template
 elasticclaw chat my-agent`}</CodeBlock>
+      </Section>
+
+      <Section title="Help the Launch">
+        <p>
+          ElasticClaw is open source and early. If it looks useful, starring the{" "}
+          <a
+            href="https://github.com/elasticclaw/elasticclaw"
+            className="text-cyan-400 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub repo
+          </a>{" "}
+          helps other developers find it.
+        </p>
+        <p>
+          If you try ElasticClaw, post honest feedback or a short demo and tag{" "}
+          <a
+            href="https://x.com/elasticclaw"
+            className="text-cyan-400 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            @elasticclaw
+          </a>
+          . For stickers, send the link to{" "}
+          <a href="mailto:marc@elasticclaw.ai" className="text-cyan-400 hover:underline">
+            marc@elasticclaw.ai
+          </a>
+          . Useful feedback matters more than reach.
+        </p>
       </Section>
 
       <Section title="Next Steps">

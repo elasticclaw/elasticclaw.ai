@@ -97,7 +97,7 @@ export default function ModelsPage() {
     default_model: groq/llama-3.3-70b-versatile`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
           The <code>default_model</code> field uses the <code>provider/model</code> format
-          (e.g. <code>anthropic/claude-opus-4-5</code>).
+          (e.g. <code>anthropic/claude-sonnet-4-6</code>).
         </p>
       </Section>
 

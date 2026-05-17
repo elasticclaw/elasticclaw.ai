@@ -145,6 +145,30 @@ export function Note({ children }: { children: ReactNode }) {
   );
 }
 
+export function VideoPlaceholder({
+  title,
+  description = "Video coming soon.",
+}: {
+  title: string;
+  description?: string;
+}) {
+  return (
+    <div className="my-6 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950">
+      <div className="aspect-video w-full bg-[radial-gradient(circle_at_50%_35%,rgba(34,211,238,0.18),transparent_18rem),linear-gradient(135deg,rgba(24,24,27,0.98),rgba(9,9,11,1))]">
+        <div className="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
+          <div className="grid h-16 w-16 place-items-center rounded-full border border-cyan-400/40 bg-cyan-400/10 text-cyan-200 shadow-[0_0_36px_rgba(34,211,238,0.16)]">
+            <span className="ml-1 block h-0 w-0 border-y-[12px] border-l-[18px] border-y-transparent border-l-current" />
+          </div>
+          <div>
+            <p className="text-base font-semibold text-white">{title}</p>
+            <p className="mt-1 text-sm text-zinc-500">{description}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function MermaidDiagram({ children }: { children: string }) {
   return <MermaidChart chart={children} />;
 }

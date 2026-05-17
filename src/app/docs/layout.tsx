@@ -46,13 +46,7 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   { href: "/docs/mcp-servers", label: "MCP Servers" },
-  {
-    href: "/docs/models",
-    label: "Models",
-    children: [
-      { href: "/docs/models", label: "Models & LLM Keys" },
-    ],
-  },
+  { href: "/docs/models", label: "Models & LLM Keys" },
   {
     href: "/docs/factories",
     label: "Factories",
@@ -172,7 +166,7 @@ export default function DocsLayout({
             rel="noopener noreferrer"
             className="text-sm text-zinc-400 hover:text-cyan-400 transition-colors"
           >
-            GitHub →
+            Star on GitHub →
           </a>
         </div>
       </nav>
