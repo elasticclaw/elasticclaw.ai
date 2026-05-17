@@ -15,6 +15,25 @@ interface ReleaseDetail {
 
 // This map is updated by the release automation workflow.
 const RELEASE_DETAILS: Record<string, ReleaseDetail> = {
+  "2026.5.16": {
+    version: "2026.5.16",
+    date: "2026-05-17",
+    title: "Mission: Possible – The SSH Key Heist",
+    whatsNew: [
+    "Auto‑generated SSH keys for the exe.dev provider, eliminating manual key creation.",
+    "External trigger support added to factories, letting you fire custom actions from outside the platform.",
+    "Reliable message delivery with acknowledgments for claw‑bridge, ensuring messages aren’t lost in transit.",
+    ],
+    improvements: [
+    "Auto actions removed from the back of Claw cards, giving a cleaner, more focused UI.",
+    ],
+    fixes: [
+    "Fixed exe.dev bootstrap, VM termination, and orphaned key recovery to keep resources tidy.",
+    "Added missing CPU, memory, and disk fields to the exe.dev provider configuration.",
+    "Updated the Add modal to automatically select the first available form provider, preventing empty selections.",
+    ],
+    rawChangelog: "3a61dcd fix: exedev bootstrap, terminateVM, and orphaned key recovery (#241) (Marc Campbell)\n08f595b feat: auto-generate SSH key for exe.dev provider (#240) (Marc Campbell)\ne788f5f local (Marc Campbell)\nb22445c fix: set formProvider to first available provider in openAdd modal (#239) (Marc Campbell)\ne3e6896 feat: add external trigger support for factories (#234) (elasticclaw-factory[bot])\na05af3a fix: exe.dev provider config — add CPU, memory, disk fields (#233) (Marc Campbell)\n3d0bb41 feat: reliable message delivery with acks for claw-bridge (#220) (#231) (elasticclaw-factory[bot])\n458e562 feat: remove auto actions from claw card back (#232) (elasticclaw-factory[bot])\nfb7a4fe test: L2 parity matrix for Linear + Shortcut + CI wiring (#229) (Marc Campbell)",
+  },
   "2026.5.15": {
     version: "2026.5.15",
     date: "2026-05-15",

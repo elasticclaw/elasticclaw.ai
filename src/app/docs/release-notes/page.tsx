@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.5.16",
+    date: "2026-05-17",
+    title: "Mission: Possible – The SSH Key Heist",
+    summary: "A sleek batch of auto‑key magic, smarter factories, and rock‑solid messaging.",
+  },
+  {
     version: "2026.5.15",
     date: "2026-05-15",
     title: "The One With the New Factory",
