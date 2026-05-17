@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DocsPage, CodeBlock, Section, Note } from "@/components/docs-page";
+import { DocsPage, CodeBlock, Section } from "@/components/docs-page";
 
 export const metadata: Metadata = { title: "Factories" };
 
@@ -9,10 +9,6 @@ export default function FactoriesPage() {
       title="Factories"
       description="Automatically spawn and terminate claws based on Linear, Shortcut, or GitHub Issues events."
     >
-      <Note>
-        Factories are in beta. Linear, Shortcut, and GitHub Issues are supported.
-      </Note>
-
       <Section title="How factories work">
         <p>
           A factory watches an external system for events. When a trigger condition
@@ -82,27 +78,6 @@ This moves the issue and keeps you alive to watch CI and review comments.
 You'll terminate automatically when the PR merges.`}</CodeBlock>
       </Section>
 
-      <Section title="Auto-watching CI and bugbot">
-        <p>
-          While a claw is in the watching state (after <code>[DONE]</code>), the hub
-          polls the PR every 2 minutes for:
-        </p>
-        <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400 mt-2">
-          <li><strong>CI failures</strong> — failed check runs inject a message telling the agent to fix them</li>
-          <li><strong>Bugbot comments</strong> — new Cursor bugbot comments are injected as user messages</li>
-          <li><strong>PR merged/closed</strong> — terminates the claw and destroys the sandbox</li>
-        </ul>
-        <p className="mt-3 text-sm text-zinc-400">
-          You can disable per-template with:
-        </p>
-        <CodeBlock lang="yaml">{`# in elasticclaw-config.yaml
-auto_watch_ci: false
-auto_watch_bugbot: false`}</CodeBlock>
-        <p className="text-sm text-zinc-400 mt-2">
-          Or toggle per-claw from the dashboard card back.
-        </p>
-      </Section>
-
       <Section title="Activity log">
         <p>
           Every webhook event is logged for 4 hours. Click <strong>Activity</strong> next to
@@ -114,25 +89,6 @@ auto_watch_bugbot: false`}</CodeBlock>
           <li><code>error</code> — provisioning failed</li>
           <li><code>not_actionable</code> — webhook received but status didn&apos;t match</li>
         </ul>
-      </Section>
-
-      <Section title="Analytics">
-        <p>
-          The hub tracks persistent analytics for each factory. Navigate to{" "}
-          <strong>Settings → Analytics</strong> to view:
-        </p>
-        <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400 mt-2">
-          <li><strong>Total triggers</strong> — how many times the factory fired</li>
-          <li><strong>Success rate</strong> — percentage of claw creations that succeeded</li>
-          <li><strong>PRs opened</strong> — number of PRs created by factory claws</li>
-          <li><strong>PR merge rate</strong> — percentage of opened PRs that merged</li>
-          <li><strong>By trigger status</strong> — breakdown of which statuses triggered creation</li>
-          <li><strong>Recent events</strong> — last 50 events with timestamps (retained for up to 1 year, unlike the 4-hour Activity log)</li>
-        </ul>
-        <p className="mt-2 text-sm text-zinc-400">
-          Analytics data is retained for up to 1 year. Use the time range selector to
-          view data for the last 7, 30, or 90 days.
-        </p>
       </Section>
 
       <Section title="1:1 enforcement">

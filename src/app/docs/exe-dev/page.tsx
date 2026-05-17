@@ -12,7 +12,7 @@ export default function ExedevPage() {
       <Section title="What is exe.dev?">
         <p>
           exe.dev provides persistent VMs accessible via SSH. Unlike ephemeral
-          providers (Daytona, Vercel), exe.dev VMs survive until you explicitly
+          providers (Daytona, Replicated CMX), exe.dev VMs survive until you explicitly
           delete them — making them ideal for long-running agents or
           stateful workloads.
         </p>

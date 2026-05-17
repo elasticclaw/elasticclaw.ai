@@ -1,7 +1,40 @@
 import type { Metadata } from "next";
-import { DocsPage, CodeBlock, Section, Note } from "@/components/docs-page";
+import { DocsPage, CodeBlock, Section } from "@/components/docs-page";
 
 export const metadata: Metadata = { title: "Models & LLM Keys" };
+
+const SUPPORTED_PROVIDERS = [
+  {
+    id: "anthropic",
+    env: "ANTHROPIC_API_KEY",
+    models: "anthropic/claude-sonnet-4-6, anthropic/claude-opus-4-5",
+  },
+  {
+    id: "openai",
+    env: "OPENAI_API_KEY",
+    models: "openai/gpt-4o, openai/gpt-4o-mini",
+  },
+  {
+    id: "codex",
+    env: "CODEX_API_KEY",
+    models: "codex/o4-mini",
+  },
+  {
+    id: "fireworks",
+    env: "FIREWORKS_API_KEY",
+    models: "fireworks/accounts/fireworks/models/kimi-k2p6",
+  },
+  {
+    id: "groq",
+    env: "GROQ_API_KEY",
+    models: "groq/llama-3.3-70b-versatile",
+  },
+  {
+    id: "deepseek",
+    env: "DEEPSEEK_API_KEY",
+    models: "deepseek/deepseek-chat",
+  },
+];
 
 export default function ModelsPage() {
   return (
@@ -9,6 +42,37 @@ export default function ModelsPage() {
       title="Models & LLM Keys"
       description="Configure multiple LLM providers and API keys. Set per-template or per-claw model overrides."
     >
+      <Section title="Supported providers">
+        <p>
+          Use these provider IDs in <code>llm_keys[].provider</code> and in the
+          <code>provider/model</code> value for <code>default_model</code>.
+        </p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
+            <thead>
+              <tr className="border-b border-zinc-800">
+                <th className="text-left py-2 pr-6 text-zinc-400 font-medium">Provider</th>
+                <th className="text-left py-2 pr-6 text-zinc-400 font-medium">API key env var</th>
+                <th className="text-left py-2 text-zinc-400 font-medium">Example models</th>
+              </tr>
+            </thead>
+            <tbody className="text-zinc-300">
+              {SUPPORTED_PROVIDERS.map((provider) => (
+                <tr key={provider.id} className="border-b border-zinc-900">
+                  <td className="py-2 pr-6">
+                    <code className="text-cyan-300">{provider.id}</code>
+                  </td>
+                  <td className="py-2 pr-6">
+                    <code>{provider.env}</code>
+                  </td>
+                  <td className="py-2 text-zinc-400">{provider.models}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Section>
+
       <Section title="Named LLM keys">
         <p>
           Instead of a single API key, ElasticClaw uses <em>named</em> LLM keys in
@@ -25,22 +89,15 @@ export default function ModelsPage() {
   - name: fireworks-kimi
     provider: fireworks
     api_key: \${FIREWORKS_API_KEY}
-    default_model: fireworks/accounts/fireworks/models/kimi-k2p6`}</CodeBlock>
+    default_model: fireworks/accounts/fireworks/models/kimi-k2p6
+
+  - name: groq-fast
+    provider: groq
+    api_key: \${GROQ_API_KEY}
+    default_model: groq/llama-3.3-70b-versatile`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
           The <code>default_model</code> field uses the <code>provider/model</code> format
-          (e.g. <code>anthropic/claude-opus-4-5</code>).
-        </p>
-      </Section>
-
-      <Section title="Legacy format">
-        <p>
-          The old flat-map format is still accepted for backwards compatibility:
-        </p>
-        <CodeBlock lang="yaml">{`llm_keys:
-  anthropic: sk-ant-...
-  fireworks: fw-...`}</CodeBlock>
-        <p className="text-sm text-zinc-400 mt-2">
-          This auto-converts to named keys with <code>default: true</code> on the first entry.
+          (e.g. <code>anthropic/claude-sonnet-4-6</code>).
         </p>
       </Section>
 
@@ -64,15 +121,6 @@ llm_key: fireworks-kimi`}</CodeBlock>
         </p>
       </Section>
 
-      <Section title="Provider env vars">
-        <p className="text-sm text-zinc-400">
-          Each provider's API key is injected as an environment variable into the claw:
-        </p>
-        <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
-          <li><code>anthropic</code> → <code>ANTHROPIC_API_KEY</code></li>
-          <li><code>fireworks</code> → <code>FIREWORKS_API_KEY</code></li>
-        </ul>
-      </Section>
     </DocsPage>
   );
 }

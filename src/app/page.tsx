@@ -1,260 +1,368 @@
 "use client";
+import Image from "next/image";
 import Link from "next/link";
 
 const GITHUB_URL = "https://github.com/elasticclaw/elasticclaw";
+const X_URL = "https://x.com/elasticclaw";
+const FEEDBACK_EMAIL = "marc@elasticclaw.ai";
+
+const PROOF_POINTS = [
+  "Single Go binary hub",
+  "Embedded web UI",
+  "Linear, GitHub Issues, Shortcut",
+  "Self-hosted",
+  "Apache 2.0",
+];
+
+const CAPABILITIES = [
+  {
+    eyebrow: "01",
+    title: "Issue tracker in, pull request out",
+    desc: "Factories watch Linear, GitHub Issues, or Shortcut. When a ticket matches your trigger, ElasticClaw creates a dedicated claw with the issue context and lifecycle rules.",
+  },
+  {
+    eyebrow: "02",
+    title: "Real sandboxes, not shared sessions",
+    desc: "Each claw runs in an isolated provider-backed environment with terminal access, git credentials, template files, secrets, MCP servers, and persistent state for the task.",
+  },
+  {
+    eyebrow: "03",
+    title: "Your infrastructure, your credentials",
+    desc: "The hub is self-hosted. Keep code, issue data, API keys, model keys, and GitHub App credentials under your control instead of routing everything through a hosted agent service.",
+  },
+];
+
+const FEATURE_CARDS = [
+  {
+    title: "Sandbox provider",
+    desc: "Pick where claws run: Daytona, Replicated CMX, or exe.dev. ElasticClaw handles provisioning, bootstrap, lifecycle, and cleanup.",
+  },
+  {
+    title: "Template",
+    desc: "Define the environment: repos, bootstrap files, model defaults, secrets, MCP servers, and the instructions every claw starts with.",
+  },
+  {
+    title: "Factory",
+    desc: "Define when work starts: status changes, labels, assignments, manual inputs, concurrency limits, and the pipeline that drives the claw.",
+  },
+  {
+    title: "Issue tracker",
+    desc: "Connect the source of work: Linear, GitHub Issues, or Shortcut. Tickets become structured context instead of pasted prompts.",
+  },
+  {
+    title: "Model key",
+    desc: "Choose named LLM keys and model defaults per hub or template, including Anthropic, OpenAI, Codex, Fireworks, Groq, and DeepSeek.",
+  },
+  {
+    title: "GitHub workflow",
+    desc: "Give claws scoped repo access so they can clone, test, push branches, open pull requests, and move work into review.",
+  },
+];
+
+const WORKFLOW_STEPS = [
+  {
+    step: "Connect",
+    desc: "Deploy the hub, add a provider, configure model keys, and install your GitHub App.",
+  },
+  {
+    step: "Template",
+    desc: "Define the environment, repos, secrets, MCP tools, and agent instructions for a class of work.",
+  },
+  {
+    step: "Trigger",
+    desc: "Move an issue into Ready for Agent, add a label, or manually trigger a factory from the UI.",
+  },
+  {
+    step: "Review",
+    desc: "The claw opens a PR, follows your pipeline, and shuts down after the work reaches a terminal state.",
+  },
+];
+
+function DemoVideoPlaceholder() {
+  return (
+    <div className="relative mx-auto mt-10 w-full max-w-3xl text-left">
+      <div className="absolute -inset-4 rounded-2xl bg-cyan-400/10 blur-3xl" />
+      <div className="relative overflow-hidden rounded-xl border border-zinc-700 bg-zinc-950/90 shadow-2xl">
+        <div className="flex items-center justify-between border-b border-zinc-800 px-5 py-3">
+          <div className="flex items-center gap-2">
+            <span className="h-3 w-3 rounded-full bg-red-500" />
+            <span className="h-3 w-3 rounded-full bg-yellow-500" />
+            <span className="h-3 w-3 rounded-full bg-green-500" />
+          </div>
+          <span className="font-mono text-xs text-zinc-500">demo video</span>
+        </div>
+        <div className="relative aspect-video overflow-hidden bg-[radial-gradient(circle_at_72%_35%,rgba(16,185,129,0.16),transparent_16rem),radial-gradient(circle_at_28%_50%,rgba(34,211,238,0.18),transparent_18rem),linear-gradient(135deg,rgba(24,24,27,0.98),rgba(9,9,11,1))]">
+          <Image
+            src="/mascot.png"
+            alt="ElasticClaw mascot"
+            width={360}
+            height={360}
+            priority
+            className="pointer-events-none absolute bottom-0 right-0 hidden h-[82%] w-auto translate-x-8 translate-y-8 object-contain opacity-90 sm:block"
+          />
+          <div className="relative z-10 flex h-full max-w-sm flex-col justify-end gap-5 px-6 pb-7 text-left sm:px-8 sm:pb-8">
+            <div className="grid h-14 w-14 place-items-center rounded-full border border-cyan-400/40 bg-cyan-400/10 text-cyan-200 shadow-[0_0_42px_rgba(34,211,238,0.2)]">
+              <span className="ml-1 block h-0 w-0 border-y-[10px] border-l-[16px] border-y-transparent border-l-current" />
+            </div>
+            <div>
+              <p className="text-lg font-bold text-white md:text-xl">
+                ElasticClaw launch demo
+              </p>
+              <p className="mt-2 text-sm leading-6 text-zinc-400">
+                A quick overview video will go here: install, connect a factory,
+                create a claw, and open the resulting pull request.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="min-h-screen" style={{ background: "#09090b", color: "#fafafa" }}>
-      {/* Nav */}
-      <nav className="border-b border-zinc-800 px-6 py-4 flex items-center justify-between max-w-7xl mx-auto">
-        <div className="flex items-center gap-2">
-          <span className="text-cyan-400 font-bold text-xl">⚡ elasticclaw</span>
-        </div>
+    <div
+      className="min-h-screen overflow-hidden"
+      style={{
+        background:
+          "radial-gradient(circle at 18% 0%, rgba(34, 211, 238, 0.12), transparent 34rem), radial-gradient(circle at 88% 8%, rgba(16, 185, 129, 0.1), transparent 28rem), radial-gradient(circle at 70% 60%, rgba(245, 158, 11, 0.04), transparent 24rem), #09090b",
+        color: "#fafafa",
+      }}
+    >
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+        <Link href="/" className="flex items-center gap-3">
+          <span className="grid h-8 w-8 place-items-center rounded-lg border border-cyan-400/40 bg-cyan-400/10 text-sm font-bold text-cyan-300">
+            EC
+          </span>
+          <span className="font-bold tracking-tight text-white">elasticclaw</span>
+        </Link>
         <div className="flex items-center gap-6 text-sm text-zinc-400">
-          <Link href="/docs" className="hover:text-cyan-400 transition-colors">Docs</Link>
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors">GitHub</a>
-        </div>
-      </nav>
-
-      {/* Hero */}
-      <section className="max-w-5xl mx-auto px-6 py-24 text-center">
-        <div className="inline-flex items-center gap-2 bg-zinc-900 border border-zinc-700 rounded-full px-4 py-1.5 text-sm text-zinc-400 mb-8">
-          <span className="w-2 h-2 rounded-full bg-cyan-400 inline-block"></span>
-          Open source · Self-hosted
-        </div>
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
-          AI agents that{" "}
-          <span style={{ color: "#22d3ee" }}>ship code.</span>
-        </h1>
-        <p className="text-xl text-zinc-400 max-w-2xl mx-auto mb-10">
-          ElasticClaw provisions isolated AI agents from your issue tracker.
-          A ticket enters <span className="text-zinc-200">Ready for Agent</span> — a sandbox
-          spins up, implements the fix, opens a PR, and shuts down when it merges.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-          <Link
-            href="/docs"
-            className="px-8 py-3 rounded-lg font-semibold text-black transition-colors"
-            style={{ background: "#22d3ee" }}
-          >
-            Get Started
+          <Link href="/docs" className="hover:text-cyan-300 transition-colors">
+            Docs
           </Link>
           <a
             href={GITHUB_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-8 py-3 rounded-lg font-semibold border border-zinc-700 text-zinc-300 hover:border-zinc-500 transition-colors"
+            className="hover:text-cyan-300 transition-colors"
           >
-            GitHub →
+            Star
           </a>
         </div>
+      </nav>
 
-        {/* Terminal snippet — factory workflow */}
-        <div className="max-w-2xl mx-auto bg-zinc-900 border border-zinc-700 rounded-xl overflow-hidden text-left shadow-2xl">
-          <div className="flex items-center gap-2 px-4 py-3 border-b border-zinc-800">
-            <span className="w-3 h-3 rounded-full bg-red-500"></span>
-            <span className="w-3 h-3 rounded-full bg-yellow-500"></span>
-            <span className="w-3 h-3 rounded-full bg-green-500"></span>
-            <span className="ml-2 text-xs text-zinc-500">terminal</span>
+      <section className="mx-auto max-w-6xl px-6 pb-20 pt-12 text-center lg:pb-28 lg:pt-20">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-zinc-950/70 px-4 py-1.5 text-sm text-cyan-100 shadow-[0_0_30px_rgba(34,211,238,0.12)]">
+            <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_20px_rgba(34,211,238,0.9)]" />
+            Open source control plane for coding agents
           </div>
-          <div className="px-5 py-4 font-mono text-sm">
-            <div className="text-zinc-500">$ <span className="text-zinc-200">brew install elasticclaw</span></div>
-            <div className="text-zinc-500">$ <span className="text-zinc-200">elasticclaw install --server ssh://root@my-server.com --domain hub.example.com</span></div>
-            <div className="mt-3 text-zinc-400">
-              <span style={{ color: "#22d3ee" }}>✓</span> Hub installed with systemd + Caddy
-            </div>
-            <div className="text-zinc-400">
-              <span style={{ color: "#22d3ee" }}>✓</span> Web UI at <span className="text-white">https://hub.example.com</span>
-            </div>
-            <div className="mt-3 text-zinc-500">$ <span className="text-zinc-200">elasticclaw factory create --name bugfix --integration linear</span></div>
-            <div className="mt-3 text-zinc-400">
-              <span style={{ color: "#22d3ee" }}>→</span> Linear webhook configured
-            </div>
-            <div className="text-zinc-400">
-              <span style={{ color: "#22d3ee" }}>→</span> Issue <span className="text-white">ENG-42</span> moved to <span className="text-white">Ready for Agent</span>
-            </div>
-            <div className="text-zinc-400">
-              <span style={{ color: "#22d3ee" }}>✓</span> Claw <span className="text-white">bugfix-eng-42</span> provisioned
-            </div>
-            <div className="text-zinc-400">
-              <span style={{ color: "#22d3ee" }}>✓</span> PR opened: <span className="text-white">https://github.com/acme/app/pull/1337</span>
-            </div>
-            <div className="text-zinc-400">
-              <span style={{ color: "#22d3ee" }}>✓</span> Issue moved to <span className="text-white">In Review</span>, claw terminated
-            </div>
-            <div className="mt-2 text-zinc-500">$<span className="animate-pulse">▋</span></div>
-          </div>
-        </div>
-      </section>
-
-      {/* What it is */}
-      <section className="border-t border-zinc-800 py-20">
-        <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-4">What is ElasticClaw?</h2>
-          <p className="text-zinc-400 text-lg max-w-3xl mb-10">
-            ElasticClaw is a self-hosted platform that turns your issue tracker
-            into an autonomous engineering team. Connect Linear, GitHub Issues,
-            or Shortcut — when a ticket hits the right status, an isolated AI
-            agent sandbox spins up, implements the fix, opens a PR, and cleans up
-            when the work is done.
+          <h1 className="mx-auto max-w-4xl text-5xl font-black leading-[0.94] tracking-[-0.055em] text-white md:text-6xl lg:text-7xl">
+            Turn issues into pull requests with self-hosted agents.
+          </h1>
+          <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-zinc-300 md:text-xl">
+            ElasticClaw watches your issue tracker, provisions an isolated AI
+            coding sandbox, gives it scoped access to your repos and tools, and
+            drives the work through review and cleanup.
           </p>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                icon: "🏭",
-                title: "Factories",
-                desc: "Auto-spawn agents from issue status changes. Linear → Ready for Agent → sandbox provisioned → PR opened → issue moved → claw terminated."
-              },
-              {
-                icon: "🖥️",
-                title: "Ephemeral Sandboxes",
-                desc: "Each agent gets a real, isolated sandbox — not a shared environment. Full terminal, git access, and persistent state for the lifetime of the task."
-              },
-              {
-                icon: "🔧",
-                title: "Full Environment",
-                desc: "Agents clone repos, install dependencies, run tests, and push branches. They do what developers do, in a real environment.",
-              },
-              {
-                icon: "🐙",
-                title: "GitHub-native",
-                desc: "Open PRs, link them to issues, watch CI, respond to review comments, and merge. Works with your existing GitHub workflow.",
-              },
-              {
-                icon: "⚙️",
-                title: "Templates & Secrets",
-                desc: "Define reusable templates with bootstrap scripts, secrets, MCP servers, and model configs. One template, infinite agents.",
-              },
-              {
-                icon: "🔓",
-                title: "Self-hosted",
-                desc: "Run on your own infra with your own API keys. No third-party access to your code, issues, or secrets.",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="bg-zinc-900 border border-zinc-800 rounded-xl p-6"
-              >
-                <div className="text-3xl mb-3">{item.icon}</div>
-                <h3 className="font-semibold text-white mb-2">{item.title}</h3>
-                <p className="text-zinc-400 text-sm">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Factory workflow deep-dive */}
-      <section className="py-20">
-        <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-4 text-center">How factories work</h2>
-          <p className="text-zinc-400 text-center max-w-2xl mx-auto mb-12">
-            Set it up once. Every ticket that matches your trigger gets its own
-            agent, start to finish.
-          </p>
-          <div className="grid md:grid-cols-4 gap-6">
-            {[
-              {
-                step: "01",
-                title: "Connect",
-                desc: "Link Linear, GitHub Issues, or Shortcut. Configure which status triggers an agent.",
-              },
-              {
-                step: "02",
-                title: "Trigger",
-                desc: "A ticket moves to Ready for Agent. ElasticClaw receives the webhook and checks your filters.",
-              },
-              {
-                step: "03",
-                title: "Implement",
-                desc: "A sandbox spins up with the issue context. The agent explores the codebase, writes the fix, and opens a PR."
-              },
-              {
-                step: "04",
-                title: "Wrap",
-                desc: "The agent signals [DONE]. The issue moves to In Review, and the sandbox terminates when the PR merges."
-              },
-            ].map((item, i) => (
-              <div key={item.step} className="relative">
-                {i < 3 && (
-                  <div className="hidden md:block absolute top-6 left-full w-8 border-t border-dashed border-zinc-700 -translate-x-4"></div>
-                )}
-                <div
-                  className="text-4xl font-bold mb-4"
-                  style={{ color: "#22d3ee", opacity: 0.4 }}
-                >
-                  {item.step}
-                </div>
-                <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-                <p className="text-zinc-400 text-sm">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Getting started */}
-      <section className="border-t border-zinc-800 py-20">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold mb-4">Get started in minutes</h2>
-          <p className="text-zinc-400 mb-8">
-            Install the CLI, deploy a hub, and connect your first factory.
-          </p>
-
-          <div className="bg-zinc-900 border border-zinc-700 rounded-xl px-6 py-5 font-mono text-sm text-left mb-6 shadow-xl">
-            <div className="text-zinc-500 text-xs mb-3">macOS / Linux</div>
-            <div className="text-zinc-400 mb-1">
-              <span className="text-zinc-600">$</span>{" "}
-              <span className="text-zinc-200">brew tap elasticclaw/elasticclaw && brew install elasticclaw</span>
-            </div>
-            <div className="text-zinc-400">
-              <span className="text-zinc-600">$</span>{" "}
-              <span className="text-zinc-200">elasticclaw install --server ssh://root@my-server.com --domain hub.example.com</span>
-            </div>
-            <div className="mt-3 text-zinc-500 text-xs border-t border-zinc-800 pt-3">
-              # Or install the hub binary directly on any Linux server
-            </div>
-            <div className="text-zinc-400 text-xs">
-              <span className="text-zinc-600">$</span>{" "}
-              <span className="text-zinc-200">curl -fsSL https://elasticclaw.ai/install | bash</span>
-            </div>
-          </div>
-
-          <div className="flex gap-4 justify-center">
+          <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               href="/docs/installation"
-              className="text-sm text-zinc-400 hover:text-cyan-400 transition-colors underline underline-offset-4"
+              className="rounded-lg border border-cyan-200 bg-cyan-300 px-6 py-3 text-center font-bold text-zinc-950 shadow-[0_0_40px_rgba(34,211,238,0.25)] transition-colors hover:bg-cyan-200"
             >
-              Full install guide →
+              Install ElasticClaw
             </Link>
-            <Link
-              href="/docs/factories"
-              className="text-sm text-zinc-400 hover:text-cyan-400 transition-colors underline underline-offset-4"
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-lg border border-zinc-700 bg-zinc-950/60 px-6 py-3 text-center font-bold text-zinc-100 transition-colors hover:border-cyan-400/60"
             >
-              Factory setup →
-            </Link>
+              Star on GitHub
+            </a>
+          </div>
+          <div className="mx-auto mt-8 flex max-w-3xl flex-wrap justify-center gap-2 text-sm text-zinc-400">
+            {PROOF_POINTS.map((point) => (
+              <div key={point} className="rounded-full border border-zinc-800 bg-zinc-950/55 px-4 py-2">
+                {point}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <DemoVideoPlaceholder />
+      </section>
+
+      <section className="border-y border-zinc-800/80 bg-zinc-950/45 py-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="max-w-3xl">
+            <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">
+              Why it exists
+            </p>
+            <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">
+              Agents need infrastructure, not just a chat box.
+            </h2>
+            <p className="mt-5 text-lg leading-8 text-zinc-400">
+              ElasticClaw is the missing operations layer for coding agents:
+              provisioning, identity, templates, issue context, secrets, PR
+              workflows, and teardown.
+            </p>
+          </div>
+          <div className="mt-12 grid gap-5 lg:grid-cols-3">
+            {CAPABILITIES.map((item) => (
+              <div key={item.title} className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-6 shadow-[0_18px_60px_rgba(0,0,0,0.18)]">
+                <p className="mb-5 font-mono text-sm text-cyan-300">{item.eyebrow}</p>
+                <h3 className="text-xl font-bold text-white">{item.title}</h3>
+                <p className="mt-3 leading-7 text-zinc-400">{item.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
+      <section className="mx-auto max-w-7xl px-6 py-20">
+        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+          <div>
+            <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">
+              Configure the pieces
+            </p>
+            <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">
+              Bring your provider, template, factory, and tracker.
+            </h2>
+            <p className="mt-5 leading-8 text-zinc-400">
+              ElasticClaw is deliberately composable. Choose the sandbox backend,
+              define the agent environment, connect the issue tracker, then wire
+              those pieces together with factories.
+            </p>
+            <p className="mt-4 leading-8 text-zinc-400">
+              The result is not one hosted workflow. It is your own issue-to-PR
+              pipeline, assembled from the systems your team already uses.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {FEATURE_CARDS.map((item) => (
+              <div key={item.title} className="rounded-lg border border-zinc-800 bg-zinc-950/55 p-5 transition-colors hover:border-cyan-400/40">
+                <h3 className="font-bold text-white">{item.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-zinc-400">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-zinc-800/80 bg-zinc-950/45 py-20">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="text-center">
+            <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">
+              Workflow
+            </p>
+            <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">
+              From ticket to review loop.
+            </h2>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-4">
+            {WORKFLOW_STEPS.map((item, index) => (
+              <div key={item.step} className="relative rounded-lg border border-zinc-800 bg-zinc-900/60 p-6">
+                <p className="font-mono text-4xl font-black text-emerald-300/35">
+                  {String(index + 1).padStart(2, "0")}
+                </p>
+                <h3 className="mt-5 text-lg font-bold text-white">{item.step}</h3>
+                <p className="mt-2 text-sm leading-6 text-zinc-400">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-4xl px-6 py-20 text-center">
+        <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">
+          Install the CLI, deploy a hub, connect your first factory.
+        </h2>
+        <div className="mt-8 overflow-x-auto rounded-lg border border-zinc-700 bg-zinc-950/80 px-6 py-5 text-left font-mono text-sm shadow-xl">
+          <p className="text-zinc-500"># macOS / Linux</p>
+          <p className="mt-3 text-zinc-400">
+            $ <span className="text-zinc-100">brew tap elasticclaw/elasticclaw && brew install elasticclaw</span>
+          </p>
+          <p className="text-zinc-400">
+            $ <span className="text-zinc-100">elasticclaw install --server ssh://root@vps --domain factory.acme.dev</span>
+          </p>
+          <p className="mt-4 border-t border-zinc-800 pt-4 text-zinc-500"># Script install</p>
+          <p className="mt-3 text-zinc-400">
+            $ <span className="text-zinc-100">curl -fsSL https://elasticclaw.ai/install | bash</span>
+          </p>
+        </div>
+        <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+          <Link
+            href="/docs/installation"
+            className="rounded-lg bg-white px-5 py-3 font-bold text-zinc-950 transition-colors hover:bg-cyan-100"
+          >
+            Read the install guide
+          </Link>
+          <Link
+            href="/docs/factories"
+            className="rounded-lg border border-zinc-700 px-5 py-3 font-bold text-zinc-100 transition-colors hover:border-cyan-400/60"
+          >
+            Set up factories
+          </Link>
+        </div>
+      </section>
+
+      <section className="border-y border-zinc-800/80 bg-zinc-950/45 py-16">
+        <div className="mx-auto max-w-4xl px-6 text-center">
+          <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">
+            Help the launch
+          </p>
+          <h2 className="text-3xl font-black tracking-tight text-white md:text-4xl">
+            Stars and honest feedback help early OSS projects get found.
+          </h2>
+          <p className="mx-auto mt-5 max-w-2xl leading-8 text-zinc-400">
+            If ElasticClaw looks useful, star the repo so more developers can
+            find it. If you try it, post what worked, what was confusing, or
+            what you built with it. Swag and small gifts are available for
+            people sharing useful public feedback while supplies last.
+          </p>
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-lg bg-white px-5 py-3 text-center font-bold text-zinc-950 transition-colors hover:bg-cyan-100"
+            >
+              Star on GitHub
+            </a>
+            <a
+              href={X_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-lg border border-zinc-700 px-5 py-3 text-center font-bold text-zinc-100 transition-colors hover:border-cyan-400/60"
+            >
+              Follow @elasticclaw
+            </a>
+            <a
+              href={`mailto:${FEEDBACK_EMAIL}`}
+              className="rounded-lg border border-zinc-700 px-5 py-3 text-center font-bold text-zinc-100 transition-colors hover:border-cyan-400/60"
+            >
+              Send feedback
+            </a>
+          </div>
+        </div>
+      </section>
+
       <footer className="border-t border-zinc-800 py-10">
-        <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="text-zinc-500 text-sm">
-            © {new Date().getFullYear()} ElasticClaw. Apache 2.0 open source.
-          </span>
-          <div className="flex gap-6 text-sm text-zinc-500">
-            <Link href="/docs" className="hover:text-cyan-400 transition-colors">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 text-sm text-zinc-500 sm:flex-row">
+          <span>© {new Date().getFullYear()} ElasticClaw. Apache 2.0 open source.</span>
+          <div className="flex gap-6">
+            <Link href="/docs" className="hover:text-cyan-300 transition-colors">
               Docs
             </Link>
             <a
               href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-cyan-400 transition-colors"
+              className="hover:text-cyan-300 transition-colors"
             >
-              GitHub
+              Star on GitHub
             </a>
           </div>
         </div>

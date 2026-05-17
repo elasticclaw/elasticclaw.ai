@@ -46,10 +46,10 @@ export default function WebUIPage() {
 
       <Section title="Starting the Server">
         <CodeBlock lang="bash">{`# Start with hub config in current directory
-elasticclaw serve
+elasticclaw hub
 
 # Or point to a specific hub config
-elasticclaw serve --config /path/to/hub.yaml`}</CodeBlock>
+elasticclaw hub --config /path/to/hub.yaml`}</CodeBlock>
         <p>
           Open <code className="text-cyan-300">http://localhost:8080</code> and
           authenticate with your token.
@@ -61,7 +61,7 @@ elasticclaw serve --config /path/to/hub.yaml`}</CodeBlock>
           The Settings page provides a UI for configuring all hub.yaml fields:
         </p>
         <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
-          <li><strong>Providers</strong> — Daytona, Vercel, Replicated CMX</li>
+          <li><strong>Providers</strong> — Daytona, Replicated CMX, exe.dev</li>
           <li><strong>LLM Keys</strong> — Named API keys with default model</li>
           <li><strong>GitHub Apps</strong> — App credentials with live permission checks</li>
           <li><strong>Integrations</strong> — Linear, Shortcut, GitHub Issues</li>

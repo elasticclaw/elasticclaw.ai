@@ -137,9 +137,9 @@ elasticclaw factory rm my-factory          # remove from hub`}</CodeBlock>
         <CodeBlock lang="bash">{`elasticclaw login --hub https://hub.example.com --token mytoken`}</CodeBlock>
       </Section>
 
-      <Section title="elasticclaw serve">
+      <Section title="elasticclaw hub">
         <p>Start the hub server (including embedded web UI).</p>
-        <CodeBlock lang="bash">{`elasticclaw serve`}</CodeBlock>
+        <CodeBlock lang="bash">{`elasticclaw hub`}</CodeBlock>
       </Section>
     </DocsPage>
   );
