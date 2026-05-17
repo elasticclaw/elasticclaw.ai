@@ -33,10 +33,6 @@ providers:
     api_url: https://app.daytona.io
     api_key: \${DAYTONA_API_KEY}
     default_snapshot: daytona-large
-  vercel:
-    access_token: \${VERCEL_TOKEN}
-    team_id: team_xxx
-    project_id: prj_xxx
   replicated:
     token: \${REPLICATED_TOKEN}
     default_instance_type: r1.large

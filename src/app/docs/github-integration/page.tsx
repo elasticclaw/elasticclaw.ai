@@ -24,6 +24,29 @@ export default function GitHubIntegrationPage() {
         </ul>
       </Section>
 
+      <Section title="Why a GitHub App instead of a PAT?">
+        <p>
+          A personal access token belongs to a human user. If you give it to an
+          agent system, every claw effectively inherits that user's reachable
+          repositories and permissions. That is too broad for automated coding
+          work.
+        </p>
+        <p>
+          GitHub Apps give ElasticClaw a narrower security model:
+        </p>
+        <ul className="list-disc list-inside space-y-1 text-sm mt-2 text-zinc-400">
+          <li><strong>Repo-scoped installs</strong> — install the app only on repos claws should access</li>
+          <li><strong>Permission-scoped access</strong> — request only contents, issues, pull requests, and checks permissions needed for the workflow</li>
+          <li><strong>Short-lived tokens</strong> — the hub mints installation tokens when a claw needs repo access instead of storing a long-lived user token</li>
+          <li><strong>Bot identity</strong> — commits, comments, and PRs are attributed to the app instead of a maintainer's personal account</li>
+          <li><strong>Revocation boundary</strong> — uninstalling or restricting the app cuts off access without rotating a human's credentials</li>
+        </ul>
+        <p className="mt-3">
+          In practice, this lets each template declare the repos it needs and
+          lets the hub mint a token for that installation at claw creation time.
+        </p>
+      </Section>
+
       <Section title="1. Create a GitHub App">
         <ol className="list-decimal list-inside space-y-3 text-sm">
           <li>

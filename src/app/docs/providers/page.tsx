@@ -13,13 +13,15 @@ export default function ProvidersPage() {
       <Section title="Supported Providers">
         <div className="space-y-3">
           {[
-            { name: "Daytona", status: "Supported", desc: "Cloud dev environments with snapshot support. Good for persistent workspaces.", type: "ephemeral" },
-            { name: "Replicated CMX", status: "Supported", desc: "Cloud-hosted sandbox infrastructure via Replicated's Compatibility Matrix. Recommended for production.", type: "ephemeral" },
-            { name: "exe.dev", status: "Supported", desc: "Persistent VMs with SSH access. No cloud account needed — just SSH key authentication.", type: "stateful" },
+            { name: "Daytona", href: "/docs/providers/daytona", status: "Supported", desc: "Cloud dev environments with snapshot support. Good for fast sandbox startup.", type: "ephemeral" },
+            { name: "Replicated CMX", href: "/docs/providers/replicated", status: "Supported", desc: "Cloud-hosted sandbox infrastructure via Replicated's Compatibility Matrix.", type: "ephemeral" },
+            { name: "exe.dev", href: "/docs/exe-dev", status: "Supported", desc: "Persistent VMs with SSH access. No cloud account needed — just SSH key authentication.", type: "stateful" },
           ].map((p) => (
             <div key={p.name} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
               <div className="flex items-center gap-3 mb-1">
-                <span className="font-semibold text-white">{p.name}</span>
+                <Link href={p.href} className="font-semibold text-white hover:text-cyan-300">
+                  {p.name}
+                </Link>
                 <span className={`text-xs px-2 py-0.5 rounded-full ${p.status === "Supported" ? "bg-cyan-900 text-cyan-300" : p.status === "Experimental" ? "bg-yellow-900 text-yellow-300" : "bg-zinc-800 text-zinc-400"}`}>
                   {p.status}
                 </span>
@@ -29,60 +31,6 @@ export default function ProvidersPage() {
             </div>
           ))}
         </div>
-      </Section>
-
-      <Section title="Replicated CMX Setup">
-        <ol className="list-decimal list-inside space-y-3 text-sm">
-          <li>
-            Sign up at{" "}
-            <a
-              href="https://vendor.replicated.com"
-              className="text-cyan-400 hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              vendor.replicated.com
-            </a>
-          </li>
-          <li>
-            Create an application and navigate to{" "}
-            <strong>Compatibility Matrix</strong>
-          </li>
-          <li>Generate a CMX API token from your account settings</li>
-          <li>Note your cluster/app slug</li>
-        </ol>
-        <CodeBlock lang="bash">{`export REPLICATED_API_TOKEN=your-token-here`}</CodeBlock>
-        <p>Configure in <code className="text-cyan-300">hub.yaml</code>:</p>
-        <CodeBlock lang="yaml">{`providers:
-  replicated:
-    token: \${REPLICATED_API_TOKEN}
-    default_instance_type: r1.small
-    default_ttl: 24h`}</CodeBlock>
-      </Section>
-
-      <Section title="Daytona Setup">
-        <p>
-          Daytona provides cloud dev environments with snapshot support.
-        </p>
-        <CodeBlock lang="yaml">{`providers:
-  daytona:
-    api_url: https://app.daytona.io
-    api_key: \${DAYTONA_API_KEY}
-    default_snapshot: daytona-large`}</CodeBlock>
-        <p className="text-sm text-zinc-400 mt-2">
-          Templates can override the snapshot with <code>snapshot: daytona-medium</code>.
-        </p>
-      </Section>
-
-      <Section title="Vercel Setup">
-        <p>
-          Vercel provider runs agents in serverless sandbox environments.
-        </p>
-        <CodeBlock lang="yaml">{`providers:
-  vercel:
-    access_token: \${VERCEL_TOKEN}
-    team_id: team_xxx      # optional
-    project_id: prj_xxx    # optional`}</CodeBlock>
       </Section>
 
       <Section title="Instance Types (CMX)">
@@ -120,8 +68,7 @@ export default function ProvidersPage() {
       <Section title="Provider capabilities">
         <div className="space-y-2 text-sm text-zinc-400">
           <p><code className="text-cyan-300">exec</code> — Execute commands in the sandbox (all providers)</p>
-          <p><code className="text-cyan-300">snapshot</code> — Save/restore sandbox state (Daytona, Sprites)</p>
-          <p><code className="text-cyan-300">hibernate</code> — Pause/resume sandbox (Sprites)</p>
+          <p><code className="text-cyan-300">snapshot</code> — Start from a prebuilt sandbox image (Daytona)</p>
           <p><code className="text-cyan-300">ssh</code> — Direct SSH access (exe.dev)</p>
         </div>
       </Section>
@@ -130,23 +77,9 @@ export default function ProvidersPage() {
         <CodeBlock lang="bash">{`elasticclaw provider list`}</CodeBlock>
       </Section>
 
-      <Section title="exe.dev Setup">
-        <p>
-          exe.dev provides persistent VMs accessible via SSH. No cloud account
-          needed — just SSH key authentication. See the{" "}
-          <Link href="/docs/exe-dev" className="text-cyan-400 hover:underline">
-            exe.dev setup guide
-          </Link>{" "}
-          for details.
-        </p>
-        <CodeBlock lang="yaml">{`providers:
-  exedev:
-    ssh_key_path: ~/.ssh/exedev    # optional; uses SSH agent if omitted`}</CodeBlock>
-      </Section>
-
       <Note>
         TTL-based auto-destroy helps control costs for ephemeral providers
-        (Daytona, Vercel, CMX). exe.dev VMs are persistent and not subject to
+        (Daytona, CMX). exe.dev VMs are persistent and not subject to
         TTL — delete them explicitly when no longer needed.
       </Note>
     </DocsPage>

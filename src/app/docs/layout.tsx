@@ -24,18 +24,33 @@ const NAV_ITEMS: NavItem[] = [
     label: "Concepts",
     children: [
       { href: "/docs/concepts", label: "Architecture" },
+      { href: "/docs/web-ui", label: "Web UI" },
     ],
   },
   {
-    href: "/docs/hub",
-    label: "Configuration",
+    href: "/docs/providers",
+    label: "Sandbox Providers",
     children: [
-      { href: "/docs/hub", label: "Hub Config" },
-      { href: "/docs/providers", label: "Providers" },
-      { href: "/docs/models", label: "Models & LLM Keys" },
+      { href: "/docs/providers", label: "Provider Overview" },
+      { href: "/docs/providers/daytona", label: "Daytona" },
+      { href: "/docs/providers/replicated", label: "Replicated CMX" },
+      { href: "/docs/exe-dev", label: "exe.dev" },
+    ],
+  },
+  {
+    href: "/docs/templates",
+    label: "Templates",
+    children: [
+      { href: "/docs/templates", label: "Template Config" },
       { href: "/docs/secrets", label: "Secrets" },
-      { href: "/docs/mcp-servers", label: "MCP Servers" },
-      { href: "/docs/authentication", label: "Authentication" },
+    ],
+  },
+  { href: "/docs/mcp-servers", label: "MCP Servers" },
+  {
+    href: "/docs/models",
+    label: "Models",
+    children: [
+      { href: "/docs/models", label: "Models & LLM Keys" },
     ],
   },
   {
@@ -43,31 +58,40 @@ const NAV_ITEMS: NavItem[] = [
     label: "Factories",
     children: [
       { href: "/docs/factories", label: "Overview" },
-      { href: "/docs/linear-integration", label: "Linear" },
-      { href: "/docs/github-issues", label: "GitHub Issues" },
-      { href: "/docs/shortcut-integration", label: "Shortcut" },
-    ],
-  },
-  {
-    href: "/docs/examples",
-    label: "Examples",
-    children: [
+      { href: "/docs/pipelines", label: "Pipelines" },
+      { href: "/docs/examples", label: "Examples" },
       { href: "/docs/examples/bugfix-linear", label: "Bug fixes (Linear)" },
       { href: "/docs/examples/feature-github", label: "Feature work (GitHub)" },
       { href: "/docs/examples/dependabot", label: "Dependabot auto-merge" },
     ],
   },
   {
+    href: "/docs/linear-integration",
+    label: "Issue Trackers",
+    children: [
+      { href: "/docs/linear-integration", label: "Linear" },
+      { href: "/docs/github-issues", label: "GitHub Issues" },
+      { href: "/docs/shortcut-integration", label: "Shortcut" },
+    ],
+  },
+  {
     href: "/docs/github-integration",
-    label: "Integrations",
+    label: "GitHub",
     children: [
       { href: "/docs/github-integration", label: "GitHub App" },
       { href: "/docs/github-actions", label: "GitHub Actions" },
     ],
   },
-  { href: "/docs/web-ui", label: "Web UI" },
+  {
+    href: "/docs/hub",
+    label: "Configuration",
+    children: [
+      { href: "/docs/hub", label: "Hub Config" },
+      { href: "/docs/authentication", label: "Authentication" },
+    ],
+  },
+  { href: "/docs/analytics", label: "Analytics" },
   { href: "/docs/troubleshooting", label: "Troubleshooting" },
-  { href: "/docs/release-notes", label: "Release Notes" },
 ];
 
 function isActive(pathname: string, href: string): boolean {
@@ -136,6 +160,12 @@ export default function DocsLayout({
         </div>
         <div className="flex items-center gap-4">
           <DocsSearch />
+          <Link
+            href="/docs/release-notes"
+            className="text-sm text-zinc-400 hover:text-cyan-400 transition-colors"
+          >
+            Release Notes
+          </Link>
           <a
             href="https://github.com/elasticclaw/elasticclaw"
             target="_blank"

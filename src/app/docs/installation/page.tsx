@@ -31,17 +31,19 @@ brew install elasticclaw`}</CodeBlock>
           .
         </p>
         <CodeBlock lang="bash">{`# macOS (arm64)
-curl -L https://github.com/elasticclaw/elasticclaw/releases/latest/download/elasticclaw_darwin_arm64.tar.gz | tar xz
+curl -L https://github.com/elasticclaw/elasticclaw/releases/latest/download/elasticclaw-darwin-arm64 -o elasticclaw
+chmod +x elasticclaw
 sudo mv elasticclaw /usr/local/bin/
 
 # Linux (amd64)
-curl -L https://github.com/elasticclaw/elasticclaw/releases/latest/download/elasticclaw_linux_amd64.tar.gz | tar xz
+curl -L https://github.com/elasticclaw/elasticclaw/releases/latest/download/elasticclaw-linux-amd64 -o elasticclaw
+chmod +x elasticclaw
 sudo mv elasticclaw /usr/local/bin/`}</CodeBlock>
       </Section>
 
       <Section title="Verify Installation">
-        <CodeBlock lang="bash">{`elasticclaw --version
-# elasticclaw v0.1.0`}</CodeBlock>
+        <CodeBlock lang="bash">{`elasticclaw version
+# elasticclaw 2026.5.16`}</CodeBlock>
       </Section>
 
       <Section title="Upgrade CLI">
