@@ -1,8 +1,10 @@
+import { PLAUSIBLE_DOMAIN } from "./analytics";
+
 export async function trackServerEvent(
-  domain: string,
   eventName: string,
   url: string,
-  props?: Record<string, string | number>
+  props?: Record<string, string | number>,
+  visitorIp?: string
 ) {
   if (process.env.NODE_ENV !== "production") {
     return;
@@ -14,9 +16,10 @@ export async function trackServerEvent(
       headers: {
         "Content-Type": "application/json",
         "User-Agent": "elasticclaw.ai/1.0",
+        ...(visitorIp ? { "X-Forwarded-For": visitorIp } : {}),
       },
       body: JSON.stringify({
-        domain,
+        domain: PLAUSIBLE_DOMAIN,
         name: eventName,
         url,
         props,

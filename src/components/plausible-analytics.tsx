@@ -1,8 +1,7 @@
 "use client";
 
 import Script from "next/script";
-
-const PLAUSIBLE_DOMAIN = "elasticclaw.ai";
+import { PLAUSIBLE_DOMAIN } from "@/lib/analytics";
 
 export function PlausibleAnalytics() {
   // Only load in production
@@ -12,7 +11,6 @@ export function PlausibleAnalytics() {
 
   return (
     <Script
-      defer
       data-domain={PLAUSIBLE_DOMAIN}
       data-api="/p/event"
       src="/p/script.js"

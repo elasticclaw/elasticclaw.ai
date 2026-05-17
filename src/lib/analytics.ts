@@ -1,3 +1,5 @@
+export const PLAUSIBLE_DOMAIN = "elasticclaw.ai";
+
 export function trackEvent(
   eventName: string,
   props?: Record<string, string | number>
