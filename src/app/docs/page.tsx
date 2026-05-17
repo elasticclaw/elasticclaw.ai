@@ -89,6 +89,12 @@ elasticclaw chat my-agent`}</CodeBlock>
             </Link>{" "}
             — external tool servers for agents
           </li>
+          <li>
+            <Link href="/docs/exe-dev" className="text-cyan-400 hover:underline">
+              exe.dev Setup
+            </Link>{" "}
+            — persistent VMs via SSH
+          </li>
         </ul>
       </Section>
     </DocsPage>
