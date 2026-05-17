@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { DocsPage, CodeBlock, Section, Note } from "@/components/docs-page";
 
 export const metadata: Metadata = { title: "Providers" };
@@ -133,9 +134,9 @@ export default function ProvidersPage() {
         <p>
           exe.dev provides persistent VMs accessible via SSH. No cloud account
           needed — just SSH key authentication. See the{" "}
-          <a href="/docs/exe-dev" className="text-cyan-400 hover:underline">
+          <Link href="/docs/exe-dev" className="text-cyan-400 hover:underline">
             exe.dev setup guide
-          </a>{" "}
+          </Link>{" "}
           for details.
         </p>
         <CodeBlock lang="yaml">{`providers:

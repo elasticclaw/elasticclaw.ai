@@ -66,7 +66,7 @@ export default function ExedevPage() {
 
       <Section title="Verify CLI Access">
         <p>Test that your SSH key is recognized:</p>
-        <CodeBlock lang="bash">{`ssh exe.dev ls`}</CodeBlock>
+        <CodeBlock lang="bash">{`ssh exe.dev ls --json`}</CodeBlock>
         <p>You should see a JSON list of VMs (empty if you haven't created any):</p>
         <CodeBlock lang="json">{`{"vms":[]}`}</CodeBlock>
         <p>If you get a permission error, verify the key is registered:</p>
