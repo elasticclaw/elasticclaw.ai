@@ -73,17 +73,6 @@ export default function ProvidersPage() {
         </p>
       </Section>
 
-      <Section title="Vercel Setup">
-        <p>
-          Vercel provider runs agents in serverless sandbox environments.
-        </p>
-        <CodeBlock lang="yaml">{`providers:
-  vercel:
-    access_token: \${VERCEL_TOKEN}
-    team_id: team_xxx      # optional
-    project_id: prj_xxx    # optional`}</CodeBlock>
-      </Section>
-
       <Section title="Instance Types (CMX)">
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
@@ -119,8 +108,7 @@ export default function ProvidersPage() {
       <Section title="Provider capabilities">
         <div className="space-y-2 text-sm text-zinc-400">
           <p><code className="text-cyan-300">exec</code> — Execute commands in the sandbox (all providers)</p>
-          <p><code className="text-cyan-300">snapshot</code> — Save/restore sandbox state (Daytona, Sprites)</p>
-          <p><code className="text-cyan-300">hibernate</code> — Pause/resume sandbox (Sprites)</p>
+          <p><code className="text-cyan-300">snapshot</code> — Save/restore sandbox state (Daytona)</p>
           <p><code className="text-cyan-300">ssh</code> — Direct SSH access (exe.dev)</p>
         </div>
       </Section>
@@ -145,7 +133,7 @@ export default function ProvidersPage() {
 
       <Note>
         TTL-based auto-destroy helps control costs for ephemeral providers
-        (Daytona, Vercel, CMX). exe.dev VMs are persistent and not subject to
+        (Daytona, CMX). exe.dev VMs are persistent and not subject to
         TTL — delete them explicitly when no longer needed.
       </Note>
     </DocsPage>
