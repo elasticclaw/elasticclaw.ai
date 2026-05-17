@@ -80,16 +80,8 @@ const WORKFLOW_STEPS = [
 
 function DemoVideoPlaceholder() {
   return (
-    <div className="relative w-full max-w-[34rem] text-left lg:ml-auto">
+    <div className="relative mx-auto mt-10 w-full max-w-3xl text-left">
       <div className="absolute -inset-4 rounded-2xl bg-cyan-400/10 blur-3xl" />
-      <Image
-        src="/mascot.png"
-        alt="ElasticClaw mascot"
-        width={192}
-        height={192}
-        priority
-        className="relative z-10 mx-auto mb-5 h-32 w-32 rounded-lg border border-zinc-800 bg-zinc-950 object-cover shadow-2xl md:absolute md:-right-10 md:-top-14 md:mb-0 md:h-40 md:w-40 lg:-right-14 lg:-top-16 lg:h-44 lg:w-44"
-      />
       <div className="relative overflow-hidden rounded-xl border border-zinc-700 bg-zinc-950/90 shadow-2xl">
         <div className="flex items-center justify-between border-b border-zinc-800 px-5 py-3">
           <div className="flex items-center gap-2">
@@ -99,16 +91,24 @@ function DemoVideoPlaceholder() {
           </div>
           <span className="font-mono text-xs text-zinc-500">demo video</span>
         </div>
-        <div className="aspect-video bg-[radial-gradient(circle_at_50%_34%,rgba(34,211,238,0.2),transparent_20rem),linear-gradient(135deg,rgba(24,24,27,0.98),rgba(9,9,11,1))]">
-          <div className="flex h-full flex-col items-center justify-center gap-5 px-6 text-center">
-            <div className="grid h-16 w-16 place-items-center rounded-full border border-cyan-400/40 bg-cyan-400/10 text-cyan-200 shadow-[0_0_42px_rgba(34,211,238,0.2)]">
-              <span className="ml-1 block h-0 w-0 border-y-[12px] border-l-[18px] border-y-transparent border-l-current" />
+        <div className="relative aspect-video overflow-hidden bg-[radial-gradient(circle_at_72%_35%,rgba(16,185,129,0.16),transparent_16rem),radial-gradient(circle_at_28%_50%,rgba(34,211,238,0.18),transparent_18rem),linear-gradient(135deg,rgba(24,24,27,0.98),rgba(9,9,11,1))]">
+          <Image
+            src="/mascot.png"
+            alt="ElasticClaw mascot"
+            width={360}
+            height={360}
+            priority
+            className="pointer-events-none absolute bottom-0 right-0 hidden h-[82%] w-auto translate-x-8 translate-y-8 object-contain opacity-90 sm:block"
+          />
+          <div className="relative z-10 flex h-full max-w-sm flex-col justify-end gap-5 px-6 pb-7 text-left sm:px-8 sm:pb-8">
+            <div className="grid h-14 w-14 place-items-center rounded-full border border-cyan-400/40 bg-cyan-400/10 text-cyan-200 shadow-[0_0_42px_rgba(34,211,238,0.2)]">
+              <span className="ml-1 block h-0 w-0 border-y-[10px] border-l-[16px] border-y-transparent border-l-current" />
             </div>
             <div>
               <p className="text-lg font-bold text-white md:text-xl">
                 ElasticClaw launch demo
               </p>
-              <p className="mt-2 max-w-xl text-sm leading-6 text-zinc-400 md:text-base">
+              <p className="mt-2 text-sm leading-6 text-zinc-400">
                 A quick overview video will go here: install, connect a factory,
                 create a claw, and open the resulting pull request.
               </p>
@@ -152,21 +152,21 @@ export default function Home() {
         </div>
       </nav>
 
-      <section className="mx-auto grid max-w-7xl items-center gap-12 px-6 pb-20 pt-12 lg:grid-cols-[1.02fr_0.98fr] lg:pb-28 lg:pt-20">
-        <div>
+      <section className="mx-auto max-w-6xl px-6 pb-20 pt-12 text-center lg:pb-28 lg:pt-20">
+        <div className="mx-auto max-w-5xl">
           <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-zinc-950/70 px-4 py-1.5 text-sm text-cyan-100 shadow-[0_0_30px_rgba(34,211,238,0.12)]">
             <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_20px_rgba(34,211,238,0.9)]" />
             Open source control plane for coding agents
           </div>
-          <h1 className="max-w-4xl text-5xl font-black leading-[0.94] tracking-[-0.055em] text-white md:text-6xl lg:text-7xl">
+          <h1 className="mx-auto max-w-4xl text-5xl font-black leading-[0.94] tracking-[-0.055em] text-white md:text-6xl lg:text-7xl">
             Turn issues into pull requests with self-hosted agents.
           </h1>
-          <p className="mt-7 max-w-2xl text-lg leading-8 text-zinc-300 md:text-xl">
+          <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-zinc-300 md:text-xl">
             ElasticClaw watches your issue tracker, provisions an isolated AI
             coding sandbox, gives it scoped access to your repos and tools, and
             drives the work through review and cleanup.
           </p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               href="/docs/installation"
               className="rounded-lg border border-cyan-200 bg-cyan-300 px-6 py-3 text-center font-bold text-zinc-950 shadow-[0_0_40px_rgba(34,211,238,0.25)] transition-colors hover:bg-cyan-200"
@@ -182,7 +182,7 @@ export default function Home() {
               Star on GitHub
             </a>
           </div>
-          <div className="mt-8 flex max-w-2xl flex-wrap gap-2 text-sm text-zinc-400">
+          <div className="mx-auto mt-8 flex max-w-3xl flex-wrap justify-center gap-2 text-sm text-zinc-400">
             {PROOF_POINTS.map((point) => (
               <div key={point} className="rounded-full border border-zinc-800 bg-zinc-950/55 px-4 py-2">
                 {point}
@@ -196,15 +196,13 @@ export default function Home() {
 
       <section className="border-y border-zinc-800/80 bg-zinc-950/45 py-20">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
-            <div>
+          <div className="max-w-3xl">
             <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">
               Why it exists
             </p>
             <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">
               Agents need infrastructure, not just a chat box.
             </h2>
-            </div>
             <p className="mt-5 text-lg leading-8 text-zinc-400">
               ElasticClaw is the missing operations layer for coding agents:
               provisioning, identity, templates, issue context, secrets, PR
@@ -311,23 +309,20 @@ export default function Home() {
       </section>
 
       <section className="border-y border-zinc-800/80 bg-zinc-950/45 py-16">
-        <div className="mx-auto grid max-w-5xl gap-8 px-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
-          <div>
+        <div className="mx-auto max-w-4xl px-6 text-center">
           <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">
             Help the launch
           </p>
           <h2 className="text-3xl font-black tracking-tight text-white md:text-4xl">
             Stars and honest feedback help early OSS projects get found.
           </h2>
-          </div>
-          <div>
-          <p className="leading-8 text-zinc-400">
+          <p className="mx-auto mt-5 max-w-2xl leading-8 text-zinc-400">
             If ElasticClaw looks useful, star the repo so more developers can
             find it. If you try it, post what worked, what was confusing, or
             what you built with it. Swag and small gifts are available for
             people sharing useful public feedback while supplies last.
           </p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <a
               href={GITHUB_URL}
               target="_blank"
@@ -350,7 +345,6 @@ export default function Home() {
             >
               Send feedback
             </a>
-          </div>
           </div>
         </div>
       </section>
