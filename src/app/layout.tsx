@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { PlausibleAnalytics } from "@/components/plausible-analytics";
 
 export const metadata: Metadata = {
   title: "ElasticClaw — Provision AI agents. Ship faster.",
@@ -20,7 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <PlausibleAnalytics />
+        {children}
+      </body>
     </html>
   );
 }
