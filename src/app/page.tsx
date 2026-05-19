@@ -7,74 +7,74 @@ const X_URL = "https://x.com/elasticclaw";
 const FEEDBACK_EMAIL = "marc@elasticclaw.ai";
 
 const PROOF_POINTS = [
+  "Factories and pipelines",
+  "Scoped GitHub App credentials",
+  "Issue tracker triggers",
   "Single Go binary hub",
-  "Embedded web UI",
-  "Linear, GitHub Issues, Shortcut",
-  "Self-hosted",
   "Apache 2.0",
 ];
 
 const CAPABILITIES = [
   {
     eyebrow: "01",
-    title: "Issue tracker in, pull request out",
-    desc: "Factories watch Linear, GitHub Issues, or Shortcut. When a ticket matches your trigger, ElasticClaw creates a dedicated claw with the issue context and lifecycle rules.",
+    title: "Factories start from real work queues",
+    desc: "Linear, GitHub Issues, Shortcut, webhooks, releases, and other events become sources of work. Factories watch those signals, apply filters, and create the right claw with the right context.",
   },
   {
     eyebrow: "02",
-    title: "Real sandboxes, not shared sessions",
-    desc: "Each claw runs in an isolated provider-backed environment with terminal access, git credentials, template files, secrets, MCP servers, and persistent state for the task.",
+    title: "Pipelines drive the workflow",
+    desc: "Define what happens after creation: branch, implement, test, open a PR, wait for CI, respond to review, move the issue, merge, and shut down.",
   },
   {
     eyebrow: "03",
-    title: "Your infrastructure, your credentials",
-    desc: "The hub is self-hosted. Keep code, issue data, API keys, model keys, and GitHub App credentials under your control instead of routing everything through a hosted agent service.",
+    title: "Credentials stay scoped and owned",
+    desc: "The self-hosted hub mints per-claw GitHub App tokens and injects only the repos, secrets, model keys, MCP tools, and issue data that each pipeline needs.",
   },
 ];
 
 const FEATURE_CARDS = [
   {
-    title: "Sandbox provider",
-    desc: "Pick where claws run: Daytona, Replicated CMX, or exe.dev. ElasticClaw handles provisioning, bootstrap, lifecycle, and cleanup.",
-  },
-  {
-    title: "Template",
-    desc: "Define the environment: repos, bootstrap files, model defaults, secrets, MCP servers, and the instructions every claw starts with.",
-  },
-  {
     title: "Factory",
-    desc: "Define when work starts: status changes, labels, assignments, manual inputs, concurrency limits, and the pipeline that drives the claw.",
+    desc: "Define the class of work: trigger rules, template, concurrency, issue movement, lifecycle policy, and the pipeline that drives the claw.",
+  },
+  {
+    title: "Pipeline",
+    desc: "Encode the stages after a claw starts: created, done, CI, review, merge, failure handling, and cleanup.",
+  },
+  {
+    title: "Scoped GitHub App",
+    desc: "Give each claw temporary, repo-scoped credentials so it can clone, push branches, open pull requests, watch checks, and merge when allowed.",
   },
   {
     title: "Issue tracker",
-    desc: "Connect the source of work: Linear, GitHub Issues, or Shortcut. Tickets become structured context instead of pasted prompts.",
+    desc: "Run from the queue your team already uses. Tickets become structured context and workflow state instead of pasted prompts.",
   },
   {
-    title: "Model key",
-    desc: "Choose named LLM keys and model defaults per hub or template, including Anthropic, OpenAI, Codex, Fireworks, Groq, and DeepSeek.",
+    title: "Template",
+    desc: "Define the runtime for a class of work: repos, bootstrap files, model defaults, secrets, MCP servers, and agent instructions.",
   },
   {
-    title: "GitHub workflow",
-    desc: "Give claws scoped repo access so they can clone, test, push branches, open pull requests, and move work into review.",
+    title: "Execution provider",
+    desc: "Use Daytona, Replicated CMX, or exe.dev for isolated workspaces. Sandboxes are a critical factory component: where claws clone, test, build, and push code.",
   },
 ];
 
 const WORKFLOW_STEPS = [
   {
-    step: "Connect",
-    desc: "Deploy the hub, add a provider, configure model keys, and install your GitHub App.",
-  },
-  {
-    step: "Template",
-    desc: "Define the environment, repos, secrets, MCP tools, and agent instructions for a class of work.",
+    step: "Declare",
+    desc: "Create a factory for a workstream: bug fixes, dependency updates, docs tasks, dark-factory jobs, or feature requests.",
   },
   {
     step: "Trigger",
-    desc: "Move an issue into Ready for Agent, add a label, or manually trigger a factory from the UI.",
+    desc: "Let Linear, GitHub Issues, Shortcut, or the UI start the right pipeline from an issue event.",
+  },
+  {
+    step: "Run",
+    desc: "ElasticClaw provisions the workspace, injects context and scoped credentials, and runs the agent through the pipeline.",
   },
   {
     step: "Review",
-    desc: "The claw opens a PR, follows your pipeline, and shuts down after the work reaches a terminal state.",
+    desc: "The claw opens a PR, handles feedback and CI, moves the issue forward, and shuts down at the terminal state.",
   },
 ];
 
@@ -109,8 +109,8 @@ function DemoVideoPlaceholder() {
                 ElasticClaw launch demo
               </p>
               <p className="mt-2 text-sm leading-6 text-zinc-400">
-                A quick overview video will go here: install, connect a factory,
-                create a claw, and open the resulting pull request.
+                A quick overview video will go here: define a factory, trigger
+                it from an issue, run the pipeline, and review the resulting PR.
               </p>
             </div>
           </div>
@@ -156,15 +156,15 @@ export default function Home() {
         <div className="mx-auto max-w-5xl">
           <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-zinc-950/70 px-4 py-1.5 text-sm text-cyan-100 shadow-[0_0_30px_rgba(34,211,238,0.12)]">
             <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_20px_rgba(34,211,238,0.9)]" />
-            Open source control plane for coding agents
+            Open source software factories for coding agents
           </div>
           <h1 className="mx-auto max-w-4xl text-5xl font-black leading-[0.94] tracking-[-0.055em] text-white md:text-6xl lg:text-7xl">
-            Turn issues into pull requests with self-hosted agents.
+            Run coding agents like a factory, not a remote shell.
           </h1>
           <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-zinc-300 md:text-xl">
-            ElasticClaw watches your issue tracker, provisions an isolated AI
-            coding sandbox, gives it scoped access to your repos and tools, and
-            drives the work through review and cleanup.
+            ElasticClaw turns issue tracker events into governed pipelines:
+            trigger the right agent, provision the workspace, mint scoped GitHub
+            credentials, open the PR, watch review and CI, then clean up.
           </p>
           <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
@@ -201,12 +201,12 @@ export default function Home() {
               Why it exists
             </p>
             <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">
-              Agents need infrastructure, not just a chat box.
+              The product is the factory, not the sandbox.
             </h2>
             <p className="mt-5 text-lg leading-8 text-zinc-400">
-              ElasticClaw is the missing operations layer for coding agents:
-              provisioning, identity, templates, issue context, secrets, PR
-              workflows, and teardown.
+              Remote agents give you a place to run code. ElasticClaw gives you
+              the operations system around them: triggers, pipelines, identity,
+              templates, issue context, PR workflows, and teardown.
             </p>
           </div>
           <div className="mt-12 grid gap-5 lg:grid-cols-3">
@@ -225,19 +225,20 @@ export default function Home() {
         <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
             <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">
-              Configure the pieces
+              Compose workstreams
             </p>
             <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">
-              Bring your provider, template, factory, and tracker.
+              Build dark factories and software factories from the systems you already use.
             </h2>
             <p className="mt-5 leading-8 text-zinc-400">
-              ElasticClaw is deliberately composable. Choose the sandbox backend,
-              define the agent environment, connect the issue tracker, then wire
-              those pieces together with factories.
+              A factory can represent a bug lane, a dependency update loop, a
+              customer escalation path, a docs queue, or a private background
+              workflow. The factory owns when work starts, what access is
+              granted, and how the job finishes.
             </p>
             <p className="mt-4 leading-8 text-zinc-400">
-              The result is not one hosted workflow. It is your own issue-to-PR
-              pipeline, assembled from the systems your team already uses.
+              Sandboxes, models, and MCP servers are pluggable components. The
+              durable value is the repeatable issue-to-PR pipeline.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -258,7 +259,7 @@ export default function Home() {
               Workflow
             </p>
             <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">
-              From ticket to review loop.
+              From issue event to governed PR.
             </h2>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-4">
@@ -277,7 +278,7 @@ export default function Home() {
 
       <section className="mx-auto max-w-4xl px-6 py-20 text-center">
         <h2 className="text-3xl font-black tracking-tight text-white md:text-5xl">
-          Install the CLI, deploy a hub, connect your first factory.
+          Install the CLI, deploy a hub, connect your first software factory.
         </h2>
         <div className="mt-8 overflow-x-auto rounded-lg border border-zinc-700 bg-zinc-950/80 px-6 py-5 text-left font-mono text-sm shadow-xl">
           <p className="text-zinc-500"># macOS / Linux</p>

@@ -12,19 +12,39 @@ type NavItem = {
 const NAV_ITEMS: NavItem[] = [
   { href: "/docs", label: "Overview" },
   {
-    href: "/docs/installation",
-    label: "Getting Started",
-    children: [
-      { href: "/docs/installation", label: "Installation" },
-      { href: "/docs/cli-reference", label: "CLI Reference" },
-    ],
-  },
-  {
     href: "/docs/concepts",
     label: "Concepts",
     children: [
       { href: "/docs/concepts", label: "Architecture" },
       { href: "/docs/web-ui", label: "Web UI" },
+    ],
+  },
+  {
+    href: "/docs/installation",
+    label: "Getting Started",
+    children: [
+      { href: "/docs/installation", label: "Installation" },
+    ],
+  },
+  {
+    href: "/docs/cli-reference",
+    label: "CLI Reference",
+    children: [
+      { href: "/docs/cli-reference#global-flags", label: "Global Flags" },
+      { href: "/docs/cli-reference#upgrade", label: "upgrade" },
+      { href: "/docs/cli-reference#install", label: "install" },
+      { href: "/docs/cli-reference#hub-management", label: "hub management" },
+      { href: "/docs/cli-reference#profile", label: "profile" },
+      { href: "/docs/cli-reference#create", label: "create" },
+      { href: "/docs/cli-reference#chat", label: "chat" },
+      { href: "/docs/cli-reference#list", label: "list / ls" },
+      { href: "/docs/cli-reference#inspect", label: "inspect" },
+      { href: "/docs/cli-reference#kill", label: "kill" },
+      { href: "/docs/cli-reference#template", label: "template" },
+      { href: "/docs/cli-reference#factory", label: "factory" },
+      { href: "/docs/cli-reference#provider", label: "provider" },
+      { href: "/docs/cli-reference#login", label: "login" },
+      { href: "/docs/cli-reference#hub-server", label: "hub server" },
     ],
   },
   {

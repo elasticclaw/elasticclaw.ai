@@ -29,19 +29,20 @@ export default function WebUIPage() {
 
       <Section title="Configuration">
         <p>
-          Enable the web server in your <code className="text-cyan-300">hub.yaml</code>:
+          The web UI is served by the hub on the same address as the API. For a
+          local or manually managed hub, configure the listen address and UI
+          password in <code className="text-cyan-300">hub.yaml</code>:
         </p>
-        <CodeBlock lang="yaml">{`web:
-  enabled: true
-  port: 8080
-  host: 0.0.0.0          # bind address
-  auth_token: \${ELASTICCLAW_WEB_TOKEN}
-  tls:
-    enabled: false         # set true + provide cert/key for HTTPS
-    cert: ./tls/cert.pem
-    key: ./tls/key.pem`}</CodeBlock>
-        <p>Set the auth token:</p>
-        <CodeBlock lang="bash">{`export ELASTICCLAW_WEB_TOKEN=$(openssl rand -hex 32)`}</CodeBlock>
+        <CodeBlock lang="yaml">{`token: mytoken
+claw_token: myclawtoken
+ui_password: mypassword
+address: :8080`}</CodeBlock>
+        <p>
+          <code className="text-cyan-300">elasticclaw install</code> writes this
+          config for you and generates a random UI password unless you pass{" "}
+          <code className="text-cyan-300">--ui-password</code>. TLS is normally
+          handled by Caddy in front of the hub, not by nested web UI settings.
+        </p>
       </Section>
 
       <Section title="Starting the Server">
@@ -52,7 +53,7 @@ elasticclaw hub
 elasticclaw hub --config /path/to/hub.yaml`}</CodeBlock>
         <p>
           Open <code className="text-cyan-300">http://localhost:8080</code> and
-          authenticate with your token.
+          authenticate with your UI password.
         </p>
       </Section>
 

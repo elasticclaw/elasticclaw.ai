@@ -7,16 +7,25 @@ export default function FactoriesPage() {
   return (
     <DocsPage
       title="Factories"
-      description="Automatically spawn and terminate claws based on Linear, Shortcut, or GitHub Issues events."
+      description="Define issue-triggered software factories with triggers, templates, scoped credentials, lifecycle rules, and pipelines."
     >
       <Section title="How factories work">
         <p>
-          A factory watches an external system for events. When a trigger condition
-          is met (e.g. an issue enters a status or gets a label), it spawns a new claw
-          pre-loaded with context from that event. When the claw sends{" "}
+          A factory is the unit of automation in ElasticClaw. It watches an
+          external system for events and turns matching work into a governed
+          coding pipeline. When a trigger condition is met (e.g. an issue enters
+          a status or gets a label), it spawns a new claw pre-loaded with context
+          from that event and scoped access for the job. When the claw sends{" "}
           <code>[DONE] &lt;pr-url&gt;</code>, the factory moves the issue to the
           done status and keeps the claw alive to watch for CI failures and review
           comments. The claw terminates automatically when the PR is merged or closed.
+        </p>
+        <p className="mt-2">
+          Use factories for repeatable workstreams: dark factories, software
+          factories, dependency updates, docs queues, bug lanes, and feature
+          request queues. The sandbox is just where the work runs; the factory
+          owns when work starts, what credentials are granted, and how the job
+          finishes.
         </p>
         <p className="mt-2">
           If <code>terminate_on_leave: true</code> is set, dragging the issue back

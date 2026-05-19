@@ -14,7 +14,7 @@ export default function CLIReferencePage() {
         <code>--json</code> for machine-readable output, and <code>--quiet</code> to suppress non-essential output.
       </Note>
 
-      <Section title="Global Flags">
+      <Section id="global-flags" title="Global Flags">
         <div className="space-y-2 text-sm">
           <p><code className="text-cyan-300">--config</code> — Config file path (default <code>~/.elasticclaw/hub.yaml</code>)</p>
           <p><code className="text-cyan-300">--profile</code> — Hub profile to use</p>
@@ -24,13 +24,13 @@ export default function CLIReferencePage() {
         </div>
       </Section>
 
-      <Section title="elasticclaw upgrade">
+      <Section id="upgrade" title="elasticclaw upgrade">
         <p>Upgrade the CLI to the latest GitHub release. Auto-detects platform and replaces the binary atomically.</p>
         <CodeBlock lang="bash">{`elasticclaw upgrade`}</CodeBlock>
         <p>Restarts the hub systemd service if it's running.</p>
       </Section>
 
-      <Section title="elasticclaw install">
+      <Section id="install" title="elasticclaw install">
         <p>Install the hub on a remote server via SSH. Sets up the binary, systemd service, Caddy reverse proxy with TLS, and generates tokens.</p>
         <CodeBlock lang="bash">{`elasticclaw install \
   --server ssh://root@my-server.com \
@@ -47,7 +47,7 @@ export default function CLIReferencePage() {
         </ul>
       </Section>
 
-      <Section title="elasticclaw hub">
+      <Section id="hub-management" title="elasticclaw hub">
         <p>Hub management commands.</p>
 
         <h3 className="text-sm font-semibold text-zinc-200 mt-4 mb-2">hub init</h3>
@@ -72,7 +72,7 @@ elasticclaw hub service status`}</CodeBlock>
 sudo elasticclaw hub caddy uninstall`}</CodeBlock>
       </Section>
 
-      <Section title="elasticclaw profile">
+      <Section id="profile" title="elasticclaw profile">
         <p>Manage hub connection profiles. Each profile stores a hub URL and token.</p>
         <CodeBlock lang="bash">{`elasticclaw profile ls
 elasticclaw profile create work --url https://hub2.example.com --token mytoken
@@ -82,41 +82,41 @@ elasticclaw profile rm work
 elasticclaw profile show`}</CodeBlock>
       </Section>
 
-      <Section title="elasticclaw create">
+      <Section id="create" title="elasticclaw create">
         <p>Create a new agent (claw).</p>
         <CodeBlock lang="bash">{`elasticclaw create --name my-agent --template my-template
 elasticclaw create --name my-agent --template my-template --ttl 4h --tag urgent`}</CodeBlock>
       </Section>
 
-      <Section title="elasticclaw chat">
+      <Section id="chat" title="elasticclaw chat">
         <p>Start an interactive chat session with an agent.</p>
         <CodeBlock lang="bash">{`elasticclaw chat my-agent`}</CodeBlock>
       </Section>
 
-      <Section title="elasticclaw list / ls">
+      <Section id="list" title="elasticclaw list / ls">
         <p>List running agents.</p>
         <CodeBlock lang="bash">{`elasticclaw list
 elasticclaw ls --json`}</CodeBlock>
       </Section>
 
-      <Section title="elasticclaw inspect">
+      <Section id="inspect" title="elasticclaw inspect">
         <p>Show detailed info about an agent.</p>
         <CodeBlock lang="bash">{`elasticclaw inspect my-agent`}</CodeBlock>
       </Section>
 
-      <Section title="elasticclaw kill">
+      <Section id="kill" title="elasticclaw kill">
         <p>Terminate an agent and destroy its sandbox.</p>
         <CodeBlock lang="bash">{`elasticclaw kill my-agent`}</CodeBlock>
       </Section>
 
-      <Section title="elasticclaw template">
+      <Section id="template" title="elasticclaw template">
         <p>Manage templates.</p>
         <CodeBlock lang="bash">{`elasticclaw template push my-template    # push template to hub
 elasticclaw template rm my-template      # remove from hub
 elasticclaw template show my-template    # show template config`}</CodeBlock>
       </Section>
 
-      <Section title="elasticclaw factory">
+      <Section id="factory" title="elasticclaw factory">
         <p>Manage factories.</p>
         <CodeBlock lang="bash">{`elasticclaw factory create --name my-factory --integration linear
 elasticclaw factory push                   # push all factories to hub
@@ -127,17 +127,17 @@ elasticclaw factory rm my-factory          # remove from hub`}</CodeBlock>
         <p><code>factory create</code> generates <code>.elasticclaw/factories/&lt;name&gt;/factory.yaml</code> and <code>pipeline.yaml</code>.</p>
       </Section>
 
-      <Section title="elasticclaw provider">
+      <Section id="provider" title="elasticclaw provider">
         <p>List available sandbox providers.</p>
         <CodeBlock lang="bash">{`elasticclaw provider list`}</CodeBlock>
       </Section>
 
-      <Section title="elasticclaw login">
+      <Section id="login" title="elasticclaw login">
         <p>Authenticate with a hub.</p>
         <CodeBlock lang="bash">{`elasticclaw login --hub https://hub.example.com --token mytoken`}</CodeBlock>
       </Section>
 
-      <Section title="elasticclaw hub">
+      <Section id="hub-server" title="elasticclaw hub">
         <p>Start the hub server (including embedded web UI).</p>
         <CodeBlock lang="bash">{`elasticclaw hub`}</CodeBlock>
       </Section>

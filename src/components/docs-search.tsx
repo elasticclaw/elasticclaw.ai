@@ -12,10 +12,10 @@ interface SearchDoc {
 }
 
 const DOCS_INDEX: SearchDoc[] = [
-  { title: "Overview", href: "/docs", excerpt: "What ElasticClaw is, core components, quick start.", tags: ["intro", "getting started"] },
+  { title: "Overview", href: "/docs", excerpt: "ElasticClaw as a factory system: triggers, pipelines, credentials, execution.", tags: ["intro", "getting started", "factory"] },
   { title: "Installation", href: "/docs/installation", excerpt: "brew install, upgrade, remote server setup, CLI installation.", tags: ["install", "setup", "brew"] },
   { title: "CLI Reference", href: "/docs/cli-reference", excerpt: "All elasticclaw commands: create, chat, kill, factory, template, hub.", tags: ["cli", "commands", "reference"] },
-  { title: "Architecture", href: "/docs/concepts", excerpt: "How ElasticClaw works — factory pipeline, templates, sandboxes, lifecycle.", tags: ["concepts", "architecture", "how it works"] },
+  { title: "Architecture", href: "/docs/concepts", excerpt: "How ElasticClaw works — factories, pipelines, templates, credentials, lifecycle.", tags: ["concepts", "architecture", "how it works"] },
   { title: "Templates", href: "/docs/templates", excerpt: "Define sandbox bootstrap, repos, secrets, MCP servers, and model config.", tags: ["templates", "bootstrap", "config"] },
   { title: "Pipelines", href: "/docs/pipelines", excerpt: "Factory state machines for created, done, CI, review, and merge behavior.", tags: ["pipelines", "factory", "lifecycle"] },
   { title: "Hub Config", href: "/docs/hub", excerpt: "hub.yaml reference — providers, LLM keys, integrations, auth, secrets.", tags: ["config", "yaml", "hub"] },
@@ -26,7 +26,7 @@ const DOCS_INDEX: SearchDoc[] = [
   { title: "Secrets", href: "/docs/secrets", excerpt: "Managing secrets in hub.yaml and templates.", tags: ["secrets", "env", "config"] },
   { title: "MCP Servers", href: "/docs/mcp-servers", excerpt: "External tool servers registered as agent tools.", tags: ["mcp", "tools", "servers"] },
   { title: "Authentication", href: "/docs/authentication", excerpt: "GitHub OAuth, UI password, access control.", tags: ["auth", "oauth", "security"] },
-  { title: "Factories", href: "/docs/factories", excerpt: "Auto-spawn agents from Linear, GitHub Issues, Shortcut events.", tags: ["factories", "automation", "linear", "github"] },
+  { title: "Factories", href: "/docs/factories", excerpt: "Run software factories from issue trackers, webhooks, releases, and other events.", tags: ["factories", "automation", "linear", "github", "webhooks", "releases", "triggers"] },
   { title: "Linear Integration", href: "/docs/linear-integration", excerpt: "Setting up Linear webhooks and factories.", tags: ["linear", "integration", "webhook"] },
   { title: "GitHub Issues", href: "/docs/github-issues", excerpt: "Setting up GitHub Issues webhooks and factories.", tags: ["github", "issues", "integration"] },
   { title: "Shortcut Integration", href: "/docs/shortcut-integration", excerpt: "Setting up Shortcut webhooks and factories.", tags: ["shortcut", "integration", "webhook"] },

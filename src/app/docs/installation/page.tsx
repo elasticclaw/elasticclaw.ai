@@ -81,7 +81,8 @@ sudo mv elasticclaw /usr/local/bin/`}</CodeBlock>
         </p>
         <CodeBlock lang="bash">{`elasticclaw install \
   --server ssh://root@my-server.com \
-  --domain hub.mycompany.com`}</CodeBlock>
+  --domain hub.mycompany.com \
+  --ssh-key ~/.ssh/id_ed25519`}</CodeBlock>
         <p>Flags:</p>
         <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
           <li><code>--server</code> — SSH URI (required)</li>
@@ -110,7 +111,12 @@ sudo mv elasticclaw /usr/local/bin/`}</CodeBlock>
       </Section>
 
       <Section title="Systemd Service">
-        <p>Manage the hub as a systemd service (Linux only):</p>
+        <p>
+          Use these commands when you are managing a hub directly on a Linux
+          host. You do not need to run <code>hub service install</code> after{" "}
+          <code>elasticclaw install</code>; the remote installer already writes,
+          enables, and starts the systemd service.
+        </p>
         <CodeBlock lang="bash">{`sudo elasticclaw hub service install    # write unit, enable, start
 sudo elasticclaw hub service uninstall  # stop, disable, remove
 elasticclaw hub service status`}</CodeBlock>
@@ -123,13 +129,18 @@ elasticclaw hub service status`}</CodeBlock>
 
       <Section title="Caddy Reverse Proxy">
         <p>
-          Caddy handles TLS automatically via Let's Encrypt. Install and configure:
+          Use these commands when you are managing Caddy directly on a Linux
+          host. You do not need to run <code>hub caddy install</code> after{" "}
+          <code>elasticclaw install</code>; the remote installer already
+          installs and configures Caddy unless you pass <code>--skip-caddy</code>.
         </p>
         <CodeBlock lang="bash">{`sudo elasticclaw hub caddy install --domain hub.example.com
 sudo elasticclaw hub caddy uninstall`}</CodeBlock>
         <Note>
-          The domain must have an A record pointing to the server's IP. Caddy is
-          installed via the official apt repo if not present.
+          The domain must have an A record pointing to the server's IP. If you
+          use Cloudflare, set the record to DNS only, not proxied/orange-cloud,
+          so Caddy can complete Let's Encrypt validation. Caddy is installed via
+          the official apt repo if not present.
         </Note>
       </Section>
     </DocsPage>
