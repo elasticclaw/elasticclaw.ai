@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import DocsSearch from "@/components/docs-search";
 
 type NavItem = {
@@ -124,14 +125,15 @@ function isSectionActive(pathname: string, item: NavItem): boolean {
 
 function NavLink({
   item,
+  currentPath,
   depth = 0,
 }: {
   item: NavItem;
+  currentPath: string;
   depth?: number;
 }) {
-  const pathname = usePathname();
-  const active = isActive(pathname, item.href);
-  const sectionOpen = item.children ? isSectionActive(pathname, item) : false;
+  const active = isActive(currentPath, item.href);
+  const sectionOpen = item.children ? isSectionActive(currentPath, item) : false;
 
   return (
     <div>
@@ -148,7 +150,12 @@ function NavLink({
       {item.children && sectionOpen && (
         <div className="mt-1 space-y-0.5 border-l border-zinc-800 ml-3">
           {item.children.map((child) => (
-            <NavLink key={child.href} item={child} depth={depth + 1} />
+            <NavLink
+              key={child.href}
+              item={child}
+              currentPath={currentPath}
+              depth={depth + 1}
+            />
           ))}
         </div>
       )}
@@ -161,6 +168,21 @@ export default function DocsLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const [hash, setHash] = useState("");
+
+  useEffect(() => {
+    function updateHash() {
+      setHash(window.location.hash);
+    }
+
+    updateHash();
+    window.addEventListener("hashchange", updateHash);
+    return () => window.removeEventListener("hashchange", updateHash);
+  }, [pathname]);
+
+  const currentPath = `${pathname}${hash}`;
+
   return (
     <div className="min-h-screen flex flex-col" style={{ background: "#09090b", color: "#fafafa" }}>
       {/* Top nav */}
@@ -199,7 +221,7 @@ export default function DocsLayout({
           </p>
           <nav className="space-y-1">
             {NAV_ITEMS.map((item) => (
-              <NavLink key={item.href} item={item} />
+              <NavLink key={item.href} item={item} currentPath={currentPath} />
             ))}
           </nav>
         </aside>
