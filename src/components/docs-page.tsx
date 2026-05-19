@@ -108,7 +108,12 @@ export function CodeBlock({
           {lang}
         </div>
       )}
-      <pre className="px-5 py-4 text-sm font-mono overflow-x-auto whitespace-pre text-zinc-200">
+      <pre
+        className={`px-5 py-4 text-sm font-mono overflow-x-auto whitespace-pre text-zinc-200${
+          prismLang ? ` language-${prismLang}` : ""
+        }`}
+        tabIndex={prismLang ? 0 : undefined}
+      >
         <code
           className={prismLang ? `language-${prismLang}` : undefined}
           dangerouslySetInnerHTML={
@@ -123,14 +128,16 @@ export function CodeBlock({
 }
 
 export function Section({
+  id,
   title,
   children,
 }: {
+  id?: string;
   title: string;
   children: ReactNode;
 }) {
   return (
-    <section className="mt-10">
+    <section id={id} className="mt-10 scroll-mt-24">
       <h2 className="text-xl font-semibold text-white mb-4">{title}</h2>
       <div className="text-zinc-400 space-y-3">{children}</div>
     </section>

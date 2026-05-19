@@ -33,38 +33,6 @@ export default function ProvidersPage() {
         </div>
       </Section>
 
-      <Section title="Instance Types (CMX)">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm border-collapse">
-            <thead>
-              <tr className="border-b border-zinc-800">
-                <th className="text-left py-2 pr-6 text-zinc-400 font-medium">Type</th>
-                <th className="text-left py-2 pr-6 text-zinc-400 font-medium">CPU</th>
-                <th className="text-left py-2 pr-6 text-zinc-400 font-medium">RAM</th>
-                <th className="text-left py-2 text-zinc-400 font-medium">Use case</th>
-              </tr>
-            </thead>
-            <tbody className="text-zinc-300">
-              {[
-                { type: "r1.nano", cpu: "1", ram: "2GB", use: "Lightweight agents" },
-                { type: "r1.small", cpu: "2", ram: "4GB", use: "General purpose" },
-                { type: "r1.medium", cpu: "4", ram: "8GB", use: "Build-heavy workloads" },
-                { type: "r1.large", cpu: "8", ram: "16GB", use: "Data-intensive agents" },
-              ].map((row) => (
-                <tr key={row.type} className="border-b border-zinc-900">
-                  <td className="py-2 pr-6">
-                    <code className="text-cyan-300">{row.type}</code>
-                  </td>
-                  <td className="py-2 pr-6">{row.cpu}</td>
-                  <td className="py-2 pr-6">{row.ram}</td>
-                  <td className="py-2 text-zinc-400">{row.use}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Section>
-
       <Section title="Provider capabilities">
         <div className="space-y-2 text-sm text-zinc-400">
           <p><code className="text-cyan-300">exec</code> — Execute commands in the sandbox (all providers)</p>

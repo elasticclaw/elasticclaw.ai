@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import DocsSearch from "@/components/docs-search";
 
 type NavItem = {
@@ -12,19 +13,39 @@ type NavItem = {
 const NAV_ITEMS: NavItem[] = [
   { href: "/docs", label: "Overview" },
   {
-    href: "/docs/installation",
-    label: "Getting Started",
-    children: [
-      { href: "/docs/installation", label: "Installation" },
-      { href: "/docs/cli-reference", label: "CLI Reference" },
-    ],
-  },
-  {
     href: "/docs/concepts",
     label: "Concepts",
     children: [
       { href: "/docs/concepts", label: "Architecture" },
       { href: "/docs/web-ui", label: "Web UI" },
+    ],
+  },
+  {
+    href: "/docs/installation",
+    label: "Getting Started",
+    children: [
+      { href: "/docs/installation", label: "Installation" },
+    ],
+  },
+  {
+    href: "/docs/cli-reference",
+    label: "CLI Reference",
+    children: [
+      { href: "/docs/cli-reference#global-flags", label: "Global Flags" },
+      { href: "/docs/cli-reference#upgrade", label: "upgrade" },
+      { href: "/docs/cli-reference#install", label: "install" },
+      { href: "/docs/cli-reference#hub-management", label: "hub management" },
+      { href: "/docs/cli-reference#profile", label: "profile" },
+      { href: "/docs/cli-reference#create", label: "create" },
+      { href: "/docs/cli-reference#chat", label: "chat" },
+      { href: "/docs/cli-reference#list", label: "list / ls" },
+      { href: "/docs/cli-reference#inspect", label: "inspect" },
+      { href: "/docs/cli-reference#kill", label: "kill" },
+      { href: "/docs/cli-reference#template", label: "template" },
+      { href: "/docs/cli-reference#factory", label: "factory" },
+      { href: "/docs/cli-reference#provider", label: "provider" },
+      { href: "/docs/cli-reference#login", label: "login" },
+      { href: "/docs/cli-reference#hub-server", label: "hub server" },
     ],
   },
   {
@@ -104,14 +125,15 @@ function isSectionActive(pathname: string, item: NavItem): boolean {
 
 function NavLink({
   item,
+  currentPath,
   depth = 0,
 }: {
   item: NavItem;
+  currentPath: string;
   depth?: number;
 }) {
-  const pathname = usePathname();
-  const active = isActive(pathname, item.href);
-  const sectionOpen = item.children ? isSectionActive(pathname, item) : false;
+  const active = isActive(currentPath, item.href);
+  const sectionOpen = item.children ? isSectionActive(currentPath, item) : false;
 
   return (
     <div>
@@ -128,7 +150,12 @@ function NavLink({
       {item.children && sectionOpen && (
         <div className="mt-1 space-y-0.5 border-l border-zinc-800 ml-3">
           {item.children.map((child) => (
-            <NavLink key={child.href} item={child} depth={depth + 1} />
+            <NavLink
+              key={child.href}
+              item={child}
+              currentPath={currentPath}
+              depth={depth + 1}
+            />
           ))}
         </div>
       )}
@@ -141,6 +168,21 @@ export default function DocsLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const [hash, setHash] = useState("");
+
+  useEffect(() => {
+    function updateHash() {
+      setHash(window.location.hash);
+    }
+
+    updateHash();
+    window.addEventListener("hashchange", updateHash);
+    return () => window.removeEventListener("hashchange", updateHash);
+  }, [pathname]);
+
+  const currentPath = `${pathname}${hash}`;
+
   return (
     <div className="min-h-screen flex flex-col" style={{ background: "#09090b", color: "#fafafa" }}>
       {/* Top nav */}
@@ -179,7 +221,7 @@ export default function DocsLayout({
           </p>
           <nav className="space-y-1">
             {NAV_ITEMS.map((item) => (
-              <NavLink key={item.href} item={item} />
+              <NavLink key={item.href} item={item} currentPath={currentPath} />
             ))}
           </nav>
         </aside>

@@ -7,12 +7,14 @@ export default function ConceptsPage() {
   return (
     <DocsPage
       title="Concepts"
-      description="How ElasticClaw works — the factory pipeline, templates, sandboxes, and the lifecycle of an agent."
+      description="How ElasticClaw works — factories, triggers, pipelines, scoped credentials, templates, and the lifecycle of a claw."
     >
       <Section title="Architecture">
         <p className="text-zinc-400">
-          ElasticClaw is a self-hosted hub that connects your issue tracker to
-          isolated AI agents. The core loop is:
+          ElasticClaw is a self-hosted factory system for coding work. It
+          connects issue tracker events to repeatable pipelines that run agents,
+          grant scoped credentials, open pull requests, and clean up. The core
+          loop is:
         </p>
         <ol className="list-decimal list-inside space-y-2 text-sm text-zinc-400 mt-3">
           <li>
@@ -20,7 +22,7 @@ export default function ConceptsPage() {
             <strong>Ready for Agent</strong>)
           </li>
           <li>
-            The hub provisions a sandbox from a{" "}
+            The factory selects a pipeline and provisions a workspace from a{" "}
             <strong>template</strong>
           </li>
           <li>
@@ -39,8 +41,9 @@ export default function ConceptsPage() {
 
       <Section title="The Factory Pipeline">
         <p className="text-zinc-400">
-          A factory is a pipeline that connects triggers to templates. Think of
-          it as a rule: <em>when this happens, create that</em>.
+          A factory is a pipeline that connects a source of work to a governed
+          agent workflow. Think of it as a rule plus lifecycle: <em>when this
+          happens, run this workflow with this access until this terminal state</em>.
         </p>
 
         <MermaidDiagram>{`
@@ -65,9 +68,9 @@ graph TD
               1. Trigger
             </h3>
             <p className="text-sm text-zinc-400">
-              A webhook from Linear, GitHub Issues, or Shortcut fires when an
-              issue changes status. The factory checks filters (labels,
-              assignee, status) and decides whether to act.
+              A trigger event arrives from Linear, GitHub Issues, Shortcut, a
+              webhook, a GitHub release, or another connected system. The
+              factory checks filters and decides whether to act.
             </p>
           </div>
 
@@ -220,8 +223,9 @@ flowchart TD
           <div>
             <h4 className="font-semibold text-white">Hub</h4>
             <p className="text-zinc-400">
-              The central server that manages sandboxes, receives webhooks,
-              serves the web UI, and routes agent traffic. Configured via{" "}
+              The central server that receives webhooks, evaluates factories,
+              manages credentials and execution providers, serves the web UI,
+              and routes agent traffic. Configured via{" "}
               <code className="text-cyan-300">hub.yaml</code>.
             </p>
           </div>
@@ -235,8 +239,9 @@ flowchart TD
           <div>
             <h4 className="font-semibold text-white">Factory</h4>
             <p className="text-zinc-400">
-              An automation rule that listens for issue status changes and
-              spawns claws. Factories connect integrations to templates.
+              A configured workstream that listens for issue events, applies
+              trigger filters, selects a template, grants scoped access, and
+              runs the claw through a pipeline.
             </p>
           </div>
           <div>
@@ -250,8 +255,8 @@ flowchart TD
             <h4 className="font-semibold text-white">Pipeline</h4>
             <p className="text-zinc-400">
               A state machine attached to a factory that defines actions at each
-              stage: on trigger, on enter, on done, on merge. Enables
-              multi-stage workflows like review → test → deploy.
+              stage: creation, implementation, done, review, CI, merge, failure,
+              and cleanup.
             </p>
           </div>
           <div>
@@ -266,9 +271,9 @@ flowchart TD
       </Section>
 
       <Note>
-        Every claw is single-tenant: one issue, one sandbox, one agent. There is
-        no shared state between claws. This isolation is what makes factories
-        safe to run autonomously.
+        Every claw is single-tenant: one issue, one workspace, one agent, one
+        scoped credential set. This isolation is what makes factories safe to
+        run autonomously.
       </Note>
     </DocsPage>
   );
