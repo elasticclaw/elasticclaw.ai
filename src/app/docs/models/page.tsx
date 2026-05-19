@@ -10,29 +10,9 @@ const SUPPORTED_PROVIDERS = [
     models: "anthropic/claude-sonnet-4-6, anthropic/claude-opus-4-5",
   },
   {
-    id: "openai",
-    env: "OPENAI_API_KEY",
-    models: "openai/gpt-4o, openai/gpt-4o-mini",
-  },
-  {
-    id: "codex",
-    env: "CODEX_API_KEY",
-    models: "codex/o4-mini",
-  },
-  {
     id: "fireworks",
     env: "FIREWORKS_API_KEY",
     models: "fireworks/accounts/fireworks/models/kimi-k2p6",
-  },
-  {
-    id: "groq",
-    env: "GROQ_API_KEY",
-    models: "groq/llama-3.3-70b-versatile",
-  },
-  {
-    id: "deepseek",
-    env: "DEEPSEEK_API_KEY",
-    models: "deepseek/deepseek-chat",
   },
 ];
 
@@ -89,12 +69,7 @@ export default function ModelsPage() {
   - name: fireworks-kimi
     provider: fireworks
     api_key: \${FIREWORKS_API_KEY}
-    default_model: fireworks/accounts/fireworks/models/kimi-k2p6
-
-  - name: groq-fast
-    provider: groq
-    api_key: \${GROQ_API_KEY}
-    default_model: groq/llama-3.3-70b-versatile`}</CodeBlock>
+    default_model: fireworks/accounts/fireworks/models/kimi-k2p6`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
           The <code>default_model</code> field uses the <code>provider/model</code> format
           (e.g. <code>anthropic/claude-sonnet-4-6</code>).
