@@ -9,6 +9,23 @@ export default function InstallationPage() {
       title="Installation"
       description="Install the elasticclaw CLI on macOS, Linux, or via direct binary download. Upgrade, install on remote servers, and set up systemd."
     >
+      <Section title="Video Walkthrough">
+        <p>Watch a quick walkthrough of the installation process:</p>
+        <div className="aspect-video w-full max-w-2xl">
+          <iframe
+            width="100%"
+            height="100%"
+            src="https://www.youtube.com/embed/1joBaUrtwOA?si=2dB5MVXkQA6smBFQ"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+            className="rounded-lg"
+          />
+        </div>
+      </Section>
+
       <Section title="Homebrew (macOS & Linux)">
         <p>The recommended install method:</p>
         <CodeBlock lang="bash">{`brew tap elasticclaw/elasticclaw
@@ -55,53 +72,6 @@ sudo mv elasticclaw /usr/local/bin/`}</CodeBlock>
         <p>
           If the hub systemd service is running, it will be restarted automatically.
         </p>
-      </Section>
-
-      <Section title="Initial Setup">
-        <p>After installing, initialize your hub config:</p>
-        <CodeBlock lang="bash">{`elasticclaw hub init`}</CodeBlock>
-        <p>
-          This creates a <code className="text-cyan-300">hub.yaml</code> in
-          your current directory. See{" "}
-          <a href="/docs/hub" className="text-cyan-400 hover:underline">
-            Hub Config
-          </a>{" "}
-          for details.
-        </p>
-        <Note>
-          You&apos;ll need a provider account (e.g., Replicated CMX) to actually
-          provision sandboxes. See{" "}
-          <a href="/docs/providers" className="text-cyan-400 hover:underline">
-            Providers
-          </a>{" "}
-          for setup.
-        </Note>
-      </Section>
-
-      <Section title="Agent &amp; Script Install (Linux)">
-        <p>For non-interactive environments — agents, CI, remote servers:</p>
-        <CodeBlock lang="bash">{`curl -fsSL https://elasticclaw.ai/install | bash`}</CodeBlock>
-        <p>With options via environment variables:</p>
-        <CodeBlock lang="bash">{`ELASTICCLAW_PUBLIC_URL=https://my-server.example.com \
-  curl -fsSL https://elasticclaw.ai/install | bash`}</CodeBlock>
-        <Note>
-          The install script downloads the right binary, writes ~/.elasticclaw/hub.yaml,
-          and prints connection details. No interactive prompts — fully scriptable.
-        </Note>
-        <p>Supported environment variables:</p>
-        <CodeBlock lang="bash">{`ELASTICCLAW_PUBLIC_URL   # Public URL for this hub
-ELASTICCLAW_TOKEN        # User API token (auto-generated if unset)
-ELASTICCLAW_CLAW_TOKEN   # Claw auth token (auto-generated if unset)
-ELASTICCLAW_VERSION      # Pin a release version (default: latest)`}</CodeBlock>
-      </Section>
-
-      <Section title="Initialize Hub Config Only">
-        <p>Generate a hub.yaml without running the full install script:</p>
-        <CodeBlock lang="bash">{`elasticclaw hub init`}</CodeBlock>
-        <p>With a public URL:</p>
-        <CodeBlock lang="bash">{`elasticclaw hub init --public-url https://my-server.example.com`}</CodeBlock>
-        <p>Print to stdout without writing (useful for piping or inspection):</p>
-        <CodeBlock lang="bash">{`elasticclaw hub init --print`}</CodeBlock>
       </Section>
 
       <Section title="Install on a Remote Server">
