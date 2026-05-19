@@ -9,6 +9,23 @@ export default function InstallationPage() {
       title="Installation"
       description="Install the elasticclaw CLI on macOS, Linux, or via direct binary download. Upgrade, install on remote servers, and set up systemd."
     >
+      <Section title="Video Walkthrough">
+        <p>Watch a quick walkthrough of the installation process:</p>
+        <div className="aspect-video w-full max-w-2xl">
+          <iframe
+            width="100%"
+            height="100%"
+            src="https://www.youtube.com/embed/1joBaUrtwOA?si=2dB5MVXkQA6smBFQ"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+            className="rounded-lg"
+          />
+        </div>
+      </Section>
+
       <Section title="Homebrew (macOS & Linux)">
         <p>The recommended install method:</p>
         <CodeBlock lang="bash">{`brew tap elasticclaw/elasticclaw
