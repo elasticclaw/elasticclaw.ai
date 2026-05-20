@@ -121,7 +121,7 @@ elasticclaw template show my-template    # show template config`}</CodeBlock>
       <Section id="factory" title="elasticclaw factory">
         <p>Manage factories.</p>
         <CodeBlock lang="bash">{`elasticclaw factory create --name my-factory --integration linear
-elasticclaw factory create --name bugfix-bot --integration github  # scaffolds github-issues
+elasticclaw factory create --name bugfix-bot --integration github-issues
 elasticclaw factory push                   # push all factories to hub
 elasticclaw factory push my-factory        # push specific factory
 elasticclaw factory list                   # list factories on hub

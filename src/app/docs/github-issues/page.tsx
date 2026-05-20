@@ -38,11 +38,10 @@ export default function GitHubIssuesPage() {
       </Section>
 
       <Section title="2. Create a factory">
-        <CodeBlock lang="bash">{`elasticclaw factory create --name bugfix-bot --integration github`}</CodeBlock>
+        <CodeBlock lang="bash">{`elasticclaw factory create --name bugfix-bot --integration github-issues`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
-          The CLI scaffolds a <code>github-issues</code> factory. Edit the
-          generated <code>factory.yaml</code> for your organization, labels, and
-          template:
+          Edit the generated <code>factory.yaml</code> for your organization,
+          labels, and template:
         </p>
         <CodeBlock lang="yaml">{`# .elasticclaw/factories/bugfix-bot/factory.yaml
 name: bugfix-bot

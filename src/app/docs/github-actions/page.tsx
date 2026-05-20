@@ -51,7 +51,16 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install elasticclaw
-        run: curl -fsSL https://elasticclaw.ai/install | bash
+        env:
+          ELASTICCLAW_VERSION: "2026.5.20"
+        run: |
+          set -euo pipefail
+          base="https://github.com/elasticclaw/elasticclaw/releases/download/$ELASTICCLAW_VERSION"
+          curl -fsSLO "$base/elasticclaw-linux-amd64"
+          curl -fsSLO "$base/checksums.txt"
+          grep " elasticclaw-linux-amd64$" checksums.txt | sha256sum -c -
+          chmod +x elasticclaw-linux-amd64
+          sudo mv elasticclaw-linux-amd64 /usr/local/bin/elasticclaw
 
       - name: Login
         run: elasticclaw login --hub "$ELASTICCLAW_HUB_URL" --token "$ELASTICCLAW_TOKEN"
@@ -76,6 +85,12 @@ jobs:
           <p><code className="text-cyan-300">elasticclaw factory push [name]</code> — Publishes all factories, or one named factory.</p>
         </div>
       </Section>
+
+      <Note>
+        Pin <code>ELASTICCLAW_VERSION</code> to a release you have reviewed.
+        The workflow verifies the downloaded binary against the release&apos;s
+        <code>checksums.txt</code> before installing it on the runner.
+      </Note>
     </DocsPage>
   );
 }
