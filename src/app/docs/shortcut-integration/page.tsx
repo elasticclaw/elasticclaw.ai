@@ -19,7 +19,7 @@ export default function ShortcutIntegrationPage() {
         <p>
           When a Shortcut story moves into a configured workflow state, the factory engine
           creates a claw pre-loaded with the story title, description, and URL in{" "}
-          <code>BOOTSTRAP.md</code>. The agent reads it, implements the task, opens a PR,
+          <code>CONTEXT.md</code>. The agent reads it, implements the task, opens a PR,
           and sends <code>[DONE] https://github.com/org/repo/pull/N</code>. The hub moves
           the story and keeps the claw alive to watch for CI failures and review comments.
           When the PR merges, the claw terminates automatically.
@@ -56,23 +56,24 @@ export default function ShortcutIntegrationPage() {
         <CodeBlock lang="yaml">{`integrations:
   shortcut:
     - workspace: my-company
-      token: \${SHORTCUT_TOKEN}
+      token: \${SHORTCUT_TOKEN}`}</CodeBlock>
+      </Section>
 
-factories:
-  - name: shortcut-factory
-    integration: shortcut
-    workspace: my-company
-    trigger_status: "In Development"   # story enters this state → spawn claw
-    done_status: "In Review"           # story moves here on [DONE]
-    terminate_on_leave: true           # kill claw if story leaves trigger state
-    template: base                     # template name (push to hub first)`}</CodeBlock>
+      <Section title="4. Configure factory.yaml">
+        <CodeBlock lang="yaml">{`# factories/shortcut-factory/factory.yaml
+name: shortcut-factory
+integration: shortcut
+workspace: my-company
+trigger_status: "In Development"   # story enters this state -> spawn claw
+done_status: "In Review"           # story moves here on [DONE]
+terminate_on_leave: true           # kill claw if story leaves trigger state
+template: base                     # template name (push to hub first)`}</CodeBlock>
         <Note>
-          Restart the hub after editing hub.yaml:{" "}
-          <code>sudo systemctl restart elasticclaw</code>
+          Publish local factory files with <code>elasticclaw factory push shortcut-factory</code>.
         </Note>
       </Section>
 
-      <Section title="4. Add to your template">
+      <Section title="5. Add to your template">
         <p>Tell your agent to signal done when finished:</p>
         <CodeBlock lang="markdown">{`When your task is complete, open a PR and send:
 [DONE] https://github.com/org/repo/pull/N

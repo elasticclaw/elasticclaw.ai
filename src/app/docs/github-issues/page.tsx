@@ -39,27 +39,27 @@ export default function GitHubIssuesPage() {
 
       <Section title="2. Create a factory">
         <CodeBlock lang="bash">{`elasticclaw factory create --name bugfix-bot --integration github-issues`}</CodeBlock>
-        <p className="text-sm text-zinc-400 mt-2">This generates:</p>
+        <p className="text-sm text-zinc-400 mt-2">
+          Edit the generated <code>factory.yaml</code> for your organization,
+          labels, and template:
+        </p>
         <CodeBlock lang="yaml">{`# .elasticclaw/factories/bugfix-bot/factory.yaml
 name: bugfix-bot
 integration: github-issues
-workspace: my-org
-trigger_status: "open"          # issue state or label name
-done_status: "in-review"        # or "closed" — see note below
-terminate_on_leave: true
-template: base
+workspace: my-org               # human label used to match github_issues integration
+trigger_status: "claw-ready"    # issue state or label name
+done_status: "in-review"        # see note below
+template: elasticclaw
 # labels: [bug, claw-ready]     # all must be present (AND)
 # assigned_to: "@octocat"        # @user, !@user, any, none
 webhook_secret_ref: bugfix_bot_webhook_secret
 name_pattern: "{issue_id}"       # or: "{repo}-{issue_number}"`}</CodeBlock>
         <Note>
-          <code>done_status</code> is applied when the claw sends{" "}
-          <code>[DONE]</code> — i.e., when the PR is <strong>opened</strong>, not
-          when it merges. If you want the issue to stay open until merge, use a
-          label or project-board column (e.g.,{" "}
-          <code>done_status: "in-review"</code>) instead of{" "}
-          <code>"closed"</code>. The default <code>"closed"</code> follows the
-          Linear/Shortcut convention of marking work complete at PR-open time.
+          <code>finished_status</code> is applied when the claw sends{" "}
+          <code>[DONE]</code>; if it is empty, the hub falls back to
+          <code>done_status</code>. Use a label or project-board column such as
+          <code>in-review</code> if you want the issue to stay open while the PR
+          is reviewed.
         </Note>
       </Section>
 
@@ -118,7 +118,7 @@ name_pattern: "{issue_id}"       # or: "{repo}-{issue_number}"`}</CodeBlock>
 
       <Note>
         GitHub Issues factories support the same pipeline stages as Linear/Shortcut factories.
-        The default pipeline moves the issue to <code>done_status</code> on <code>[DONE]</code>
+        The default pipeline can move the issue on <code>[DONE]</code>
         and terminates when the PR merges or closes.
       </Note>
     </DocsPage>

@@ -7,7 +7,7 @@ export default function HubPage() {
   return (
     <DocsPage
       title="Hub Config"
-      description="hub.yaml is your central ElasticClaw configuration file — it defines providers, templates, LLM keys, integrations, factories, secrets, MCP servers, and auth."
+      description="hub.yaml is your central ElasticClaw configuration file — it defines providers, LLM keys, integrations, secrets, MCP servers, and auth."
     >
       <Section title="Overview">
         <p>
@@ -15,7 +15,15 @@ export default function HubPage() {
           in your project root (or at{" "}
           <code className="text-cyan-300">~/.elasticclaw/hub.yaml</code> for
           global config). It tells ElasticClaw where to provision sandboxes, which
-          templates to use, and how to connect integrations.
+          credentials to use, and how to connect integrations.
+        </p>
+        <p className="mt-2">
+          Templates and factories are not stored inline in <code>hub.yaml</code>.
+          The hub keeps them as files next to the config:{" "}
+          <code className="text-cyan-300">templates/&lt;name&gt;/</code> for
+          templates and{" "}
+          <code className="text-cyan-300">factories/&lt;name&gt;/factory.yaml</code>
+          {" "}plus optional <code>pipeline.yaml</code> for factories.
         </p>
       </Section>
 
@@ -54,7 +62,7 @@ llm_keys:
 default_model: anthropic/claude-sonnet-4-6
 
 # GitHub App (for repo access and token minting)
-github_apps:
+github:
   - app_id: 123456
     private_key_pem: |
       -----BEGIN RSA PRIVATE KEY-----
@@ -64,7 +72,7 @@ github_apps:
 integrations:
   linear:
     - workspace: my-company
-      api_key: \${LINEAR_API_TOKEN}
+      token: \${LINEAR_API_TOKEN}
       # webhook_secret is a shared default for all Linear webhooks.
       # Each factory can override with webhook_secret_ref (preferred).
       webhook_secret: \${LINEAR_WEBHOOK_SECRET}
@@ -76,19 +84,6 @@ integrations:
       token: \${GITHUB_TOKEN}
       # Same pattern: integration-level default, factory-level override.
       webhook_secret: \${GITHUB_WEBHOOK_SECRET}
-
-# Factories
-factories:
-  - name: feature-factory
-    integration: linear
-    workspace: my-company
-    trigger_status: "Ready for Agent"
-    done_status: "In Review"
-    terminate_on_leave: true
-    template: base
-    # Per-factory override — takes precedence over integration-level secret.
-    # Remove this to fall back to the integration webhook_secret.
-    webhook_secret_ref: linear_webhook_secret
 
 # Secrets
 secrets:
@@ -124,6 +119,31 @@ ssh_public_keys:
   - ssh-ed25519 AAAAC3NzaC...`}</CodeBlock>
       </Section>
 
+      <Section title="External templates and factories">
+        <p>
+          The hub creates <code>templates/</code> and <code>factories/</code>{" "}
+          alongside <code>hub.yaml</code>. Use <code>elasticclaw template push</code>{" "}
+          and <code>elasticclaw factory push</code> to publish local definitions
+          into those external directories.
+        </p>
+        <CodeBlock lang="text">{`~/.elasticclaw/
+  hub.yaml
+  templates/
+    elasticclaw/
+      elasticclaw-config.yaml
+      AGENTS.md
+      TOOLS.md
+  factories/
+    feature-factory/
+      factory.yaml
+      pipeline.yaml`}</CodeBlock>
+        <Note>
+          Older configs with inline <code>factories:</code> are migrated on hub
+          startup. The hub writes them to <code>factories/</code> and removes the
+          inline entries from <code>hub.yaml</code> to avoid split-brain config.
+        </Note>
+      </Section>
+
       <Section title="Fields Reference">
         <div className="space-y-4">
           {[
@@ -135,9 +155,8 @@ ssh_public_keys:
             { field: "providers", desc: "Sandbox provider configs. See Providers docs." },
             { field: "llm_keys", desc: "Named LLM API keys. One can be marked default:true." },
             { field: "default_model", desc: "Global default model (provider/model format)." },
-            { field: "github_apps", desc: "GitHub App credentials for repo access and token minting." },
+            { field: "github", desc: "GitHub App credentials for repo access and token minting." },
             { field: "integrations", desc: "External service configs: linear, shortcut, github_issues." },
-            { field: "factories", desc: "Automation rules that spin up claws from integration events." },
             { field: "secrets", desc: "Named secret values referenced by factories and MCP servers." },
             { field: "mcp_servers", desc: "MCP server configs available to claws." },
             { field: "auth", desc: "GitHub OAuth and tag-based access control for the web UI." },

@@ -32,22 +32,24 @@ export default function FeatureGitHubExamplePage() {
       token: \${GITHUB_TOKEN}
       webhook_secret: \${GITHUB_WEBHOOK_SECRET}
 
-factories:
-  - name: feature-bot
-    integration: github-issues
-    workspace: acme/app
-    trigger_status: "open"
-    labels: [claw-ready, feature]
-    assigned_to: "!@pm-alice"   # exclude the PM who labels
-    done_status: "in-review"
-    terminate_on_leave: false
-    template: feature-template
-    webhook_secret_ref: github_webhook_secret
-    name_pattern: "feat-{issue_number}"
-    tags: [feature]
-
 secrets:
   github_webhook_secret: whsec_xxx`}</CodeBlock>
+      </Section>
+
+      <Section title="Factory: feature-bot">
+        <CodeBlock lang="yaml">{`# factories/feature-bot/factory.yaml
+name: feature-bot
+integration: github-issues
+workspace: acme/app
+trigger_status: "open"
+labels: [claw-ready, feature]
+assigned_to: "!@pm-alice"   # exclude the PM who labels
+done_status: "in-review"
+terminate_on_leave: false
+template: feature-template
+webhook_secret_ref: github_webhook_secret
+name_pattern: "feat-{issue_number}"
+tags: [feature]`}</CodeBlock>
       </Section>
 
       <Section title="The labeling workflow">
@@ -67,25 +69,19 @@ secrets:
           A template with planning instructions and broader context for
           feature work.
         </p>
-        <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
+        <CodeBlock lang="yaml">{`# templates/feature-template/elasticclaw-config.yaml
 provider: daytona
-instance_type: r1.medium
 llm_key: fireworks-kimi
-
 default_model: fireworks/accounts/fireworks/models/kimi-k2p6
+github:
+  repos:
+    - repo: acme/app
+      permissions: write
+tags: [feature]`}</CodeBlock>
 
-bootstrap:
-  steps:
-    - name: Setup
-      run: |
-        git clone \${REPO_URL} /workspace
-        cd /workspace && npm install
-
-files:
-  AGENTS.md: |
-    You are a feature implementation agent. Read the issue, propose a plan
-    in a comment, get alignment, then implement. Open a PR and send
-    [DONE] &lt;pr-url&gt; when ready.`}</CodeBlock>
+        <CodeBlock lang="markdown">{`# templates/feature-template/AGENTS.md
+You are a feature implementation agent. Read CONTEXT.md, propose a plan,
+then implement. Open a PR and send [DONE] <pr-url> when ready.`}</CodeBlock>
       </Section>
 
       <Section title="GitHub webhook setup">

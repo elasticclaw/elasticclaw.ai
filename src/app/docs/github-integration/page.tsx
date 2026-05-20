@@ -78,16 +78,14 @@ export default function GitHubIntegrationPage() {
       <Section title="2. Install the App">
         <p>
           On the app settings page, click <strong>Install App</strong> and
-          select the repos or org you want ElasticClaw to access. Note the
-          Installation ID from the URL after install.
+          select the repos or org you want ElasticClaw to access. ElasticClaw
+          discovers the matching installation for each requested repo at runtime;
+          you do not configure an installation ID.
         </p>
-        <CodeBlock lang="text">{`https://github.com/settings/installations/12345678
-                                              ^^^^^^^^
-                                         installation_id`}</CodeBlock>
       </Section>
 
       <Section title="3. Configure hub.yaml">
-        <CodeBlock lang="yaml">{`github_apps:
+        <CodeBlock lang="yaml">{`github:
   - app_id: \${GITHUB_APP_ID}          # e.g. 123456
     private_key_pem: |
       -----BEGIN RSA PRIVATE KEY-----
@@ -114,7 +112,8 @@ github:
       permissions: "read"`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
           The hub resolves the right GitHub App installation and mints a token
-          with the requested permissions.
+          with the requested repo permissions. <code>permissions</code> is either
+          <code>read</code> or <code>write</code>; omitted values default to read.
         </p>
       </Section>
 
