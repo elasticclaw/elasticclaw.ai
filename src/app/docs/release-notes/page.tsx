@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.5.20",
+    date: "2026-05-20",
+    title: "The Claw Awakens: ElasticClaw 2026.5.20",
+    summary: "A fresh batch of async bootstraps, smarter queues, and bug‑squashing for a smoother claw experience.",
+  },
+  {
     version: "2026.5.16",
     date: "2026-05-16",
     title: "Mission: Possible – The SSH Key Heist",
