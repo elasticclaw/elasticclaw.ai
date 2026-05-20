@@ -13,7 +13,8 @@ export function YouTubeVideo({
     >
       <iframe
         className="aspect-video w-full"
-        src={`https://www.youtube.com/embed/${videoId}`}
+        loading="lazy"
+        src={`https://www.youtube-nocookie.com/embed/${videoId}`}
         title={title}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerPolicy="strict-origin-when-cross-origin"
