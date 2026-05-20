@@ -105,7 +105,7 @@ export default function Home() {
             rel="noopener noreferrer"
             className="hover:text-cyan-300 transition-colors"
           >
-            Star
+            Star this repo on GitHub
           </a>
         </div>
       </nav>

@@ -34,22 +34,24 @@ export default function BugfixLinearExamplePage() {
       # Per-factory overrides use webhook_secret_ref.
       webhook_secret: \${LINEAR_WEBHOOK_SECRET}
 
-factories:
-  - name: eng-bugfix
-    integration: linear
-    workspace: acme
-    team: ENG
-    trigger_status: "Triage"
-    done_status: "In Review"
-    terminate_on_leave: true
-    template: bugfix-template
-    labels: [bug]
-    webhook_secret_ref: linear_webhook_secret
-    tags: [bugfix]
-    color: red
-
 secrets:
   linear_webhook_secret: whsec_xxx`}</CodeBlock>
+      </Section>
+
+      <Section title="Factory: eng-bugfix">
+        <CodeBlock lang="yaml">{`# factories/eng-bugfix/factory.yaml
+name: eng-bugfix
+integration: linear
+workspace: acme
+team: ENG
+trigger_status: "Triage"
+done_status: "In Review"
+terminate_on_leave: true
+template: bugfix-template
+labels: [bug]
+webhook_secret_ref: linear_webhook_secret
+tags: [bugfix]
+color: red`}</CodeBlock>
       </Section>
 
       <Section title="Template: bugfix-template">
@@ -57,28 +59,22 @@ secrets:
           A dedicated template with extra logging, test tooling, and a
           conservative model for debugging work.
         </p>
-        <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
+        <CodeBlock lang="yaml">{`# templates/bugfix-template/elasticclaw-config.yaml
 provider: daytona
-instance_type: r1.small
 llm_key: anthropic-prod
-
 default_model: anthropic/claude-sonnet-4-6
+github:
+  repos:
+    - repo: acme/app
+      permissions: write
+linear:
+  workspace: acme
+tags: [bugfix]
+color: red`}</CodeBlock>
 
-bootstrap:
-  steps:
-    - name: Install deps
-      run: |
-        apt-get update -q
-        apt-get install -y git curl build-essential
-    - name: Clone repo
-      run: git clone \${REPO_URL} /workspace
-    - name: Run tests
-      run: cd /workspace && npm test
-
-files:
-  AGENTS.md: |
-    You are a bug-fix agent. Read the issue carefully, reproduce the bug,
-    write a minimal fix, and open a PR. Send [DONE] &lt;pr-url&gt; when ready.`}</CodeBlock>
+        <CodeBlock lang="markdown">{`# templates/bugfix-template/AGENTS.md
+You are a bug-fix agent. Read CONTEXT.md carefully, reproduce the bug,
+write a minimal fix, and open a PR. Send [DONE] <pr-url> when ready.`}</CodeBlock>
       </Section>
 
       <Section title="Linear webhook setup">

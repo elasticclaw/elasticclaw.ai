@@ -66,11 +66,10 @@ export default function AuthenticationPage() {
     view_requires_tags: ["frontend"]    # must have at least one matching tag to view
     interact_requires_tags: ["frontend"]`}</CodeBlock>
         <Note>
-          Tag-based access control restricts <strong>interaction</strong> (chat and
-          terminal), not <strong>visibility</strong>. Users who don't match the tag
-          requirements will still see restricted claws in the list — they just
-          can't open them. If you need full hiding, use separate hub instances or
-          tenant isolation. Admins bypass all checks.
+          Tag-based access control is enforced by the hub API and WebSocket paths.
+          <code>view_requires_tags</code> filters claw visibility, and
+          <code>interact_requires_tags</code> gates chat, terminal, and mutating
+          actions. Admins bypass all tag checks.
         </Note>
       </Section>
 

@@ -12,16 +12,19 @@ export default function TemplatesPage() {
     >
       <Section title="Template Directory Structure">
         <p>
-          A template is a directory registered in <code className="text-cyan-300">hub.yaml</code>.
+          A template is a directory pushed to the hub&apos;s external
+          <code className="text-cyan-300">templates/</code> storage.
           It contains at minimum an <code className="text-cyan-300">elasticclaw-config.yaml</code>.
         </p>
         <CodeBlock lang="text">{`templates/
   my-template/
-    elasticclaw-config.yaml   # required — bootstrap spec
-    bootstrap.sh              # optional — custom bootstrap script
-    files/                    # optional — files copied into the sandbox
-      .env.example
-      config.toml`}</CodeBlock>
+    elasticclaw-config.yaml   # required
+    AGENTS.md                 # optional workspace instruction file
+    SOUL.md                   # optional persona file
+    TOOLS.md                  # optional tool guidance
+    MEMORY.md                 # optional long-term memory
+    memory/
+      2026-05-20.md           # optional memory entries`}</CodeBlock>
       </Section>
 
       <Section title="Configure a template">
@@ -33,61 +36,21 @@ export default function TemplatesPage() {
 
       <Section title="elasticclaw-config.yaml">
         <p>
-          This file defines how the sandbox is bootstrapped when an agent is created.
+          This file defines provider, model, repo, secret, MCP, and runtime
+          settings for claws created from the template.
         </p>
-        <CodeBlock lang="yaml">{`version: "1"
-name: my-template
-description: "General purpose dev agent"
+        <CodeBlock lang="yaml">{`schema_version: v1
 
-# Sandbox resources
+# Sandbox
 provider: daytona                    # override hub default provider
-instance_type: r1.small
+snapshot: daytona-large              # Daytona snapshot override
+instance_type: r1.small              # Replicated instance type override
 image: ubuntu-22.04
 ttl: 24h
 
 # Model and LLM key
 llm_key: anthropic-prod             # named key from hub.yaml
 default_model: anthropic/claude-sonnet-4-6
-
-# Bootstrap
-bootstrap:
-  env:
-    NODE_ENV: development
-    REPO_URL: \${GITHUB_REPO_URL}
-  steps:
-    - name: Install system deps
-      run: |
-        apt-get update -q
-        apt-get install -y git curl build-essential
-
-    - name: Install Node.js
-      run: |
-        curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
-        apt-get install -y nodejs
-        npm install -g pnpm
-
-    - name: Clone repo
-      run: |
-        git clone \${REPO_URL} /workspace
-        cd /workspace && pnpm install
-
-    - name: Copy files
-      copy:
-        - src: files/.env.example
-          dest: /workspace/.env
-
-# Agent behavior
-agent:
-  model: gpt-4o
-  system_prompt: |
-    You are a software engineering agent. You have access to a full
-    development environment. Work methodically, test your changes,
-    and communicate clearly about what you're doing.
-  tools:
-    - shell
-    - file_read
-    - file_write
-    - git
 
 # Template features
 nix: false                          # install Determinate Systems Nix
@@ -106,25 +69,23 @@ mcps:
     config:
       repository: "my-org/my-repo"
 
-# Auto-watch settings
-auto_watch_ci: true                 # detect CI failures and inject fix messages
-auto_watch_bugbot: true             # detect Cursor bugbot comments and inject`}</CodeBlock>
-      </Section>
+# Repo access
+github:
+  repos:
+    - repo: my-org/my-repo
+      permissions: write
 
-      <Section title="Bootstrap Steps">
-        <p>Each step under <code className="text-cyan-300">bootstrap.steps</code> runs in order. Available keys:</p>
-        <ul className="list-disc list-inside space-y-1 text-sm">
-          <li><code className="text-cyan-300">name</code> — display name for the step</li>
-          <li><code className="text-cyan-300">run</code> — shell commands to execute</li>
-          <li><code className="text-cyan-300">copy</code> — copy files from template into the sandbox</li>
-          <li><code className="text-cyan-300">env</code> — environment variables for this step</li>
-        </ul>
+# Issue tracker token selection
+linear:
+  workspace: my-company`}</CodeBlock>
       </Section>
 
       <Section title="Template fields">
         <div className="space-y-3 text-sm text-zinc-400">
+          <p><code className="text-cyan-300">schema_version</code> — Optional schema marker; defaults to <code>v1</code></p>
           <p><code className="text-cyan-300">provider</code> — Override the hub default provider for this template</p>
           <p><code className="text-cyan-300">instance_type</code> — Sandbox size (provider-specific, e.g. <code>r1.small</code>)</p>
+          <p><code className="text-cyan-300">snapshot</code> — Daytona snapshot override; overrides <code>providers.daytona.default_snapshot</code></p>
           <p><code className="text-cyan-300">image</code> — OS image</p>
           <p><code className="text-cyan-300">ttl</code> — Auto-destroy after this duration</p>
           <p><code className="text-cyan-300">llm_key</code> — Named LLM key from hub.yaml to use</p>
@@ -136,8 +97,6 @@ auto_watch_bugbot: true             # detect Cursor bugbot comments and inject`}
           <p><code className="text-cyan-300">secret_refs</code> — Secret references to inject as env vars (map of env var → hub secret name). See Secrets docs.</p>
           <p><code className="text-cyan-300">secrets</code> — <strong>Deprecated</strong> — legacy list format for secret references. Migrate to <code>secret_refs</code>.</p>
           <p><code className="text-cyan-300">mcps</code> — MCP servers to start in the claw. See MCP Servers docs.</p>
-          <p><code className="text-cyan-300">auto_watch_ci</code> — Auto-detect CI failures and inject fix messages (default: true)</p>
-          <p><code className="text-cyan-300">auto_watch_bugbot</code> — Auto-detect Cursor bugbot comments and inject (default: true)</p>
           <p><code className="text-cyan-300">github.repos</code> — GitHub repos the claw needs access to</p>
           <p><code className="text-cyan-300">linear.workspace</code> — Linear workspace for the claw</p>
         </div>
@@ -155,12 +114,12 @@ auto_watch_bugbot: true             # detect Cursor bugbot comments and inject`}
           <li><code>IDENTITY.md</code> — Identity/persona configuration</li>
           <li><code>USER.md</code> — Information about the human user</li>
           <li><code>MEMORY.md</code> — Long-term memory for the agent</li>
-          <li><code>BOOTSTRAP.md</code> — Bootstrap instructions (auto-generated from factory context)</li>
+          <li><code>BOOTSTRAP.md</code> — Optional bootstrap instructions</li>
           <li><code>HEARTBEAT.md</code> — Periodic check instructions</li>
         </ul>
         <p className="text-sm text-zinc-400 mt-2">
-          If not present in the template, the hub generates defaults. Factory-created claws
-          get a <code>BOOTSTRAP.md</code> with issue context injected automatically.
+          Factory-created claws also get generated <code>CONTEXT.md</code> with
+          issue, story, PR, or external event context.
         </p>
       </Section>
 
@@ -171,8 +130,9 @@ elasticclaw template show my-template    # show config`}</CodeBlock>
       </Section>
 
       <Note>
-        Bootstrap runs as root inside the sandbox. The workspace is typically
-        mounted at <code>/workspace</code>.
+        Template files are workspace instruction files. Arbitrary
+        <code>bootstrap.steps</code>, nested <code>files:</code>, and
+        <code>agent:</code> blocks are not part of the current template schema.
       </Note>
     </DocsPage>
   );

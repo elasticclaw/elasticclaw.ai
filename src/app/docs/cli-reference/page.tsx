@@ -16,7 +16,7 @@ export default function CLIReferencePage() {
 
       <Section id="global-flags" title="Global Flags">
         <div className="space-y-2 text-sm">
-          <p><code className="text-cyan-300">--config</code> — Config file path (default <code>~/.elasticclaw/hub.yaml</code>)</p>
+          <p><code className="text-cyan-300">--config</code> — CLI profile config path (default <code>~/.elasticclaw/config.yaml</code>)</p>
           <p><code className="text-cyan-300">--profile</code> — Hub profile to use</p>
           <p><code className="text-cyan-300">--json</code> — Output as JSON</p>
           <p><code className="text-cyan-300">--quiet, -q</code> — Suppress non-essential output</p>
@@ -111,7 +111,9 @@ elasticclaw ls --json`}</CodeBlock>
 
       <Section id="template" title="elasticclaw template">
         <p>Manage templates.</p>
-        <CodeBlock lang="bash">{`elasticclaw template push my-template    # push template to hub
+        <CodeBlock lang="bash">{`elasticclaw template create my-template  # scaffold .elasticclaw/templates/my-template
+elasticclaw template list                # list local and hub templates
+elasticclaw template push my-template    # push template to hub
 elasticclaw template rm my-template      # remove from hub
 elasticclaw template show my-template    # show template config`}</CodeBlock>
       </Section>
@@ -119,10 +121,12 @@ elasticclaw template show my-template    # show template config`}</CodeBlock>
       <Section id="factory" title="elasticclaw factory">
         <p>Manage factories.</p>
         <CodeBlock lang="bash">{`elasticclaw factory create --name my-factory --integration linear
+elasticclaw factory create --name bugfix-bot --integration github  # scaffolds github-issues
 elasticclaw factory push                   # push all factories to hub
 elasticclaw factory push my-factory        # push specific factory
 elasticclaw factory list                   # list factories on hub
 elasticclaw factory show my-factory        # show factory config
+elasticclaw factory trigger my-factory --input key=value
 elasticclaw factory rm my-factory          # remove from hub`}</CodeBlock>
         <p><code>factory create</code> generates <code>.elasticclaw/factories/&lt;name&gt;/factory.yaml</code> and <code>pipeline.yaml</code>.</p>
       </Section>

@@ -92,15 +92,19 @@ export default function ExedevPage() {
         <p>Set exe.dev as the default provider for a template:</p>
         <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
 provider: exedev
-instance_type: default           # exe.dev has no instance type tiers
+resources:
+  cpu: "2"
+  memory: 4GB
+  disk: 20GB
 nix: false                       # exe.dev VMs are bare; enable if you need Nix
 docker: false                    # enable if you need Docker`}</CodeBlock>
         <p>Or set per-factory:</p>
-        <CodeBlock lang="yaml">{`factories:
-  - name: long-running-agent
-    integration: linear
-    provider: exedev
-    template: my-template`}</CodeBlock>
+        <CodeBlock lang="yaml">{`# factories/long-running-agent/factory.yaml
+name: long-running-agent
+integration: linear
+provider: exedev
+template: my-template
+trigger_status: "Ready for Agent"`}</CodeBlock>
       </Section>
 
       <Section title="Provider Behavior">

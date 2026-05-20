@@ -10,11 +10,6 @@ const SUPPORTED_PROVIDERS = [
     models: "anthropic/claude-sonnet-4-6, anthropic/claude-opus-4-5",
   },
   {
-    id: "openai",
-    env: "OPENAI_API_KEY",
-    models: "openai/gpt-4o, openai/gpt-4o-mini",
-  },
-  {
     id: "codex",
     env: "CODEX_API_KEY",
     models: "codex/o4-mini",
@@ -22,17 +17,7 @@ const SUPPORTED_PROVIDERS = [
   {
     id: "fireworks",
     env: "FIREWORKS_API_KEY",
-    models: "fireworks/accounts/fireworks/models/kimi-k2p6",
-  },
-  {
-    id: "groq",
-    env: "GROQ_API_KEY",
-    models: "groq/llama-3.3-70b-versatile",
-  },
-  {
-    id: "deepseek",
-    env: "DEEPSEEK_API_KEY",
-    models: "deepseek/deepseek-chat",
+    models: "fireworks/accounts/fireworks/models/kimi-k2p6, fireworks/accounts/fireworks/models/llama-v3p3-70b-instruct",
   },
 ];
 
@@ -44,8 +29,9 @@ export default function ModelsPage() {
     >
       <Section title="Supported providers">
         <p>
-          Use these provider IDs in <code>llm_keys[].provider</code> and in the
-          <code>provider/model</code> value for <code>default_model</code>.
+          ElasticClaw currently supports these LLM providers in the hub UI and
+          bootstrap path. Use these provider IDs in <code>llm_keys[].provider</code>
+          {" "}and as the prefix in <code>default_model</code>.
         </p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
@@ -77,7 +63,8 @@ export default function ModelsPage() {
         <p>
           Instead of a single API key, ElasticClaw uses <em>named</em> LLM keys in
           <code>hub.yaml</code>. Each key has a provider, API key, and optional default model.
-          One key can be marked <code>default: true</code>.
+          One key can be marked <code>default: true</code>. Configure more than one
+          key when different templates should use different providers or accounts.
         </p>
         <CodeBlock lang="yaml">{`llm_keys:
   - name: anthropic-prod
@@ -91,10 +78,10 @@ export default function ModelsPage() {
     api_key: \${FIREWORKS_API_KEY}
     default_model: fireworks/accounts/fireworks/models/kimi-k2p6
 
-  - name: groq-fast
-    provider: groq
-    api_key: \${GROQ_API_KEY}
-    default_model: groq/llama-3.3-70b-versatile`}</CodeBlock>
+  - name: codex-main
+    provider: codex
+    api_key: \${CODEX_API_KEY}
+    default_model: codex/o4-mini`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
           The <code>default_model</code> field uses the <code>provider/model</code> format
           (e.g. <code>anthropic/claude-sonnet-4-6</code>).
@@ -117,7 +104,9 @@ default_model: fireworks/accounts/fireworks/models/kimi-k2p6
 llm_key: fireworks-kimi`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
           If <code>llm_key</code> is set and <code>default_model</code> is empty, the hub
-          resolves the model from the key's <code>default_model</code> field.
+          resolves the model from the named key&apos;s <code>default_model</code>. If no
+          <code>llm_key</code> is set, the hub uses the key marked{" "}
+          <code>default: true</code>, then the hub-level <code>default_model</code>.
         </p>
       </Section>
 

@@ -30,13 +30,14 @@ export default function WebUIPage() {
       <Section title="Configuration">
         <p>
           The web UI is served by the hub on the same address as the API. For a
-          local or manually managed hub, configure the listen address and UI
-          password in <code className="text-cyan-300">hub.yaml</code>:
+          local or manually managed hub, configure the UI password in
+          <code className="text-cyan-300">hub.yaml</code> and pass the listen
+          address with the hub command:
         </p>
         <CodeBlock lang="yaml">{`token: mytoken
 claw_token: myclawtoken
-ui_password: mypassword
-address: :8080`}</CodeBlock>
+ui_password: mypassword`}</CodeBlock>
+        <CodeBlock lang="bash">{`elasticclaw hub --addr :8080`}</CodeBlock>
         <p>
           <code className="text-cyan-300">elasticclaw install</code> writes this
           config for you and generates a random UI password unless you pass{" "}
@@ -46,11 +47,11 @@ address: :8080`}</CodeBlock>
       </Section>
 
       <Section title="Starting the Server">
-        <CodeBlock lang="bash">{`# Start with hub config in current directory
+        <CodeBlock lang="bash">{`# Start with the default hub config search path
 elasticclaw hub
 
 # Or point to a specific hub config
-elasticclaw hub --config /path/to/hub.yaml`}</CodeBlock>
+ELASTICCLAW_HUB_CONFIG=/path/to/hub.yaml elasticclaw hub`}</CodeBlock>
         <p>
           Open <code className="text-cyan-300">http://localhost:8080</code> and
           authenticate with your UI password.

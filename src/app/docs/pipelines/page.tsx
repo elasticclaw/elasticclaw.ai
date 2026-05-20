@@ -7,7 +7,7 @@ export default function PipelinesPage() {
   return (
     <DocsPage
       title="Pipelines"
-      description="Factory pipelines define the lifecycle of an agent — what happens when it's created, when it signals done, and when the PR merges."
+      description="Factory pipelines define the lifecycle of a factory-created claw: entry instructions, done signals, issue transitions, PR events, and terminal stages."
     >
       <Section title="What is a pipeline?">
         <p>
@@ -84,9 +84,23 @@ export default function PipelinesPage() {
       <Section title="On-enter actions">
         <div className="space-y-3 text-sm text-zinc-400">
           <p><code className="text-cyan-300">inject</code> — Sends a user message to the claw</p>
-          <p><code className="text-cyan-300">move_issue</code> — Moves the associated Linear/Shortcut issue to this status name</p>
-          <p><code className="text-cyan-300">merge_pr: true</code> — Triggers GitHub merge API (stub — not yet implemented)</p>
+          <p><code className="text-cyan-300">move_issue</code> — Moves the associated Linear, Shortcut, or GitHub issue. It accepts a status string or <code>{"{ status, issue_id }"}</code>.</p>
+          <p><code className="text-cyan-300">close_issue: true</code> — Closes the associated GitHub issue</p>
+          <p><code className="text-cyan-300">add_labels</code> — Adds labels to the associated GitHub issue</p>
+          <p><code className="text-cyan-300">remove_labels</code> — Removes labels from the associated GitHub issue</p>
+          <p><code className="text-cyan-300">merge_pr: true</code> — Attempts to merge the tracked PR through the hub&apos;s GitHub PR merge path</p>
         </div>
+      </Section>
+
+      <Section title="Template variables">
+        <p>
+          <code>inject</code> messages and mapped <code>move_issue.issue_id</code>{" "}
+          values can use Go template variables. Automatic issue-triggered
+          factories expose <code>{"{{.Issue.Identifier}}"}</code>,{" "}
+          <code>{"{{.Issue.Title}}"}</code>, <code>{"{{.Issue.URL}}"}</code>, and
+          <code>{"{{.Issue.Description}}"}</code>. Manual triggers expose
+          <code>{"{{.Inputs.name}}"}</code> values from the factory inputs.
+        </p>
       </Section>
 
       <Section title="Default pipeline">
