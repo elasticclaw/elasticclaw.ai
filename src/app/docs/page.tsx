@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  DocsPage,
-  CodeBlock,
-  Section,
-  VideoPlaceholder,
-} from "@/components/docs-page";
+import { DocsPage, CodeBlock, Section } from "@/components/docs-page";
+import { YouTubeVideo } from "@/components/youtube-video";
 
 export const metadata: Metadata = { title: "Overview" };
 
@@ -137,9 +133,10 @@ brew install elasticclaw`}</CodeBlock>
             to an issue tracker, webhook, release event, or manual trigger.
           </li>
         </ol>
-        <VideoPlaceholder
-          title="ElasticClaw quick start"
-          description="A short walkthrough will show the full setup path from install to first factory."
+        <YouTubeVideo
+          title="ElasticClaw general walkthrough"
+          videoId="2h_-3HsV9Bo"
+          className="my-6"
         />
       </Section>
 

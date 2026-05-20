@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DocsPage, CodeBlock, Section, Note } from "@/components/docs-page";
+import { YouTubeVideo } from "@/components/youtube-video";
 
 export const metadata: Metadata = { title: "Daytona Provider" };
 
@@ -21,6 +22,13 @@ export default function DaytonaProviderPage() {
           <p><strong>Capabilities:</strong> <code className="text-cyan-300">exec</code>, <code className="text-cyan-300">snapshot</code></p>
           <p><strong>Best for:</strong> Fast factory-created claws and repeatable development environments</p>
         </div>
+      </Section>
+
+      <Section title="Configure Daytona">
+        <YouTubeVideo
+          title="Configure Daytona as an ElasticClaw sandbox provider"
+          videoId="RAgallzy4so"
+        />
       </Section>
 
       <Section title="Configure hub.yaml">

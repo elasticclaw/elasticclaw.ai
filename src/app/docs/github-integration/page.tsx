@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DocsPage, CodeBlock, Section, Note } from "@/components/docs-page";
+import { YouTubeVideo } from "@/components/youtube-video";
 
 export const metadata: Metadata = { title: "GitHub Integration" };
 
@@ -22,6 +23,13 @@ export default function GitHubIntegrationPage() {
           <li>Post comments and status checks</li>
           <li>Clone private repos using the app&apos;s installation token</li>
         </ul>
+      </Section>
+
+      <Section title="Configure GitHub App access">
+        <YouTubeVideo
+          title="Configure ElasticClaw GitHub App repo access"
+          videoId="AqrYPz2--qE"
+        />
       </Section>
 
       <Section title="Why a GitHub App instead of a PAT?">

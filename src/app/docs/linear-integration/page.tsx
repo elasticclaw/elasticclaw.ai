@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DocsPage, CodeBlock, Section, Note } from "@/components/docs-page";
+import { YouTubeVideo } from "@/components/youtube-video";
 
 export const metadata: Metadata = { title: "Linear Integration" };
 
@@ -20,6 +21,13 @@ export default function LinearIntegrationPage() {
           <li>Move issues through workflow states (e.g., In Progress → Done)</li>
           <li>Link PRs back to Linear issues</li>
         </ul>
+      </Section>
+
+      <Section title="Configure Linear">
+        <YouTubeVideo
+          title="Configure ElasticClaw with Linear"
+          videoId="NtMX-iOpbko"
+        />
       </Section>
 
       <Section title="1. Create a Linear API Token">

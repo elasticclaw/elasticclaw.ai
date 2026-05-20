@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DocsPage, CodeBlock, Section } from "@/components/docs-page";
+import { YouTubeVideo } from "@/components/youtube-video";
 
 export const metadata: Metadata = { title: "Factories" };
 
@@ -31,6 +32,13 @@ export default function FactoriesPage() {
           If <code>terminate_on_leave: true</code> is set, dragging the issue back
           out of the trigger status will immediately kill the claw and its sandbox.
         </p>
+      </Section>
+
+      <Section title="Configure a factory">
+        <YouTubeVideo
+          title="Configure an ElasticClaw factory"
+          videoId="kP5lQsxTaSU"
+        />
       </Section>
 
       <Section title="Creating a factory">
