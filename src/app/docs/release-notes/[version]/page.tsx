@@ -15,6 +15,31 @@ interface ReleaseDetail {
 
 // This map is updated by the release automation workflow.
 const RELEASE_DETAILS: Record<string, ReleaseDetail> = {
+  "2026.5.20": {
+    version: "2026.5.20",
+    date: "2026-05-20",
+    title: "The Claw Awakens: ElasticClaw 2026.5.20",
+    whatsNew: [
+    "Introduced async Daytona bootstrap using the new async API, speeding up VM provisioning.",
+    "Added Figma API documentation injection, allowing automatic inclusion of design specs.",
+    "Embedded `elasticclaw_version` into factory and template configs for easier version tracking.",
+    "Implemented a message queue that buffers commands when a claw is busy, preventing lost work.",
+    "New `max_tokens` setting gives fine‑grained control over token limits for AI integrations.",
+    ],
+    improvements: [
+    "Anthropic tokens are now preserved instead of being overwritten, respecting user‑provided credentials.",
+    "Exit codes from subprocesses are now captured and reported, improving observability.",
+    "Trigger deduplication logic has been refined to reduce redundant executions.",
+    "Daytona connector download now retries automatically, increasing reliability on flaky networks.",
+    "Updated README and hub documentation (including Figma API docs) for clearer onboarding.",
+    ],
+    fixes: [
+    "Fixed the Anthropics integration bug that caused failed calls.",
+    "Resolved idempotency issue with Daytona bootstrap retries to avoid duplicate VM creation.",
+    "Corrected premature status transition of Replicated claws from “starting” to “running”.",
+    ],
+    rawChangelog: "8203d93 Refresh README for launch (#259) (Marc Campbell)\nb566ffd Fix anthropic (#258) (Marc Campbell)\n69d22bc Bug/daytona bootstrap retry idempotent (#256) (Marc Campbell)\ne5bfcdc don't override anthropic tokens (#255) (Marc Campbell)\n0dff3ba set max tokens (#254) (Marc Campbell)\n56da3a2 track exit code (#253) (Marc Campbell)\n3257590 use daytona async api to bootstrap (#252) (Marc Campbell)\n57bfa75 Update pkg/hub/figma_api_docs_test.go (Noah Campbell)\n6e06c40 Update pkg/hub/figma_api_docs.go (Noah Campbell)\n7a23087 Add Figma API docs injection (Noah Campbell)\n1ee61f8 better dedupe triggers (#250) (Marc Campbell)\nc206956 Daytona connector download retry (#249) (Marc Campbell)\n53f1efd feat: add elasticclaw_version to factory and template configs (#244) (elasticclaw-factory[bot])\n3f77882 fix: don't prematurely flip Replicated claw status to 'starting' before VM is running (#248) (Marc Campbell)\nb22ca4d update docs (Marc Campbell)\n6f7df01 feat: queue messages when claw is busy processing (#242) (elasticclaw-factory[bot])",
+  },
   "2026.5.16": {
     version: "2026.5.16",
     date: "2026-05-16",
