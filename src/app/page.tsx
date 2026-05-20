@@ -1,6 +1,6 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
+import { YouTubeVideo } from "@/components/youtube-video";
 
 const GITHUB_URL = "https://github.com/elasticclaw/elasticclaw";
 const X_URL = "https://x.com/elasticclaw";
@@ -78,48 +78,6 @@ const WORKFLOW_STEPS = [
   },
 ];
 
-function DemoVideoPlaceholder() {
-  return (
-    <div className="relative mx-auto mt-10 w-full max-w-3xl text-left">
-      <div className="absolute -inset-4 rounded-2xl bg-cyan-400/10 blur-3xl" />
-      <div className="relative overflow-hidden rounded-xl border border-zinc-700 bg-zinc-950/90 shadow-2xl">
-        <div className="flex items-center justify-between border-b border-zinc-800 px-5 py-3">
-          <div className="flex items-center gap-2">
-            <span className="h-3 w-3 rounded-full bg-red-500" />
-            <span className="h-3 w-3 rounded-full bg-yellow-500" />
-            <span className="h-3 w-3 rounded-full bg-green-500" />
-          </div>
-          <span className="font-mono text-xs text-zinc-500">demo video</span>
-        </div>
-        <div className="relative aspect-video overflow-hidden bg-[radial-gradient(circle_at_72%_35%,rgba(16,185,129,0.16),transparent_16rem),radial-gradient(circle_at_28%_50%,rgba(34,211,238,0.18),transparent_18rem),linear-gradient(135deg,rgba(24,24,27,0.98),rgba(9,9,11,1))]">
-          <Image
-            src="/mascot.png"
-            alt="ElasticClaw mascot"
-            width={360}
-            height={360}
-            priority
-            className="pointer-events-none absolute bottom-0 right-0 hidden h-[82%] w-auto translate-x-8 translate-y-8 object-contain opacity-90 sm:block"
-          />
-          <div className="relative z-10 flex h-full max-w-sm flex-col justify-end gap-5 px-6 pb-7 text-left sm:px-8 sm:pb-8">
-            <div className="grid h-14 w-14 place-items-center rounded-full border border-cyan-400/40 bg-cyan-400/10 text-cyan-200 shadow-[0_0_42px_rgba(34,211,238,0.2)]">
-              <span className="ml-1 block h-0 w-0 border-y-[10px] border-l-[16px] border-y-transparent border-l-current" />
-            </div>
-            <div>
-              <p className="text-lg font-bold text-white md:text-xl">
-                ElasticClaw launch demo
-              </p>
-              <p className="mt-2 text-sm leading-6 text-zinc-400">
-                A quick overview video will go here: define a factory, trigger
-                it from an issue, run the pipeline, and review the resulting PR.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function Home() {
   return (
     <div
@@ -191,7 +149,14 @@ export default function Home() {
           </div>
         </div>
 
-        <DemoVideoPlaceholder />
+        <div className="relative mx-auto mt-10 w-full max-w-3xl text-left">
+          <div className="absolute -inset-4 rounded-2xl bg-cyan-400/10 blur-3xl" />
+          <YouTubeVideo
+            title="ElasticClaw general walkthrough"
+            videoId="2h_-3HsV9Bo"
+            className="relative border-zinc-700"
+          />
+        </div>
       </section>
 
       <section className="border-y border-zinc-800/80 bg-zinc-950/45 py-20">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DocsPage, CodeBlock, Section, Note } from "@/components/docs-page";
+import { YouTubeVideo } from "@/components/youtube-video";
 
 export const metadata: Metadata = { title: "Templates" };
 
@@ -21,6 +22,13 @@ export default function TemplatesPage() {
     files/                    # optional — files copied into the sandbox
       .env.example
       config.toml`}</CodeBlock>
+      </Section>
+
+      <Section title="Configure a template">
+        <YouTubeVideo
+          title="Configure an ElasticClaw template"
+          videoId="qAvg6q2cuYA"
+        />
       </Section>
 
       <Section title="elasticclaw-config.yaml">
