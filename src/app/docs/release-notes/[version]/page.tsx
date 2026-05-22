@@ -17,7 +17,7 @@ interface ReleaseDetail {
 const RELEASE_DETAILS: Record<string, ReleaseDetail> = {
   "2026.5.21": {
     version: "2026.5.21",
-    date: "2026-05-22",
+    date: "2026-05-21",
     title: "The One With the AI Troubleshooter",
     whatsNew: [
     "Trigger repositories directly from GitHub issues, letting you launch builds straight from an issue thread.",
