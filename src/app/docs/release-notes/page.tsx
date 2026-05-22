@@ -16,7 +16,7 @@ interface Release {
 const RELEASES: Release[] = [
   {
     version: "2026.5.21",
-    date: "2026-05-22",
+    date: "2026-05-21",
     title: "The One With the AI Troubleshooter",
     summary: "AI diagnostics, smarter triggers, and tougher GitHub resilience in this release.",
   },
