@@ -15,6 +15,26 @@ interface ReleaseDetail {
 
 // This map is updated by the release automation workflow.
 const RELEASE_DETAILS: Record<string, ReleaseDetail> = {
+  "2026.5.21": {
+    version: "2026.5.21",
+    date: "2026-05-22",
+    title: "The One With the AI Troubleshooter",
+    whatsNew: [
+    "Trigger repositories directly from GitHub issues, letting you launch builds straight from an issue thread.",
+    "Introducing an AI‑powered Troubleshoot section that automatically diagnoses logs and suggests fixes.",
+    "Added a dedicated static route for troubleshooting settings, simplifying access to diagnostic tools.",
+    ],
+    improvements: [
+    "Factory failures are now summarized in concise reports instead of dumping raw logs, making root‑cause analysis faster.",
+    "Enhanced resilience against GitHub 5xx errors; the client now retries with exponential back‑off and provides clearer fallback messages.",
+    "Hardening the installation process for the Git credential helper to avoid permission and path issues across platforms.",
+    ],
+    fixes: [
+    "Fixed bootstrapping of GitHub issues on replicated clusters, ensuring issues are correctly linked on all nodes.",
+    "Corrected manual trigger validation logic to prevent false‑positive errors and improve user experience.",
+    ],
+    rawChangelog: "5ec82dc trigger repos in github issues (#270) (Marc Campbell)\n20a3814 summarize factory failures instead of dumping (#268) (Marc Campbell)\nd296296 more resilient to github 50x error (#267) (Marc Campbell)\n7886864 fix bootstrapping github issues on replicated (#266) (Marc Campbell)\nea94b86 Add troubleshoot settings static route (#265) (Marc Campbell)\ncdedf02 Add Troubleshoot section with AI-powered log diagnosis (#264) (Marc Campbell)\nde41cb7 harden instalation of git cred helper (#263) (Marc Campbell)\ne791ccc Fix/manual trigger validation (#262) (Marc Campbell)",
+  },
   "2026.5.20": {
     version: "2026.5.20",
     date: "2026-05-20",
