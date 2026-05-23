@@ -139,11 +139,13 @@ export default function Home() {
                   </span>
                 </div>
                 <div className="space-y-4 p-5 font-mono text-sm leading-6">
-                  <p className="text-zinc-500">workspace.yaml + workflows/ci-repair.yaml</p>
+                  <p className="text-zinc-500">elasticclaw-config.yaml + workflows/ci-repair.yaml</p>
                   <pre className="overflow-x-auto text-zinc-300">
-                    <code>{`name: ci-repair
+                    <code>{`schema_version: v1
+name: ci-repair
 repositories: ["elasticclaw/*"]
 secrets: ["github_app"]
+provider: replicated
 
 ---
 name: github-issues

@@ -20,7 +20,9 @@ export default function GitHubActionsPage() {
         <CodeBlock lang="text">{`.elasticclaw/
   workspaces/
     my-workspace/
-      workspace.yaml
+      elasticclaw-config.yaml
+      AGENTS.md
+      TOOLS.md
       workflows/
         triage.yaml
         resolution.yaml`}</CodeBlock>

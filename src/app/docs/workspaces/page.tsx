@@ -12,19 +12,21 @@ export default function WorkspacesPage() {
       <Section title="Workspace layout">
         <p>
           A workspace is the deployment unit for automation. It contains a
-          <code className="text-cyan-300">workspace.yaml</code> file and any
+          <code className="text-cyan-300">elasticclaw-config.yaml</code> file and any
           number of workflow definitions under <code className="text-cyan-300">workflows/</code>.
         </p>
         <CodeBlock lang="text">{`.elasticclaw/
   workspaces/
     bugbot/
-      workspace.yaml
+      elasticclaw-config.yaml
+      AGENTS.md
+      TOOLS.md
       workflows/
         triage.yaml
         resolution.yaml`}</CodeBlock>
       </Section>
 
-      <Section title="workspace.yaml">
+      <Section title="elasticclaw-config.yaml">
         <CodeBlock lang="yaml">{`schema_version: v1
 name: bugbot
 
@@ -37,7 +39,9 @@ secrets:
 
 webhook_secrets:
   - github_issues_webhook
-  - linear_webhook`}</CodeBlock>
+  - linear_webhook
+
+provider: replicated`}</CodeBlock>
       </Section>
 
       <Section title="Workspace fields">
@@ -52,7 +56,7 @@ webhook_secrets:
 
       <Section title="Push a workspace">
         <p>
-          Pushing a workspace publishes <code>workspace.yaml</code> and all
+          Pushing a workspace publishes <code>elasticclaw-config.yaml</code>, workspace files, and all
           workflow files below <code>workflows/</code>.
         </p>
         <CodeBlock lang="bash">{`elasticclaw workspace create bugbot

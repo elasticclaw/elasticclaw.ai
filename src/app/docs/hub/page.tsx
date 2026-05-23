@@ -133,10 +133,8 @@ ssh_public_keys:
       elasticclaw-config.yaml
       AGENTS.md
       TOOLS.md
-  workflows/
-    feature-workflow/
-      workflow.yaml
-      pipeline.yaml`}</CodeBlock>
+      workflows/
+        feature-workflow.yaml`}</CodeBlock>
         <Note>
           Older configs with inline <code>workflows:</code> are migrated on hub
           startup. The hub writes them to <code>workflows/</code> and removes the
