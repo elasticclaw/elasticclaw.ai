@@ -15,6 +15,35 @@ interface ReleaseDetail {
 
 // This map is updated by the release automation workflow.
 const RELEASE_DETAILS: Record<string, ReleaseDetail> = {
+  "2026.5.23": {
+    version: "2026.5.23",
+    date: "2026-05-23",
+    title: "Self‑Terminate Signal Added",
+    whatsNew: [
+    "Promote bridge gateway pairing scopes, giving finer‑grained control over how bridges match and communicate.",
+    "Auto‑accept unknown SSH host keys to streamline first‑time connections without manual prompts.",
+    "Update Codex integration to the newest OpenAI models, unlocking higher‑quality completions.",
+    "Introduce a [TERMINATE] signal so a Claw can gracefully shut itself down on command.",
+    "Add support for extra tools in templates, letting you embed custom tool definitions directly.",
+    "Checkpointing capability added, allowing long‑running jobs to be saved and resumed later.",
+    "New demovoice configuration options for more flexible voice‑based interactions.",
+    ],
+    improvements: [
+    "Bump OpenClaw version in installation paths to 2026.5.20 for consistency across deployments.",
+    "Quiet the poller by removing the noisy \"[poll] tick: N factories loaded...\" log line.",
+    "Refresh the Fireworks model catalog, ensuring the latest models are always available.",
+    "Add a Clawpatch PR workflow to simplify contribution and review cycles.",
+    "Password handling enhancements (part 2) for stronger security during gateway operations.",
+    ],
+    fixes: [
+    "Bootstrap now scrubs stale 'routers' entries when injecting prototypes, preventing ghost routes.",
+    "Removed stale Kimi K2.5 / kimi‑k2p5‑turbo router from model catalogs to avoid invalid selections.",
+    "Fixed a series of Clawpatch finding regressions across medium, high, and library signatures.",
+    "Corrected openclaw gateway password handling to prevent authentication failures.",
+    "General issue resolution from the latest main branch, tightening overall stability.",
+    ],
+    rawChangelog: "92e03d6 Promote bridge gateway pairing scopes (#295) (Marc Campbell)\n33f369b demovoice config (#294) (Marc Campbell)\n7d2a989 Fix/issues from latest main (#293) (Marc Campbell)\n3f95ed7 fix(bootstrap): also scrub stale 'routers' entries when injecting pro… (#289) (Marc Campbell)\nd6c2bc0 chore: bump openclaw to 2026.5.20 in installation paths (#290) (Marc Campbell)\nee34c5f Update codex to OpenAI models (#286) (Marc Campbell)\n2d3c563 chore(poller): remove noisy '[poll] tick: N factories loaded...' log line (#288) (Marc Campbell)\n6662933 fix(fireworks): remove stale Kimi K2.5 / kimi-k2p5-turbo router from model catalogs (#287) (Marc Campbell)\n9e5891b Refresh Fireworks model catalog (#285) (Marc Campbell)\n096eb37 auto accept unknown host keys (#284) (Marc Campbell)\nc363195 feat: add [TERMINATE] signal for claw self-termination (#243) (elasticclaw-factory[bot])\nfff9507 feat: add support for additional tools in templates (#247) (elasticclaw-factory[bot])\nbf141a2 checkpointing (#276) (Marc Campbell)\n948de89 Fix Clawpatch medium finding fnd_sig-feat-cli-command-dd3b636156-_9f762fa40b (#283) (Marc Campbell)\n010f3fa Fix Clawpatch finding fnd_sig-feat-cli-command-3f0482b723-_9afed42cfe (#282) (Marc Campbell)\n23c4730 Fix Clawpatch finding fnd_sig-feat-cli-command-3f0482b723-_5dea4f034f (#281) (Marc Campbell)\n122694d Fix Clawpatch finding fnd_sig-feat-library-1c7d619b91-720d_5689f35514 (#280) (Marc Campbell)\nf13b14a Fix Clawpatch finding fnd_sig-feat-library-0fc085f96c-7fb7_408ea136c3 (#279) (Marc Campbell)\n168549d Fix Clawpatch high finding fnd_sig-feat-cli-command-3f0482b723-_d2e1015bd1 (#278) (Marc Campbell)\n2613107 Fix Clawpatch finding fnd_sig-feat-cli-command-0b9f15889a-_30b2a14535 (#277) (Marc Campbell)\nb2015af Add Clawpatch PR workflow (#275) (Marc Campbell)\nc66cb89 password part 2 (#274) (Marc Campbell)\necfa8f6 fix openclaw gateway password handling (#272) (Marc Campbell)",
+  },
   "2026.5.21": {
     version: "2026.5.21",
     date: "2026-05-21",
