@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.5.23",
+    date: "2026-05-23",
+    title: "Self‑Terminate Signal Added",
+    summary: "New self‑termination signal, model updates, and a slew of fixes to keep ElasticClaw sharp.",
+  },
+  {
     version: "2026.5.21",
     date: "2026-05-21",
     title: "The One With the AI Troubleshooter",
