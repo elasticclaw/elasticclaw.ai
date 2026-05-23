@@ -82,7 +82,7 @@ elasticclaw login \
 ### Step 7: Create a claw
 
 ```bash
-elasticclaw create --template elasticclaw --name my-claw
+elasticclaw create --workspace elasticclaw --name my-claw
 ```
 
 ---

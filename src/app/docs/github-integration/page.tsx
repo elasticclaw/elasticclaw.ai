@@ -50,7 +50,7 @@ export default function GitHubIntegrationPage() {
           <li><strong>Revocation boundary</strong> — uninstalling or restricting the app cuts off access without rotating a human's credentials</li>
         </ul>
         <p className="mt-3">
-          In practice, this lets each template declare the repos it needs and
+          In practice, this lets each workspace declare the repos it needs and
           lets the hub mint a token for that installation at claw creation time.
         </p>
       </Section>
@@ -99,9 +99,9 @@ export default function GitHubIntegrationPage() {
         </p>
       </Section>
 
-      <Section title="Template repo access">
+      <Section title="Workspace repo access">
         <p>
-          Templates can specify which repos the claw needs access to:
+          Workspaces can specify which repos the claw needs access to:
         </p>
         <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
 github:

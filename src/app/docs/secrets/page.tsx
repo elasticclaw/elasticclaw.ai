@@ -34,21 +34,21 @@ export default function SecretsPage() {
         </p>
       </Section>
 
-      <Section title="Referencing secrets in factories">
+      <Section title="Referencing secrets in workflows">
         <p>
-          Use <code className="text-cyan-300">webhook_secret_ref</code> in factory.yaml
+          Use <code className="text-cyan-300">webhook_secret_ref</code> in workflow.yaml
           to reference a secret by name instead of inlining it:
         </p>
-        <CodeBlock lang="yaml">{`# factory.yaml
-name: my-factory
+        <CodeBlock lang="yaml">{`# workflow.yaml
+name: my-workflow
 integration: linear
 webhook_secret_ref: linear_webhook_secret   # references hub.yaml secrets.linear_webhook_secret
-template: base`}</CodeBlock>
+workspace: base`}</CodeBlock>
       </Section>
 
-      <Section title="Referencing secrets in templates">
+      <Section title="Referencing secrets in workspaces">
         <p>
-          Templates can request secrets via <code className="text-cyan-300">secret_refs</code>
+          Workspaces can request secrets via <code className="text-cyan-300">secret_refs</code>
           in <code>elasticclaw-config.yaml</code>. This maps environment variable names
           to hub secret names — simple and explicit.
         </p>
@@ -78,9 +78,9 @@ secrets:
           <li><code>custom</code> → uppercase of the secret name (override with <code>as</code>)</li>
         </ul>
         <Note>
-          The Doctor dashboard will warn you if any templates still use the deprecated
+          The Doctor dashboard will warn you if any workspaces still use the deprecated
           <code>secrets:</code> list format. Migrate to <code>secret_refs:</code> for
-          consistency with factory-level secret references.
+          consistency with workflow-level secret references.
         </Note>
       </Section>
 

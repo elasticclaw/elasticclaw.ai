@@ -25,7 +25,7 @@ export default function ModelsPage() {
   return (
     <DocsPage
       title="Models & LLM Keys"
-      description="Configure multiple LLM providers and API keys. Set per-template or per-claw model overrides."
+      description="Configure multiple LLM providers and API keys. Set per-workspace or per-claw model overrides."
     >
       <Section title="Supported providers">
         <p>
@@ -64,7 +64,7 @@ export default function ModelsPage() {
           Instead of a single API key, ElasticClaw uses <em>named</em> LLM keys in
           <code>hub.yaml</code>. Each key has a provider, API key, and optional default model.
           One key can be marked <code>default: true</code>. Configure more than one
-          key when different templates should use different providers or accounts.
+          key when different workspaces should use different providers or accounts.
         </p>
         <CodeBlock lang="yaml">{`llm_keys:
   - name: anthropic-prod
@@ -95,9 +95,9 @@ export default function ModelsPage() {
         <CodeBlock lang="yaml">{`default_model: anthropic/claude-sonnet-4-6`}</CodeBlock>
       </Section>
 
-      <Section title="Per-template model override">
+      <Section title="Per-workspace model override">
         <p>
-          Templates can override the default model and specify which LLM key to use:
+          Workspaces can override the default model and specify which LLM key to use:
         </p>
         <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
 default_model: fireworks/accounts/fireworks/models/kimi-k2p6

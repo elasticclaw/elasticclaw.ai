@@ -11,7 +11,7 @@ export default function GitHubIssuesPage() {
     >
       <Section title="How it works">
         <p>
-          A GitHub Issues factory watches webhook events from your repositories.
+          A GitHub Issues workflow watches webhook events from your repositories.
           When an issue matches your trigger conditions, ElasticClaw creates a claw
           pre-loaded with the issue context. The claw implements the fix/feature,
           opens a PR, and signals done with <code className="text-cyan-300">[DONE]</code>.
@@ -37,19 +37,19 @@ export default function GitHubIssuesPage() {
         </p>
       </Section>
 
-      <Section title="2. Create a factory">
-        <CodeBlock lang="bash">{`elasticclaw factory create --name bugfix-bot --integration github-issues`}</CodeBlock>
+      <Section title="2. Create a workflow">
+        <CodeBlock lang="bash">{`elasticclaw workspace create bugfix-bot`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
-          Edit the generated <code>factory.yaml</code> for your organization,
-          labels, and template:
+          Edit the generated <code>workflow.yaml</code> for your organization,
+          labels, and workspace:
         </p>
-        <CodeBlock lang="yaml">{`# .elasticclaw/factories/bugfix-bot/factory.yaml
+        <CodeBlock lang="yaml">{`# .elasticclaw/workflows/bugfix-bot/workflow.yaml
 name: bugfix-bot
 integration: github-issues
 workspace: my-org               # human label used to match github_issues integration
 trigger_status: "claw-ready"    # issue state or label name
 done_status: "in-review"        # see note below
-template: elasticclaw
+workspace: elasticclaw
 # labels: [bug, claw-ready]     # all must be present (AND)
 # assigned_to: "@octocat"        # @user, !@user, any, none
 webhook_secret_ref: bugfix_bot_webhook_secret
@@ -74,8 +74,8 @@ name_pattern: "{issue_id}"       # or: "{repo}-{issue_number}"`}</CodeBlock>
         </ol>
       </Section>
 
-      <Section title="4. Push the factory">
-        <CodeBlock lang="bash">{`elasticclaw factory push bugfix-bot`}</CodeBlock>
+      <Section title="4. Push the workflow">
+        <CodeBlock lang="bash">{`elasticclaw workspace push bugfix-bot`}</CodeBlock>
       </Section>
 
       <Section title="Filters">
@@ -117,7 +117,7 @@ name_pattern: "{issue_id}"       # or: "{repo}-{issue_number}"`}</CodeBlock>
       </Section>
 
       <Note>
-        GitHub Issues factories support the same pipeline stages as Linear/Shortcut factories.
+        GitHub Issues workflows support the same pipeline stages as Linear/Shortcut workflows.
         The default pipeline can move the issue on <code>[DONE]</code>
         and terminates when the PR merges or closes.
       </Note>

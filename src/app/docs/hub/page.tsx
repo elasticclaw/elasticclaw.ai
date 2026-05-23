@@ -18,12 +18,12 @@ export default function HubPage() {
           credentials to use, and how to connect integrations.
         </p>
         <p className="mt-2">
-          Templates and factories are not stored inline in <code>hub.yaml</code>.
+          Workspaces and workflows are not stored inline in <code>hub.yaml</code>.
           The hub keeps them as files next to the config:{" "}
-          <code className="text-cyan-300">templates/&lt;name&gt;/</code> for
-          templates and{" "}
-          <code className="text-cyan-300">factories/&lt;name&gt;/factory.yaml</code>
-          {" "}plus optional <code>pipeline.yaml</code> for factories.
+          <code className="text-cyan-300">workspaces/&lt;name&gt;/</code> for
+          workspaces and{" "}
+          <code className="text-cyan-300">workflows/&lt;name&gt;/workflow.yaml</code>
+          {" "}plus optional <code>pipeline.yaml</code> for workflows.
         </p>
       </Section>
 
@@ -74,7 +74,7 @@ integrations:
     - workspace: my-company
       token: \${LINEAR_API_TOKEN}
       # webhook_secret is a shared default for all Linear webhooks.
-      # Each factory can override with webhook_secret_ref (preferred).
+      # Each workflow can override with webhook_secret_ref (preferred).
       webhook_secret: \${LINEAR_WEBHOOK_SECRET}
   shortcut:
     - workspace: my-company
@@ -82,7 +82,7 @@ integrations:
   github_issues:
     - workspace: my-org
       token: \${GITHUB_TOKEN}
-      # Same pattern: integration-level default, factory-level override.
+      # Same pattern: integration-level default, workflow-level override.
       webhook_secret: \${GITHUB_WEBHOOK_SECRET}
 
 # Secrets
@@ -119,27 +119,27 @@ ssh_public_keys:
   - ssh-ed25519 AAAAC3NzaC...`}</CodeBlock>
       </Section>
 
-      <Section title="External templates and factories">
+      <Section title="External workspaces and workflows">
         <p>
-          The hub creates <code>templates/</code> and <code>factories/</code>{" "}
-          alongside <code>hub.yaml</code>. Use <code>elasticclaw template push</code>{" "}
-          and <code>elasticclaw factory push</code> to publish local definitions
+          The hub creates <code>workspaces/</code> and <code>workflows/</code>{" "}
+          alongside <code>hub.yaml</code>. Use <code>elasticclaw workspace push</code>{" "}
+          and <code>elasticclaw workspace push</code> to publish local definitions
           into those external directories.
         </p>
         <CodeBlock lang="text">{`~/.elasticclaw/
   hub.yaml
-  templates/
+  workspaces/
     elasticclaw/
       elasticclaw-config.yaml
       AGENTS.md
       TOOLS.md
-  factories/
-    feature-factory/
-      factory.yaml
+  workflows/
+    feature-workflow/
+      workflow.yaml
       pipeline.yaml`}</CodeBlock>
         <Note>
-          Older configs with inline <code>factories:</code> are migrated on hub
-          startup. The hub writes them to <code>factories/</code> and removes the
+          Older configs with inline <code>workflows:</code> are migrated on hub
+          startup. The hub writes them to <code>workflows/</code> and removes the
           inline entries from <code>hub.yaml</code> to avoid split-brain config.
         </Note>
       </Section>
@@ -157,7 +157,7 @@ ssh_public_keys:
             { field: "default_model", desc: "Global default model (provider/model format)." },
             { field: "github", desc: "GitHub App credentials for repo access and token minting." },
             { field: "integrations", desc: "External service configs: linear, shortcut, github_issues." },
-            { field: "secrets", desc: "Named secret values referenced by factories and MCP servers." },
+            { field: "secrets", desc: "Named secret values referenced by workflows and MCP servers." },
             { field: "mcp_servers", desc: "MCP server configs available to claws." },
             { field: "auth", desc: "GitHub OAuth and tag-based access control for the web UI." },
             { field: "branding", desc: "White-label: app_name, logo_url." },

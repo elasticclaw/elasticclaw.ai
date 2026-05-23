@@ -18,7 +18,7 @@ export default function ReplicatedProviderPage() {
           <p><strong>Type:</strong> Ephemeral sandbox</p>
           <p><strong>Auth:</strong> Replicated API token</p>
           <p><strong>Capabilities:</strong> <code className="text-cyan-300">exec</code></p>
-          <p><strong>Best for:</strong> Production factory workloads with TTL-based cleanup</p>
+          <p><strong>Best for:</strong> Production workflow workloads with TTL-based cleanup</p>
         </div>
       </Section>
 
@@ -82,7 +82,7 @@ export default function ReplicatedProviderPage() {
         </div>
       </Section>
 
-      <Section title="Use in templates">
+      <Section title="Use in workspaces">
         <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
 provider: replicated
 instance_type: r1.small
@@ -90,7 +90,7 @@ ttl: 4h`}</CodeBlock>
       </Section>
 
       <Note>
-        Use TTLs to control cost. Factory-created claws are also terminated by
+        Use TTLs to control cost. Workflow-created claws are also terminated by
         their pipeline when work reaches a terminal state.
       </Note>
     </DocsPage>

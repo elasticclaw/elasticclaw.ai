@@ -7,7 +7,7 @@ export default function FeatureGitHubExamplePage() {
   return (
     <DocsPage
       title="Human-tagged feature work in GitHub Issues"
-      description="A factory where a single labeler triggers claw creation for feature requests, excluding themselves from assignment."
+      description="A workflow where a single labeler triggers claw creation for feature requests, excluding themselves from assignment."
     >
       <Note>
         This pattern is useful when a PM or tech lead triages incoming
@@ -19,7 +19,7 @@ export default function FeatureGitHubExamplePage() {
           <li>Watches the <code>acme/app</code> repository</li>
           <li>Triggers when an issue is labeled <code>claw-ready</code> <em>and</em> <code>feature</code></li>
           <li>Excludes the PM (<code>@pm-alice</code>) from assignment — they labeled it, they don&apos;t implement it</li>
-          <li>Uses a <code>feature-template</code> with broader context and planning instructions</li>
+          <li>Uses a <code>feature-workspace</code> with broader context and planning instructions</li>
           <li>Moves the issue to <code>in-review</code> when done</li>
           <li>Does <strong>not</strong> terminate on leave — the claw stays alive to handle review feedback</li>
         </ul>
@@ -36,8 +36,8 @@ secrets:
   github_webhook_secret: whsec_xxx`}</CodeBlock>
       </Section>
 
-      <Section title="Factory: feature-bot">
-        <CodeBlock lang="yaml">{`# factories/feature-bot/factory.yaml
+      <Section title="Workflow: feature-bot">
+        <CodeBlock lang="yaml">{`# workflows/feature-bot/workflow.yaml
 name: feature-bot
 integration: github-issues
 workspace: acme/app
@@ -46,7 +46,7 @@ labels: [claw-ready, feature]
 assigned_to: "!@pm-alice"   # exclude the PM who labels
 done_status: "in-review"
 terminate_on_leave: false
-template: feature-template
+workspace: feature-workspace
 webhook_secret_ref: github_webhook_secret
 name_pattern: "feat-{issue_number}"
 tags: [feature]`}</CodeBlock>
@@ -56,7 +56,7 @@ tags: [feature]`}</CodeBlock>
         <ol className="list-decimal list-inside space-y-2 text-sm text-zinc-400">
           <li>User opens a feature request issue in <code>acme/app</code></li>
           <li>PM reviews it, adds labels <code>claw-ready</code> + <code>feature</code></li>
-          <li>Factory webhook fires — labels match, issue is open → claw spawned</li>
+          <li>Workflow webhook fires — labels match, issue is open → claw spawned</li>
           <li>Claw implements the feature, opens a PR, sends <code>[DONE]</code></li>
           <li>Issue moved to <code>in-review</code>, claw watches for CI/review comments</li>
           <li>PM removes <code>claw-ready</code> label → claw stays alive (terminate_on_leave: false)</li>
@@ -64,12 +64,12 @@ tags: [feature]`}</CodeBlock>
         </ol>
       </Section>
 
-      <Section title="Template: feature-template">
+      <Section title="Workspace: feature-workspace">
         <p className="text-sm text-zinc-400 mb-2">
-          A template with planning instructions and broader context for
+          A workspace with planning instructions and broader context for
           feature work.
         </p>
-        <CodeBlock lang="yaml">{`# templates/feature-template/elasticclaw-config.yaml
+        <CodeBlock lang="yaml">{`# workspaces/feature-workspace/elasticclaw-config.yaml
 provider: daytona
 llm_key: fireworks-kimi
 default_model: fireworks/accounts/fireworks/models/kimi-k2p6
@@ -79,7 +79,7 @@ github:
       permissions: write
 tags: [feature]`}</CodeBlock>
 
-        <CodeBlock lang="markdown">{`# templates/feature-template/AGENTS.md
+        <CodeBlock lang="markdown">{`# workspaces/feature-workspace/AGENTS.md
 You are a feature implementation agent. Read CONTEXT.md, propose a plan,
 then implement. Open a PR and send [DONE] <pr-url> when ready.`}</CodeBlock>
       </Section>

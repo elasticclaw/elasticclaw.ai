@@ -7,11 +7,11 @@ export default function ConceptsPage() {
   return (
     <DocsPage
       title="Concepts"
-      description="How ElasticClaw works — factories, triggers, pipelines, scoped credentials, templates, and the lifecycle of a claw."
+      description="How ElasticClaw works — workflows, triggers, pipelines, scoped credentials, workspaces, and the lifecycle of a claw."
     >
       <Section title="Architecture">
         <p className="text-zinc-400">
-          ElasticClaw is a self-hosted factory system for coding work. It
+          ElasticClaw is a self-hosted workflow system for coding work. It
           connects issue tracker events to repeatable pipelines that run agents,
           grant scoped credentials, open pull requests, and clean up. The core
           loop is:
@@ -22,8 +22,8 @@ export default function ConceptsPage() {
             <strong>Ready for Agent</strong>)
           </li>
           <li>
-            The factory selects a pipeline and provisions a workspace from a{" "}
-            <strong>template</strong>
+            The workflow selects a pipeline and provisions a workspace from a{" "}
+            <strong>workspace</strong>
           </li>
           <li>
             The agent receives the issue context and implements the fix
@@ -39,17 +39,17 @@ export default function ConceptsPage() {
         </ol>
       </Section>
 
-      <Section title="The Factory Pipeline">
+      <Section title="The Workflow Pipeline">
         <p className="text-zinc-400">
-          A factory is a pipeline that connects a source of work to a governed
+          A workflow is a pipeline that connects a source of work to a governed
           agent workflow. Think of it as a rule plus lifecycle: <em>when this
           happens, run this workflow with this access until this terminal state</em>.
         </p>
 
         <MermaidDiagram>{`
 graph TD
-    A[Issue enters trigger status] -->|webhook| B{Factory filters}
-    B -->|labels match assignee match status match| C[Template selected]
+    A[Issue enters trigger status] -->|webhook| B{Workflow filters}
+    B -->|labels match assignee match status match| C[Workspace selected]
     B -->|no match| D[Ignore event]
     C --> E[Sandbox provisioned]
     E --> F[Agent receives CONTEXT.md]
@@ -70,7 +70,7 @@ graph TD
             <p className="text-sm text-zinc-400">
               A trigger event arrives from Linear, GitHub Issues, Shortcut, a
               webhook, a GitHub release, or another connected system. The
-              factory checks filters and decides whether to act.
+              workflow checks filters and decides whether to act.
             </p>
           </div>
 
@@ -80,10 +80,10 @@ graph TD
 
           <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
             <h3 className="text-sm font-semibold text-white mb-2">
-              2. Template
+              2. Workspace
             </h3>
             <p className="text-sm text-zinc-400">
-              The factory references a template that defines the sandbox
+              The workflow references a workspace that defines the sandbox
               environment: provider (Replicated, Daytona, etc.), bootstrap
               scripts, secrets, MCP servers, and the agent&apos;s initial
               instructions.
@@ -186,9 +186,9 @@ stateDiagram-v2
         </div>
       </Section>
 
-      <Section title="How a Factory Decides">
+      <Section title="How a Workflow Decides">
         <p className="text-zinc-400">
-          When a webhook arrives, the factory evaluates multiple filters in
+          When a webhook arrives, the workflow evaluates multiple filters in
           sequence. All must pass for a claw to spawn.
         </p>
 
@@ -196,7 +196,7 @@ stateDiagram-v2
 flowchart TD
     A[Webhook arrives] --> B{Integration match?}
     B -->|no| Z[Ignore]
-    B -->|yes| C{Factory enabled?}
+    B -->|yes| C{Workflow enabled?}
     C -->|no| Z
     C -->|yes| D{Status matches trigger_status?}
     D -->|no| Z
@@ -223,7 +223,7 @@ flowchart TD
           <div>
             <h4 className="font-semibold text-white">Hub</h4>
             <p className="text-zinc-400">
-              The central server that receives webhooks, evaluates factories,
+              The central server that receives webhooks, evaluates workflows,
               manages credentials and execution providers, serves the web UI,
               and routes agent traffic. Configured via{" "}
               <code className="text-cyan-300">hub.yaml</code>.
@@ -237,15 +237,15 @@ flowchart TD
             </p>
           </div>
           <div>
-            <h4 className="font-semibold text-white">Factory</h4>
+            <h4 className="font-semibold text-white">Workflow</h4>
             <p className="text-zinc-400">
               A configured workstream that listens for issue events, applies
-              trigger filters, selects a template, grants scoped access, and
+              trigger filters, selects a workspace, grants scoped access, and
               runs the claw through a pipeline.
             </p>
           </div>
           <div>
-            <h4 className="font-semibold text-white">Template</h4>
+            <h4 className="font-semibold text-white">Workspace</h4>
             <p className="text-zinc-400">
               A reusable definition of a sandbox environment: bootstrap scripts,
               files, secrets, model config, and provider settings.
@@ -254,7 +254,7 @@ flowchart TD
           <div>
             <h4 className="font-semibold text-white">Pipeline</h4>
             <p className="text-zinc-400">
-              A state machine attached to a factory that defines actions at each
+              A state machine attached to a workflow that defines actions at each
               stage: creation, implementation, done, review, CI, merge, failure,
               and cleanup.
             </p>
@@ -272,7 +272,7 @@ flowchart TD
 
       <Note>
         Every claw is single-tenant: one issue, one workspace, one agent, one
-        scoped credential set. This isolation is what makes factories safe to
+        scoped credential set. This isolation is what makes workflows safe to
         run autonomously.
       </Note>
     </DocsPage>

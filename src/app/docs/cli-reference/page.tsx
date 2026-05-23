@@ -84,8 +84,8 @@ elasticclaw profile show`}</CodeBlock>
 
       <Section id="create" title="elasticclaw create">
         <p>Create a new agent (claw).</p>
-        <CodeBlock lang="bash">{`elasticclaw create --name my-agent --template my-template
-elasticclaw create --name my-agent --template my-template --ttl 4h --tag urgent`}</CodeBlock>
+        <CodeBlock lang="bash">{`elasticclaw create --name my-agent --workspace my-workspace
+elasticclaw create --name my-agent --workspace my-workspace --ttl 4h --tag urgent`}</CodeBlock>
       </Section>
 
       <Section id="chat" title="elasticclaw chat">
@@ -109,26 +109,20 @@ elasticclaw ls --json`}</CodeBlock>
         <CodeBlock lang="bash">{`elasticclaw kill my-agent`}</CodeBlock>
       </Section>
 
-      <Section id="template" title="elasticclaw template">
-        <p>Manage templates.</p>
-        <CodeBlock lang="bash">{`elasticclaw template create my-template  # scaffold .elasticclaw/templates/my-template
-elasticclaw template list                # list local and hub templates
-elasticclaw template push my-template    # push template to hub
-elasticclaw template rm my-template      # remove from hub
-elasticclaw template show my-template    # show template config`}</CodeBlock>
+      <Section id="workspace" title="elasticclaw workspace">
+        <p>Manage workspaces.</p>
+        <CodeBlock lang="bash">{`elasticclaw workspace create my-workspace  # scaffold .elasticclaw/workspaces/my-workspace
+elasticclaw workspace list                # list local and hub workspaces
+elasticclaw workspace push my-workspace    # push workspace to hub
+elasticclaw workspace rm my-workspace      # remove from hub
+elasticclaw workspace show my-workspace    # show workspace config`}</CodeBlock>
       </Section>
 
-      <Section id="factory" title="elasticclaw factory">
-        <p>Manage factories.</p>
-        <CodeBlock lang="bash">{`elasticclaw factory create --name my-factory --integration linear
-elasticclaw factory create --name bugfix-bot --integration github-issues
-elasticclaw factory push                   # push all factories to hub
-elasticclaw factory push my-factory        # push specific factory
-elasticclaw factory list                   # list factories on hub
-elasticclaw factory show my-factory        # show factory config
-elasticclaw factory trigger my-factory --input key=value
-elasticclaw factory rm my-factory          # remove from hub`}</CodeBlock>
-        <p><code>factory create</code> generates <code>.elasticclaw/factories/&lt;name&gt;/factory.yaml</code> and <code>pipeline.yaml</code>.</p>
+      <Section id="workflow" title="elasticclaw workflow">
+        <p>Inspect and manually trigger workflows that were pushed with a workspace.</p>
+        <CodeBlock lang="bash">{`elasticclaw workflow list --workspace bugbot
+elasticclaw workflow show triage --workspace bugbot
+elasticclaw workflow trigger triage --workspace bugbot --input key=value`}</CodeBlock>
       </Section>
 
       <Section id="provider" title="elasticclaw provider">

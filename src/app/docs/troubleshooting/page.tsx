@@ -9,16 +9,16 @@ export default function TroubleshootingPage() {
       title="Troubleshooting"
       description="Common issues and how to fix them."
     >
-      <Section title="Template uses deprecated secrets: list">
+      <Section title="Workspace uses deprecated secrets: list">
         <p>
           If you see this warning in the Doctor dashboard or logs:
         </p>
-        <CodeBlock lang="text">{`Template "my-template" uses deprecated secrets: list`}</CodeBlock>
+        <CodeBlock lang="text">{`Workspace "my-workspace" uses deprecated secrets: list`}</CodeBlock>
         <p>
-          Your template&apos;s <code>elasticclaw-config.yaml</code> uses the old{" "}
+          Your workspace&apos;s <code>elasticclaw-config.yaml</code> uses the old{" "}
           <code className="text-cyan-300">secrets:</code> list format. Migrate to{" "}
           <code className="text-cyan-300">secret_refs:</code> for consistency with
-          factory-level secret references.
+          workflow-level secret references.
         </p>
         <p className="mt-2"><strong>Old format (deprecated):</strong></p>
         <CodeBlock lang="yaml">{`secrets:
@@ -51,11 +51,11 @@ export default function TroubleshootingPage() {
         </Note>
       </Section>
 
-      <Section title="Factory secret_refs references missing secret">
+      <Section title="Workflow secret_refs references missing secret">
         <p>
-          If Doctor reports that a factory or template references a missing secret:
+          If Doctor reports that a workflow or workspace references a missing secret:
         </p>
-        <CodeBlock lang="text">{`Factory "my-factory" secret_refs references missing secret
+        <CodeBlock lang="text">{`Workflow "my-workflow" secret_refs references missing secret
   secret_refs maps "LINEAR_API_KEY" to secret "linear_token" which is not in the secrets map.`}</CodeBlock>
         <p>
           Add the missing secret to <code>hub.yaml</code>:
@@ -69,13 +69,13 @@ export default function TroubleshootingPage() {
   linear_token: \${LINEAR_API_TOKEN}`}</CodeBlock>
       </Section>
 
-      <Section title="Webhooks not triggering factories">
+      <Section title="Webhooks not triggering workflows">
         <p>
           If webhooks from Linear, GitHub Issues, or Shortcut are not triggering
-          factories, check that the factory has a webhook secret configured:
+          workflows, check that the workflow has a webhook secret configured:
         </p>
-        <CodeBlock lang="yaml">{`# factory.yaml
-name: my-factory
+        <CodeBlock lang="yaml">{`# workflow.yaml
+name: my-workflow
 integration: linear
 webhook_secret_ref: linear_webhook_secret   # references hub.yaml secrets
 # NOT webhook_secret: "inline value" (deprecated)`}</CodeBlock>

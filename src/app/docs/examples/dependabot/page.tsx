@@ -7,7 +7,7 @@ export default function DependabotExamplePage() {
   return (
     <DocsPage
       title="Auto-resolve Dependabot alerts"
-      description="A factory that bumps vulnerable packages, runs tests, and auto-merges the PR if CI passes."
+      description="A workflow that bumps vulnerable packages, runs tests, and auto-merges the PR if CI passes."
     >
       <Note>
         This example uses a pipeline to stage the work: bump packages, open a
@@ -37,8 +37,8 @@ secrets:
   github_webhook_secret: whsec_xxx`}</CodeBlock>
       </Section>
 
-      <Section title="Factory: dependabot-fix">
-        <CodeBlock lang="yaml">{`# factories/dependabot-fix/factory.yaml
+      <Section title="Workflow: dependabot-fix">
+        <CodeBlock lang="yaml">{`# workflows/dependabot-fix/workflow.yaml
 name: dependabot-fix
 integration: github-issues
 workspace: acme/app
@@ -46,7 +46,7 @@ trigger_status: "open"
 labels: [dependencies, security]
 done_status: "closed"
 terminate_on_leave: true
-template: dependabot-template
+workspace: dependabot-workspace
 webhook_secret_ref: github_webhook_secret
 name_pattern: "dep-{issue_number}"
 tags: [dependabot, security]
@@ -57,7 +57,7 @@ color: orange`}</CodeBlock>
         <p className="text-sm text-zinc-400 mb-2">
           Pipelines use stages, triggers, and <code>on_enter</code> actions.
         </p>
-        <CodeBlock lang="yaml">{`# .elasticclaw/factories/dependabot-fix/pipeline.yaml
+        <CodeBlock lang="yaml">{`# .elasticclaw/workflows/dependabot-fix/pipeline.yaml
 stages:
   - id: working
     label: "Working"
@@ -87,12 +87,12 @@ stages:
         </p>
       </Section>
 
-      <Section title="Template: dependabot-template">
+      <Section title="Workspace: dependabot-workspace">
         <p className="text-sm text-zinc-400 mb-2">
-          A lightweight template focused on dependency management and test
+          A lightweight workspace focused on dependency management and test
           validation.
         </p>
-        <CodeBlock lang="yaml">{`# templates/dependabot-template/elasticclaw-config.yaml
+        <CodeBlock lang="yaml">{`# workspaces/dependabot-workspace/elasticclaw-config.yaml
 provider: daytona
 llm_key: anthropic-prod
 default_model: anthropic/claude-sonnet-4-6
@@ -103,7 +103,7 @@ github:
 tags: [dependabot, security]
 color: orange`}</CodeBlock>
 
-        <CodeBlock lang="markdown">{`# templates/dependabot-template/AGENTS.md
+        <CodeBlock lang="markdown">{`# workspaces/dependabot-workspace/AGENTS.md
 You are a security patch agent. Read CONTEXT.md, bump the vulnerable
 package to the minimum safe version, run the test suite, and open a PR.
 Do not change unrelated code. Send [DONE] <pr-url> when the PR is ready.`}</CodeBlock>
@@ -120,7 +120,7 @@ Do not change unrelated code. Send [DONE] <pr-url> when the PR is ready.`}</Code
           <li>Repeat until CI passes or the claw gives up</li>
         </ol>
         <p className="text-sm text-zinc-400 mt-2">
-          The PR watcher behavior is tied to the factory PR lifecycle, not an
+          The PR watcher behavior is tied to the workflow PR lifecycle, not an
           <code>elasticclaw-config.yaml</code> field.
         </p>
       </Section>

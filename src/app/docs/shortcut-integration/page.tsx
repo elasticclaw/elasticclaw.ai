@@ -10,14 +10,14 @@ export default function ShortcutIntegrationPage() {
       description="Connect ElasticClaw to Shortcut to auto-spawn agents when stories enter a workflow state."
     >
       <Note>
-        Shortcut factories work identically to Linear factories — stories replace issues,
+        Shortcut workflows work identically to Linear workflows — stories replace issues,
         workflow states replace statuses. The <code>[DONE]</code> signal moves the story
         and terminates the claw when the PR merges.
       </Note>
 
       <Section title="How it works">
         <p>
-          When a Shortcut story moves into a configured workflow state, the factory engine
+          When a Shortcut story moves into a configured workflow state, the workflow engine
           creates a claw pre-loaded with the story title, description, and URL in{" "}
           <code>CONTEXT.md</code>. The agent reads it, implements the task, opens a PR,
           and sends <code>[DONE] https://github.com/org/repo/pull/N</code>. The hub moves
@@ -44,11 +44,11 @@ export default function ShortcutIntegrationPage() {
   -H "Content-Type: application/json" \\
   -d '{
     "url": "https://your-hub.example.com/api/integrations/shortcut/webhook",
-    "description": "ElasticClaw factory",
+    "description": "ElasticClaw workflow",
     "story_update": true
   }'`}</CodeBlock>
         <p className="mt-2 text-sm text-zinc-400">
-          You can also find the webhook URL in <strong>Settings → Factories</strong> in the hub web UI.
+          You can also find the webhook URL in <strong>Settings → Workflows</strong> in the hub web UI.
         </p>
       </Section>
 
@@ -59,21 +59,21 @@ export default function ShortcutIntegrationPage() {
       token: \${SHORTCUT_TOKEN}`}</CodeBlock>
       </Section>
 
-      <Section title="4. Configure factory.yaml">
-        <CodeBlock lang="yaml">{`# factories/shortcut-factory/factory.yaml
-name: shortcut-factory
+      <Section title="4. Configure workflow.yaml">
+        <CodeBlock lang="yaml">{`# workflows/shortcut-workflow/workflow.yaml
+name: shortcut-workflow
 integration: shortcut
 workspace: my-company
 trigger_status: "In Development"   # story enters this state -> spawn claw
 done_status: "In Review"           # story moves here on [DONE]
 terminate_on_leave: true           # kill claw if story leaves trigger state
-template: base                     # template name (push to hub first)`}</CodeBlock>
+workspace: base                     # workspace name (push to hub first)`}</CodeBlock>
         <Note>
-          Publish local factory files with <code>elasticclaw factory push shortcut-factory</code>.
+          Publish local workflow files with <code>elasticclaw workspace push shortcut-workspace</code>.
         </Note>
       </Section>
 
-      <Section title="5. Add to your template">
+      <Section title="5. Add to your workspace">
         <p>Tell your agent to signal done when finished:</p>
         <CodeBlock lang="markdown">{`When your task is complete, open a PR and send:
 [DONE] https://github.com/org/repo/pull/N

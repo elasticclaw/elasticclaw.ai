@@ -64,17 +64,17 @@ mcp_servers:
       GITHUB_TOKEN: github_token   # injects secrets.github_token as GITHUB_TOKEN`}</CodeBlock>
       </Section>
 
-      <Section title="Enabling in templates">
+      <Section title="Enabling in workspaces">
         <p>
-          Add <code className="text-cyan-300">mcps</code> to your template's
+          Add <code className="text-cyan-300">mcps</code> to your workspace's
           <code>elasticclaw-config.yaml</code> to enable specific MCP servers for claws
-          created from that template:
+          created from that workspace:
         </p>
         <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
 mcps:
   - name: github
     config:
-      repository: "my-org/my-repo"   # template-level override`}</CodeBlock>
+      repository: "my-org/my-repo"   # workspace-level override`}</CodeBlock>
         <p>
           Each claw will start the configured MCP servers as subprocesses and register
           their tools with the OpenClaw gateway.

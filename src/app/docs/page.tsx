@@ -9,23 +9,23 @@ export default function DocsOverviewPage() {
   return (
     <DocsPage
       title="Overview"
-      description="ElasticClaw is an open source factory system for coding agents: issue tracker triggers, workflow pipelines, scoped GitHub credentials, and self-hosted execution."
+      description="ElasticClaw is an open source workflow system for coding agents: issue tracker triggers, workflow pipelines, scoped GitHub credentials, and self-hosted execution."
     >
       <Section title="What is ElasticClaw?">
         <p>
           ElasticClaw turns external events into repeatable coding pipelines. A
-          factory can watch Linear, GitHub Issues, Shortcut, webhooks, GitHub
+          workflow can watch Linear, GitHub Issues, Shortcut, webhooks, GitHub
           releases, or any other signal you want to use as a trigger; start the
-          right agent from the right template; grant scoped GitHub access; drive
+          right agent from the right workspace; grant scoped GitHub access; drive
           the pull request through review and CI; and tear down the workspace
           when the job reaches a terminal state.
         </p>
         <p>
-          Sandboxes are a critical part of the factory: they give each job an
+          Sandboxes are a critical part of the workflow: they give each job an
           isolated place to clone, test, build, and push code. ElasticClaw adds
-          the factory layer around that execution environment: triggers,
+          the workflow layer around that execution environment: triggers,
           workflow gates, credentials, context, and lifecycle policy that let
-          teams run dark factories and software factories from their existing
+          teams run dark workflows and software workflows from their existing
           work queues.
         </p>
         <p>The core components are:</p>
@@ -35,19 +35,19 @@ export default function DocsOverviewPage() {
             <p className="mt-1 text-sm text-zinc-400">
               The self-hosted control point: web dashboard, API,{" "}
               <code>hub.yaml</code>, GitHub App credentials, secrets,
-              integrations, and factory state.
+              integrations, and workflow state.
             </p>
           </div>
           <div className="rounded-lg border border-zinc-800 bg-zinc-900/45 p-4">
-            <h3 className="font-semibold text-zinc-100">Factories</h3>
+            <h3 className="font-semibold text-zinc-100">Workflows</h3>
             <p className="mt-1 text-sm text-zinc-400">
               Workstream definitions that decide when to start work, which
-              template to use, what access to grant, and which pipeline drives
+              workspace to use, what access to grant, and which pipeline drives
               the job through PR review, CI, merge, and cleanup.
             </p>
           </div>
           <div className="rounded-lg border border-zinc-800 bg-zinc-900/45 p-4">
-            <h3 className="font-semibold text-zinc-100">Templates</h3>
+            <h3 className="font-semibold text-zinc-100">Workspaces</h3>
             <p className="mt-1 text-sm text-zinc-400">
               Reusable bootstrap definitions for a class of work: repos,
               files, instructions, secrets, MCP tools, model defaults, and
@@ -84,14 +84,14 @@ export default function DocsOverviewPage() {
         <CodeBlock lang="bash">{`brew tap elasticclaw/elasticclaw
 brew install elasticclaw`}</CodeBlock>
         <p>
-          From there, set up the pieces your factory needs:
+          From there, set up the pieces your workflow needs:
         </p>
         <ol className="list-decimal list-inside space-y-2 text-sm text-zinc-400 mt-2">
           <li>
             <Link href="/docs/installation" className="text-cyan-400 hover:underline">
               Deploy a hub
             </Link>{" "}
-            so factories, credentials, and claw lifecycle state have a home.
+            so workflows, credentials, and claw lifecycle state have a home.
           </li>
           <li>
             <Link href="/docs/providers" className="text-cyan-400 hover:underline">
@@ -106,8 +106,8 @@ brew install elasticclaw`}</CodeBlock>
             so claws can receive scoped repo credentials and open pull requests.
           </li>
           <li>
-            <Link href="/docs/templates" className="text-cyan-400 hover:underline">
-              Create a template
+            <Link href="/docs/workspaces" className="text-cyan-400 hover:underline">
+              Create a workspace
             </Link>{" "}
             that defines the workspace, repos, instructions, tools, secrets, and model defaults.
           </li>
@@ -124,11 +124,11 @@ brew install elasticclaw`}</CodeBlock>
             <Link href="/docs/shortcut-integration" className="text-cyan-400 hover:underline">
               Shortcut
             </Link>{" "}
-            if the factory should start from ticket events.
+            if the workflow should start from ticket events.
           </li>
           <li>
-            <Link href="/docs/factories" className="text-cyan-400 hover:underline">
-              Connect a factory
+            <Link href="/docs/workflows" className="text-cyan-400 hover:underline">
+              Connect a workflow
             </Link>{" "}
             to an issue tracker, webhook, release event, or manual trigger.
           </li>
@@ -189,17 +189,17 @@ brew install elasticclaw`}</CodeBlock>
             <Link href="/docs/hub" className="text-cyan-400 hover:underline">
               Hub Config
             </Link>{" "}
-            — configure providers, templates, auth, secrets, MCP servers
+            — configure providers, workspaces, auth, secrets, MCP servers
           </li>
           <li>
-            <Link href="/docs/templates" className="text-cyan-400 hover:underline">
-              Templates
+            <Link href="/docs/workspaces" className="text-cyan-400 hover:underline">
+              Workspaces
             </Link>{" "}
-            — build your own agent template
+            — build your own agent workspace
           </li>
           <li>
-            <Link href="/docs/factories" className="text-cyan-400 hover:underline">
-              Factories
+            <Link href="/docs/workflows" className="text-cyan-400 hover:underline">
+              Workflows
             </Link>{" "}
             — define triggers, pipelines, access, and lifecycle rules
           </li>
@@ -207,7 +207,7 @@ brew install elasticclaw`}</CodeBlock>
             <Link href="/docs/concepts" className="text-cyan-400 hover:underline">
               Concepts
             </Link>{" "}
-            — architecture, factory pipeline, claw lifecycle
+            — architecture, workflow pipeline, claw lifecycle
           </li>
           <li>
             <Link href="/docs/mcp-servers" className="text-cyan-400 hover:underline">

@@ -23,7 +23,7 @@ export default function WebUIPage() {
           <li>In-browser SSH terminal via xterm.js</li>
           <li>View agent logs and status</li>
           <li>Create and destroy agents via the UI</li>
-          <li>Settings page — configure providers, LLM keys, integrations, factories, secrets, MCP servers, auth</li>
+          <li>Settings page — configure providers, LLM keys, integrations, workflows, secrets, MCP servers, auth</li>
         </ul>
       </Section>
 
@@ -67,7 +67,7 @@ ELASTICCLAW_HUB_CONFIG=/path/to/hub.yaml elasticclaw hub`}</CodeBlock>
           <li><strong>LLM Keys</strong> — Named API keys with default model</li>
           <li><strong>GitHub Apps</strong> — App credentials with live permission checks</li>
           <li><strong>Integrations</strong> — Linear, Shortcut, GitHub Issues</li>
-          <li><strong>Factories</strong> — Create, edit, enable/disable factories</li>
+          <li><strong>Workflows</strong> — Create, edit, enable/disable workflows</li>
           <li><strong>Secrets</strong> — Manage secret values (names only in UI, values hidden)</li>
           <li><strong>MCP Servers</strong> — Configure npx/uvx/docker/sse tool servers</li>
           <li><strong>Authentication</strong> — GitHub OAuth, tag-based ACLs</li>
