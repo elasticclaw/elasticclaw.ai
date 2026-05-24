@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ElasticClaw — Workspaces and workflows for issue-to-PR work",
     description:
-      "Open source workflow system for coding agents: issue tracker triggers, workflow pipelines, scoped GitHub access, and self-hosted execution.",
+      "Open source workflow system for coding agents: issue tracker triggers, workflow stages, scoped GitHub access, and self-hosted execution.",
   },
 };
 

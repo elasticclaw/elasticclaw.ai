@@ -11,9 +11,9 @@ export default function AnalyticsPage() {
     >
       <Section title="Overview">
         <p>
-          The hub records persistent analytics for workflows so you can see which
+          ElasticClaw Server records persistent analytics for workflows so you can see which
           automations are running, how often they succeed, and what happens after
-          claws open pull requests.
+          agents open pull requests.
         </p>
         <p>
           Open <strong>Settings → Analytics</strong> in the web UI to review
@@ -24,8 +24,8 @@ export default function AnalyticsPage() {
       <Section title="Metrics">
         <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
           <li><strong>Total triggers</strong> — how many times workflows fired</li>
-          <li><strong>Success rate</strong> — percentage of claw creations that succeeded</li>
-          <li><strong>PRs opened</strong> — number of pull requests created by workflow claws</li>
+          <li><strong>Success rate</strong> — percentage of agent creations that succeeded</li>
+          <li><strong>PRs opened</strong> — number of pull requests created by workflow agents</li>
           <li><strong>PR merge rate</strong> — percentage of opened pull requests that merged</li>
           <li><strong>By trigger status</strong> — breakdown of which statuses triggered creation</li>
           <li><strong>Recent events</strong> — the latest workflow events with timestamps</li>

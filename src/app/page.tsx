@@ -9,15 +9,15 @@ const FEEDBACK_EMAIL = "marc@elasticclaw.ai";
 const CORE_PRIMITIVES = [
   {
     title: "Concurrent agents",
-    desc: "Run many isolated claws from the same hub with workflow-level concurrency groups, queueing, and lifecycle state.",
+    desc: "Run many isolated agents from the same ElasticClaw Server with workflow-level concurrency groups, queueing, and lifecycle state.",
   },
   {
     title: "Execution graphs",
-    desc: "Model work as pipeline stages with triggers, transitions, on-enter actions, terminal states, and issue/PR events.",
+    desc: "Model work as workflow stages with triggers, transitions, on-enter actions, terminal states, and issue/PR events.",
   },
   {
     title: "Delegation and reentrancy",
-    desc: "Workflows can start work from external events, manual inputs, or pipeline transitions, then re-enter the workflow when CI, review, or issue state changes.",
+    desc: "Workflows can start work from external events, manual inputs, or stage transitions, then re-enter the workflow when CI, review, or issue state changes.",
   },
   {
     title: "Plugin-based extensions",
@@ -25,7 +25,7 @@ const CORE_PRIMITIVES = [
   },
   {
     title: "Local-first operation",
-    desc: "Run the hub yourself. Keep configuration, workspaces, workflows, credentials, and workflow state under your control.",
+    desc: "Run ElasticClaw Server yourself. Keep configuration, workspaces, workflows, credentials, and workflow state under your control.",
   },
   {
     title: "Retries and recovery",
@@ -33,22 +33,22 @@ const CORE_PRIMITIVES = [
   },
   {
     title: "Logs and task state",
-    desc: "Inspect claw status, provisioning events, activity logs, failure summaries, and pipeline state from the CLI and web UI.",
+    desc: "Inspect agent status, provisioning events, activity logs, failure summaries, and workflow state from the CLI and web UI.",
   },
 ];
 
 const WORKFLOWS = [
   {
     title: "Linear ticket to PR",
-    desc: "Move an issue into a trigger state, provision a workspace, inject issue context, open a PR, and advance the tracker when the job is done.",
+    desc: "Move an issue into a trigger state, provision a workspace, inject issue context, open a PR, and advance the tracker when the work is done.",
   },
   {
     title: "CI repair swarm",
     desc: "Route failed checks back into one or more running agents so the system can attempt targeted repairs instead of dropping state.",
   },
   {
-    title: "PR review pipeline",
-    desc: "Keep a claw alive after the first PR so it can react to review comments, changed checks, and merge or close events.",
+    title: "PR review workflow",
+    desc: "Keep an agent alive after the first PR so it can react to review comments, changed checks, and merge or close events.",
   },
   {
     title: "Dependency upgrade workflow",

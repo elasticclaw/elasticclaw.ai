@@ -7,11 +7,11 @@ export default function AuthenticationPage() {
   return (
     <DocsPage
       title="Authentication"
-      description="Control access to the ElasticClaw hub web UI with GitHub OAuth and tag-based ACLs."
+      description="Control access to the ElasticClaw Server web UI with GitHub OAuth and tag-based ACLs."
     >
       <Section title="Overview">
         <p>
-          By default, the hub web UI uses a single password (<code>ui_password</code> in
+          By default, the server web UI uses a single password (<code>ui_password</code> in
           <code>hub.yaml</code>). For team deployments, you can enable GitHub OAuth and
           tag-based access control to restrict who can view and interact with agents.
         </p>
@@ -19,14 +19,14 @@ export default function AuthenticationPage() {
 
       <Section title="GitHub OAuth">
         <p>
-          When enabled, users sign in with their GitHub account. The hub validates their
+          When enabled, users sign in with their GitHub account. ElasticClaw Server validates their
           identity against allowlists (users, orgs, or teams).
         </p>
 
         <h3 className="text-sm font-semibold text-zinc-200 mt-4 mb-2">1. Create a GitHub OAuth App</h3>
         <ol className="list-decimal list-inside space-y-2 text-sm text-zinc-400">
           <li>Go to <strong>GitHub → Settings → Developer Settings → OAuth Apps → New OAuth App</strong></li>
-          <li>Authorization callback URL: <code>https://hub.example.com/auth/github/callback</code></li>
+          <li>Authorization callback URL: <code>https://server.example.com/auth/github/callback</code></li>
           <li>Copy the Client ID and generate a Client Secret</li>
         </ol>
 
@@ -48,7 +48,7 @@ export default function AuthenticationPage() {
         </ul>
         <Note>
           If <strong>all three allowlists are empty</strong>, any authenticated
-          GitHub user can access the hub. This is the default and a common
+          GitHub user can access ElasticClaw Server. This is the default and a common
           misconfiguration — populate at least one list before deploying to
           production.
         </Note>
@@ -57,7 +57,7 @@ export default function AuthenticationPage() {
       <Section title="Tag-based access control">
         <p>
           Beyond authentication, you can restrict what authenticated users can <em>do</em>
-          based on claw tags. This is useful for multi-team setups where different teams
+          based on agent tags. This is useful for multi-team setups where different teams
           manage different agents.
         </p>
         <CodeBlock lang="yaml">{`auth:
@@ -66,8 +66,8 @@ export default function AuthenticationPage() {
     view_requires_tags: ["frontend"]    # must have at least one matching tag to view
     interact_requires_tags: ["frontend"]`}</CodeBlock>
         <Note>
-          Tag-based access control is enforced by the hub API and WebSocket paths.
-          <code>view_requires_tags</code> filters claw visibility, and
+          Tag-based access control is enforced by the ElasticClaw Server API and WebSocket paths.
+          <code>view_requires_tags</code> filters agent visibility, and
           <code>interact_requires_tags</code> gates chat, terminal, and mutating
           actions. Admins bypass all tag checks.
         </Note>

@@ -90,8 +90,8 @@ ttl: 4h`}</CodeBlock>
       </Section>
 
       <Note>
-        Use TTLs to control cost. Workflow-created claws are also terminated by
-        their pipeline when work reaches a terminal state.
+        Use TTLs to control cost. Workflow-created agents are also terminated by
+        their workflow when work reaches a terminal state.
       </Note>
     </DocsPage>
   );

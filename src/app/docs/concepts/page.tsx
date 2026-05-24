@@ -7,12 +7,12 @@ export default function ConceptsPage() {
   return (
     <DocsPage
       title="Concepts"
-      description="How ElasticClaw works — workflows, triggers, pipelines, scoped credentials, workspaces, and the lifecycle of a claw."
+      description="How ElasticClaw works — workflows, triggers, stages, scoped credentials, workspaces, and the lifecycle of an agent."
     >
       <Section title="Architecture">
         <p className="text-zinc-400">
           ElasticClaw is a self-hosted workflow system for coding work. It
-          connects issue tracker events to repeatable pipelines that run agents,
+          connects issue tracker events to repeatable workflows that run agents,
           grant scoped credentials, open pull requests, and clean up. The core
           loop is:
         </p>
@@ -22,7 +22,7 @@ export default function ConceptsPage() {
             <strong>Ready for Agent</strong>)
           </li>
           <li>
-            The workflow selects a pipeline and provisions a workspace from a{" "}
+            The workflow selects stages and provisions a workspace from a{" "}
             <strong>workspace</strong>
           </li>
           <li>
@@ -33,15 +33,15 @@ export default function ConceptsPage() {
             <code className="text-cyan-300">[DONE]</code>
           </li>
           <li>
-            The hub moves the issue to <strong>In Review</strong> and
+            ElasticClaw Server moves the issue to <strong>In Review</strong> and
             terminates the sandbox when the PR merges
           </li>
         </ol>
       </Section>
 
-      <Section title="The Workflow Pipeline">
+      <Section title="Workflow Stages">
         <p className="text-zinc-400">
-          A workflow is a pipeline that connects a source of work to a governed
+          A workflow connects a source of work to a governed
           agent workflow. Think of it as a rule plus lifecycle: <em>when this
           happens, run this workflow with this access until this terminal state</em>.
         </p>
@@ -57,7 +57,7 @@ graph TD
     G --> H[Agent opens PR]
     H --> I["Agent sends DONE"]
     I --> J[Issue moved to done_status]
-    J --> K[Claw watches CI and reviews]
+    J --> K[Agent watches CI and reviews]
     K -->|PR merged| L[Sandbox terminated]
     K -->|PR closed| L
         `}</MermaidDiagram>
@@ -99,7 +99,7 @@ graph TD
               3. Sandbox
             </h3>
             <p className="text-sm text-zinc-400">
-              The hub provisions an isolated sandbox, injects the issue context
+              ElasticClaw Server provisions an isolated sandbox, injects the issue context
               as <code className="text-cyan-300">CONTEXT.md</code>, and starts
               the agent. The agent has full terminal, git, and API access within
               its environment.
@@ -116,19 +116,19 @@ graph TD
             </h3>
             <p className="text-sm text-zinc-400">
               When the agent sends{" "}
-              <code className="text-cyan-300">[DONE]</code>, the hub validates
+              <code className="text-cyan-300">[DONE]</code>, ElasticClaw Server validates
               the PR, moves the issue to the configured{" "}
               <code className="text-cyan-300">done_status</code>, and marks the
-              claw idle. The sandbox terminates when the PR merges or closes.
+              agent idle. The sandbox terminates when the PR merges or closes.
             </p>
           </div>
         </div>
       </Section>
 
-      <Section title="Claw Lifecycle">
+      <Section title="Agent Lifecycle">
         <p className="text-zinc-400">
-          A claw moves through distinct states from creation to termination.
-          Understanding these states helps debug why a claw is stuck or
+          An agent moves through distinct states from creation to termination.
+          Understanding these states helps debug why an agent is stuck or
           failed.
         </p>
 
@@ -137,7 +137,7 @@ stateDiagram-v2
     [*] --> Pending: concurrency limit reached
     [*] --> Provisioning: slot available
     Pending --> Provisioning: slot freed
-    Pending --> Deleted: issue closed / claw killed
+    Pending --> Deleted: issue closed / agent killed
     Provisioning --> Starting: sandbox running
     Provisioning --> Error: provider failure
     Starting --> Connected: bridge registered
@@ -145,7 +145,7 @@ stateDiagram-v2
     Connected --> Running: agent active
     Running --> Idle: [DONE] received
     Idle --> Deleted: PR merged
-    Idle --> Error: claw killed
+    Idle --> Error: agent killed
     Error --> [*]
     Deleted --> [*]
         `}</MermaidDiagram>
@@ -189,7 +189,7 @@ stateDiagram-v2
       <Section title="How a Workflow Decides">
         <p className="text-zinc-400">
           When a webhook arrives, the workflow evaluates multiple filters in
-          sequence. All must pass for a claw to spawn.
+          sequence. All must pass for an agent to spawn.
         </p>
 
         <MermaidDiagram>{`
@@ -204,15 +204,15 @@ flowchart TD
     E -->|no| Z
     E -->|yes| F{Assignee filter passes?}
     F -->|no| Z
-    F -->|yes| G{1:1 check — existing claw?}
+    F -->|yes| G{1:1 check — existing agent?}
     G -->|yes| Z
     G -->|no| H{Concurrency limit?}
     H -->|at capacity| I[Queue as Pending]
-    H -->|slot free| J[Spawn claw]
+    H -->|slot free| J[Spawn agent]
         `}</MermaidDiagram>
 
         <p className="text-sm text-zinc-400 mt-3">
-          Each filter is a gate. The first failure stops evaluation — no claw
+          Each filter is a gate. The first failure stops evaluation — no agent
           is created, and the event is logged as{" "}
           <code className="text-cyan-300">not_actionable</code>.
         </p>
@@ -221,7 +221,7 @@ flowchart TD
       <Section title="Key Terms">
         <div className="space-y-3 text-sm">
           <div>
-            <h4 className="font-semibold text-white">Hub</h4>
+            <h4 className="font-semibold text-white">ElasticClaw Server</h4>
             <p className="text-zinc-400">
               The central server that receives webhooks, evaluates workflows,
               manages credentials and execution providers, serves the web UI,
@@ -230,9 +230,9 @@ flowchart TD
             </p>
           </div>
           <div>
-            <h4 className="font-semibold text-white">Claw</h4>
+            <h4 className="font-semibold text-white">Agent</h4>
             <p className="text-zinc-400">
-              A single running agent instance. Each claw is backed by one
+              A single running agent instance. Each agent is backed by one
               sandbox and has a unique ID, status, and lifecycle.
             </p>
           </div>
@@ -241,7 +241,7 @@ flowchart TD
             <p className="text-zinc-400">
               A configured workstream that listens for issue events, applies
               trigger filters, selects a workspace, grants scoped access, and
-              runs the claw through a pipeline.
+              runs the agent through workflow stages.
             </p>
           </div>
           <div>
@@ -252,7 +252,7 @@ flowchart TD
             </p>
           </div>
           <div>
-            <h4 className="font-semibold text-white">Pipeline</h4>
+            <h4 className="font-semibold text-white">Stages</h4>
             <p className="text-zinc-400">
               A state machine attached to a workflow that defines actions at each
               stage: creation, implementation, done, review, CI, merge, failure,
@@ -262,7 +262,7 @@ flowchart TD
           <div>
             <h4 className="font-semibold text-white">Sandbox</h4>
             <p className="text-zinc-400">
-              The isolated compute environment that hosts a claw. Can be a VM
+              The isolated compute environment that hosts an agent. Can be a VM
               (Replicated, Daytona), container, or serverless function depending
               on the provider.
             </p>
@@ -271,7 +271,7 @@ flowchart TD
       </Section>
 
       <Note>
-        Every claw is single-tenant: one issue, one workspace, one agent, one
+        Every agent is single-tenant: one issue, one workspace, one agent, one
         scoped credential set. This isolation is what makes workflows safe to
         run autonomously.
       </Note>

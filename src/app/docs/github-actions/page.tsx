@@ -29,9 +29,9 @@ export default function GitHubActionsPage() {
       </Section>
 
       <Section title="Required secrets">
-        <p>Store the hub URL and user token as repository secrets:</p>
-        <CodeBlock lang="text">{`ELASTICCLAW_HUB_URL   # e.g. https://hub.example.com
-ELASTICCLAW_TOKEN     # hub user token`}</CodeBlock>
+        <p>Store the ElasticClaw Server URL and user token as repository secrets:</p>
+        <CodeBlock lang="text">{`ELASTICCLAW_HUB_URL   # e.g. https://server.example.com
+ELASTICCLAW_TOKEN     # server user token`}</CodeBlock>
       </Section>
 
       <Section title="Publish workflow">

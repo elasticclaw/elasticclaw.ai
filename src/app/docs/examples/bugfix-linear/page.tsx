@@ -7,7 +7,7 @@ export default function BugfixLinearExamplePage() {
   return (
     <DocsPage
       title="Bug fixes from a single Linear board"
-      description="A workflow that watches one Linear team, filters by label, and auto-spawns claws for bug triage."
+      description="A workflow that watches one Linear team, filters by label, and auto-spawns agents for bug triage."
     >
       <Note>
         This example shows a complete, working workflow configuration. Adapt the
@@ -19,8 +19,8 @@ export default function BugfixLinearExamplePage() {
           <li>Watches the <code>ENG</code> team on Linear</li>
           <li>Only acts on issues with the <code>bug</code> label</li>
           <li>Triggers when an issue enters <code>Triage</code> status</li>
-          <li>Spawns a claw using a dedicated <code>bugfix-workspace</code></li>
-          <li>Moves the issue to <code>In Review</code> when the claw sends <code>[DONE]</code></li>
+          <li>Spawns an agent using a dedicated <code>bugfix-workspace</code></li>
+          <li>Moves the issue to <code>In Review</code> when the agent sends <code>[DONE]</code></li>
         </ul>
       </Section>
 
@@ -47,7 +47,7 @@ trigger:
 tags: [bugfix]
 color: red
 
-jobs:
+stages:
   - id: working
     label: Working
     entry: true
@@ -88,7 +88,7 @@ write a minimal fix, and open a PR. Send [DONE] <pr-url> when ready.`}</CodeBloc
       <Section title="Linear webhook setup">
         <ol className="list-decimal list-inside space-y-2 text-sm text-zinc-400">
           <li>Go to <strong>Linear → Settings → API → Webhooks</strong></li>
-          <li>Payload URL: <code>https://hub.example.com/api/workspaces/bugfix-workspace/webhooks/linear</code></li>
+          <li>Payload URL: <code>https://server.example.com/api/workspaces/bugfix-workspace/webhooks/linear</code></li>
           <li>Events: <strong>Issues</strong></li>
           <li>Use the signing secret from the workspace issue tracker settings</li>
         </ol>

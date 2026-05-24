@@ -12,17 +12,17 @@ export default function ShortcutIntegrationPage() {
       <Note>
         Shortcut workflows work identically to Linear workflows — stories replace issues,
         workflow states replace statuses. The <code>[DONE]</code> signal moves the story
-        and terminates the claw when the PR merges.
+        and terminates the agent when the PR merges.
       </Note>
 
       <Section title="How it works">
         <p>
           When a Shortcut story moves into a configured workflow state, the workflow engine
-          creates a claw pre-loaded with the story title, description, and URL in{" "}
+          creates an agent pre-loaded with the story title, description, and URL in{" "}
           <code>CONTEXT.md</code>. The agent reads it, implements the task, opens a PR,
-          and sends <code>[DONE] https://github.com/org/repo/pull/N</code>. The hub moves
-          the story and keeps the claw alive to watch for CI failures and review comments.
-          When the PR merges, the claw terminates automatically.
+          and sends <code>[DONE] https://github.com/org/repo/pull/N</code>. ElasticClaw Server moves
+          the story and keeps the agent alive to watch for CI failures and review comments.
+          When the PR merges, the agent terminates automatically.
         </p>
       </Section>
 
@@ -43,12 +43,12 @@ export default function ShortcutIntegrationPage() {
   -H "Shortcut-Token: YOUR_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "url": "https://your-hub.example.com/api/workspaces/shortcut-workspace/webhooks/shortcut",
+    "url": "https://server.example.com/api/workspaces/shortcut-workspace/webhooks/shortcut",
     "description": "ElasticClaw workflow",
     "story_update": true
   }'`}</CodeBlock>
         <p className="mt-2 text-sm text-zinc-400">
-          You can also find the webhook URL in the workspace issue tracker settings in the hub web UI.
+          You can also find the webhook URL in the workspace issue tracker settings in the server web UI.
         </p>
       </Section>
 
@@ -64,9 +64,9 @@ Add Shortcut:
 name: shortcut-workflow
 integration: shortcut
 workspace: my-company
-trigger_status: "In Development"   # story enters this state -> spawn claw
+trigger_status: "In Development"   # story enters this state -> spawn agent
 done_status: "In Review"           # story moves here on [DONE]
-terminate_on_leave: true           # kill claw if story leaves trigger state`}</CodeBlock>
+terminate_on_leave: true           # kill agent if story leaves trigger state`}</CodeBlock>
         <Note>
           Publish the workspace with <code>elasticclaw workspace push shortcut-workspace</code>,
           then publish this file with{" "}
@@ -86,9 +86,9 @@ You'll be terminated automatically when the PR merges.`}</CodeBlock>
       <Section title="Template variables">
         <p className="text-sm text-zinc-400">
           Shortcut story context is written to <code>CONTEXT.md</code> when the
-          claw starts. Automatic Shortcut workflow jobs do not currently expose
+          agent starts. Automatic Shortcut workflow stages do not currently expose
           a Go template object such as <code>{"{{.Issue.Title}}"}</code> in
-          <code>jobs[].on_enter.inject</code>.
+          <code>stages[].on_enter.inject</code>.
         </p>
         <p className="text-sm text-zinc-400 mt-2">
           Use <code>CONTEXT.md</code> for the story ID, title, URL, and

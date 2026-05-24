@@ -20,7 +20,7 @@ export default function DaytonaProviderPage() {
           <p><strong>Type:</strong> Ephemeral sandbox</p>
           <p><strong>Auth:</strong> Daytona API key</p>
           <p><strong>Capabilities:</strong> <code className="text-cyan-300">exec</code>, <code className="text-cyan-300">snapshot</code></p>
-          <p><strong>Best for:</strong> Fast workflow-created claws and repeatable development environments</p>
+          <p><strong>Best for:</strong> Fast workflow-created agents and repeatable development environments</p>
         </div>
       </Section>
 
@@ -38,7 +38,7 @@ export default function DaytonaProviderPage() {
     api_key: \${DAYTONA_API_KEY}
     default_snapshot: daytona-large`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
-          Store <code>DAYTONA_API_KEY</code> in the hub environment or your
+          Store <code>DAYTONA_API_KEY</code> in the server environment or your
           deployment secret manager.
         </p>
       </Section>
@@ -51,7 +51,7 @@ snapshot: daytona-medium
 ttl: 4h`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
           <code>snapshot</code> overrides <code>providers.daytona.default_snapshot</code>
-          for claws created from that workspace.
+          for agents created from that workspace.
         </p>
       </Section>
 
@@ -59,13 +59,13 @@ ttl: 4h`}</CodeBlock>
         <div className="space-y-3 text-sm text-zinc-400">
           <p><strong>Create</strong> — Starts a Daytona sandbox from the configured snapshot.</p>
           <p><strong>Exec</strong> — Runs bootstrap and agent commands through the Daytona execution API.</p>
-          <p><strong>Destroy</strong> — Deletes the sandbox when the claw terminates.</p>
+          <p><strong>Destroy</strong> — Deletes the sandbox when the agent terminates.</p>
         </div>
       </Section>
 
       <Note>
         Build your snapshots with the base dependencies your agents need. That
-        keeps workflow-created claws fast and reduces per-task bootstrap work.
+        keeps workflow-created agents fast and reduces per-task bootstrap work.
       </Note>
     </DocsPage>
   );

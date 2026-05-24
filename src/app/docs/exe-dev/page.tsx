@@ -114,7 +114,7 @@ trigger:
           <p>
             <strong>Create</strong> — Provisions a new VM via{" "}
             <code>ssh exe.dev new --json</code>. The VM name is auto-generated
-            (e.g., <code>claw-abc123</code>) and the SSH destination is{" "}
+            (e.g., <code>agent-abc123</code>) and the SSH destination is{" "}
             <code>vm-name.exe.xyz</code>.
           </p>
           <p>

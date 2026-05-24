@@ -70,18 +70,18 @@ sudo mv elasticclaw /usr/local/bin/`}</CodeBlock>
         </p>
         <CodeBlock lang="bash">{`elasticclaw upgrade`}</CodeBlock>
         <p>
-          If the hub systemd service is running, it will be restarted automatically.
+          If the ElasticClaw Server systemd service is running, it will be restarted automatically.
         </p>
       </Section>
 
       <Section title="Install on a Remote Server">
         <p>
-          Install the full hub (binary, systemd service, Caddy TLS) on a remote
+          Install ElasticClaw Server (binary, systemd service, Caddy TLS) on a remote
           Linux server via SSH:
         </p>
         <CodeBlock lang="bash">{`elasticclaw install \
   --server ssh://root@my-server.com \
-  --domain hub.mycompany.com \
+  --domain server.mycompany.com \
   --ssh-key ~/.ssh/id_ed25519`}</CodeBlock>
         <p>Flags:</p>
         <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
@@ -89,7 +89,7 @@ sudo mv elasticclaw /usr/local/bin/`}</CodeBlock>
           <li><code>--domain</code> — Domain for TLS via Let's Encrypt (required)</li>
           <li><code>--ssh-key</code> — SSH private key path</li>
           <li><code>--version</code> — Pin a release version (default: latest)</li>
-          <li><code>--token</code> — Hub user token (default: random hex32)</li>
+          <li><code>--token</code> — Server user token (default: random hex32)</li>
           <li><code>--ui-password</code> — Web UI password (default: random hex32)</li>
           <li><code>--skip-caddy</code> — Skip Caddy/TLS (useful when DNS not ready)</li>
         </ul>
@@ -99,11 +99,11 @@ sudo mv elasticclaw /usr/local/bin/`}</CodeBlock>
         </Note>
       </Section>
 
-      <Section title="Upgrade Remote Hub">
+      <Section title="Upgrade Remote Server">
         <p>
-          Upgrade the hub binary on a remote server via SSH:
+          Upgrade ElasticClaw Server on a remote server via SSH:
         </p>
-        <CodeBlock lang="bash">{`elasticclaw hub upgrade --server ssh://root@hub.example.com`}</CodeBlock>
+        <CodeBlock lang="bash">{`elasticclaw hub upgrade --server ssh://root@server.example.com`}</CodeBlock>
         <p>
           The server SSH target and key can be inferred from your active profile if
           <code>ssh_uri</code> or <code>url</code> is configured.
@@ -112,7 +112,7 @@ sudo mv elasticclaw /usr/local/bin/`}</CodeBlock>
 
       <Section title="Systemd Service">
         <p>
-          Use these commands when you are managing a hub directly on a Linux
+          Use these commands when you are managing ElasticClaw Server directly on a Linux
           host. You do not need to run <code>hub service install</code> after{" "}
           <code>elasticclaw install</code>; the remote installer already writes,
           enables, and starts the systemd service.
@@ -134,7 +134,7 @@ elasticclaw hub service status`}</CodeBlock>
           <code>elasticclaw install</code>; the remote installer already
           installs and configures Caddy unless you pass <code>--skip-caddy</code>.
         </p>
-        <CodeBlock lang="bash">{`sudo elasticclaw hub caddy install --domain hub.example.com
+        <CodeBlock lang="bash">{`sudo elasticclaw hub caddy install --domain server.example.com
 sudo elasticclaw hub caddy uninstall`}</CodeBlock>
         <Note>
           The domain must have an A record pointing to the server's IP. If you

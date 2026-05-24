@@ -11,9 +11,9 @@ export default function SecretsPage() {
     >
       <Section title="Overview">
         <p>
-          ElasticClaw stores secrets on the hub per workspace. Create them with
+          ElasticClaw stores secrets on ElasticClaw Server per workspace. Create them with
           the CLI, then reference them by name from <code>elasticclaw-config.yaml</code>
-          or workflow YAML when a claw needs an environment variable.
+          or workflow YAML when an agent needs an environment variable.
         </p>
         <Note>
           Never commit real secret values to version control. Commit only the
@@ -27,7 +27,7 @@ printf '%s' "$SLACK_BOT_TOKEN" | elasticclaw secret create slack_bot_token --wor
 elasticclaw secret list --workspace my-app
 elasticclaw secret rm slack_bot_token --workspace my-app`}</CodeBlock>
         <p>
-          Secret values are sent to the hub. <code>secret list</code> returns names
+          Secret values are sent to ElasticClaw Server. <code>secret list</code> returns names
           only, never values.
         </p>
       </Section>
@@ -36,7 +36,7 @@ elasticclaw secret rm slack_bot_token --workspace my-app`}</CodeBlock>
         <p>
           Use <code className="text-cyan-300">env</code> in{" "}
           <code>elasticclaw-config.yaml</code> to inject a workspace secret into
-          every claw created from that workspace:
+          every agent created from that workspace:
         </p>
         <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
 env:

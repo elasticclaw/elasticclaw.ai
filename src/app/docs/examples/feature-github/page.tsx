@@ -7,7 +7,7 @@ export default function FeatureGitHubExamplePage() {
   return (
     <DocsPage
       title="Human-tagged feature work in GitHub Issues"
-      description="A workflow where a single labeler triggers claw creation for feature requests, excluding themselves from assignment."
+      description="A workflow where a single labeler triggers agent creation for feature requests, excluding themselves from assignment."
     >
       <Note>
         This pattern is useful when a PM or tech lead triages incoming
@@ -17,11 +17,11 @@ export default function FeatureGitHubExamplePage() {
       <Section title="What it does">
         <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
           <li>Watches the <code>acme/app</code> repository</li>
-          <li>Triggers when an issue is labeled <code>claw-ready</code> <em>and</em> <code>feature</code></li>
+          <li>Triggers when an issue is labeled <code>agent-ready</code> <em>and</em> <code>feature</code></li>
           <li>Excludes the PM (<code>@pm-alice</code>) from assignment — they labeled it, they don&apos;t implement it</li>
           <li>Uses a <code>feature-workspace</code> with broader context and planning instructions</li>
           <li>Moves the issue to <code>in-review</code> when done</li>
-          <li>Does <strong>not</strong> terminate on leave — the claw stays alive to handle review feedback</li>
+          <li>Does <strong>not</strong> terminate on leave — the agent stays alive to handle review feedback</li>
         </ul>
       </Section>
 
@@ -44,11 +44,11 @@ trigger:
     states:
       - open
     labels:
-      - claw-ready
+      - agent-ready
       - feature
 tags: [feature]
 
-jobs:
+stages:
   - id: working
     label: Working
     entry: true
@@ -73,12 +73,12 @@ jobs:
       <Section title="The labeling workflow">
         <ol className="list-decimal list-inside space-y-2 text-sm text-zinc-400">
           <li>User opens a feature request issue in <code>acme/app</code></li>
-          <li>PM reviews it, adds labels <code>claw-ready</code> + <code>feature</code></li>
-          <li>Workflow webhook fires — labels match, issue is open → claw spawned</li>
-          <li>Claw implements the feature, opens a PR, sends <code>[DONE]</code></li>
-          <li>Issue moved to <code>in-review</code>, claw watches for CI/review comments</li>
-          <li>PM removes <code>claw-ready</code> label → claw stays alive (terminate_on_leave: false)</li>
-          <li>PR merges → claw terminates automatically</li>
+          <li>PM reviews it, adds labels <code>agent-ready</code> + <code>feature</code></li>
+          <li>Workflow webhook fires — labels match, issue is open → agent spawned</li>
+          <li>Agent implements the feature, opens a PR, sends <code>[DONE]</code></li>
+          <li>Issue moved to <code>in-review</code>, agent watches for CI/review comments</li>
+          <li>PM removes <code>agent-ready</code> label → agent stays alive (terminate_on_leave: false)</li>
+          <li>PR merges → agent terminates automatically</li>
         </ol>
       </Section>
 
@@ -105,7 +105,7 @@ then implement. Open a PR and send [DONE] <pr-url> when ready.`}</CodeBlock>
       <Section title="GitHub webhook setup">
         <ol className="list-decimal list-inside space-y-2 text-sm text-zinc-400">
           <li>Go to <strong>repo → Settings → Webhooks → Add webhook</strong></li>
-          <li>Payload URL: <code>https://hub.example.com/api/workspaces/feature-workspace/webhooks/github-issues</code></li>
+          <li>Payload URL: <code>https://server.example.com/api/workspaces/feature-workspace/webhooks/github-issues</code></li>
           <li>Content type: <code>application/json</code></li>
           <li>Secret: the webhook secret from workspace issue tracker settings</li>
           <li>Events: <strong>Issues</strong></li>

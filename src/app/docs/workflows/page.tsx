@@ -7,13 +7,13 @@ export default function WorkflowsPage() {
   return (
     <DocsPage
       title="Workflows"
-      description="Workflows define triggers, manual inputs, and lifecycle jobs, then run inside a published workspace."
+      description="Workflows define triggers, manual inputs, and lifecycle stages, then run inside a published workspace."
     >
       <Section title="How workflows work">
         <p>
           A workflow watches an external system or accepts a manual trigger,
-          creates a claw with scoped access from its workspace, injects event
-          context, and tracks the job through issue, code, PR, review, and
+          creates an agent with scoped access from its workspace, injects event
+          context, and tracks the work through issue, code, PR, review, and
           completion states.
         </p>
         <p>
@@ -35,7 +35,7 @@ trigger:
     states:
       - open
     labels:
-      - claw-ready
+      - agent-ready
     labelers:
       - "*"
 
@@ -52,13 +52,13 @@ inputs:
     type: string
     required: true
 
-jobs:
+stages:
   - id: working
     label: Working
     entry: true
     on_enter:
-      remove_labels: [claw-ready]
-      add_labels: [claw-working]
+      remove_labels: [agent-ready]
+      add_labels: [agent-working]
       inject: |
         Issue: {{.Issue.Identifier}} — {{.Issue.Title}}
         URL: {{.Issue.URL}}
@@ -71,7 +71,7 @@ jobs:
       - message_contains: "[DONE]"
     on_enter:
       add_labels: [needs-review]
-      remove_labels: [claw-working]
+      remove_labels: [agent-working]
 
   - id: merged
     label: Merged
@@ -86,13 +86,13 @@ jobs:
           <p><code className="text-cyan-300">enabled</code> — Set false to pause the workflow.</p>
           <p><code className="text-cyan-300">trigger.github_issues</code> — GitHub Issues source. Supports issue events, repositories, states, labels, labelers, and assignee filters.</p>
           <p><code className="text-cyan-300">trigger.linear</code> — Linear source. Supports status-change events, states, team, labels, and assignee filters.</p>
-          <p><code className="text-cyan-300">provider</code> — Sandbox provider override for claws created by this workflow.</p>
-          <p><code className="text-cyan-300">tags</code> and <code className="text-cyan-300">color</code> — Dashboard metadata for created claws.</p>
+          <p><code className="text-cyan-300">provider</code> — Sandbox provider override for agents created by this workflow.</p>
+          <p><code className="text-cyan-300">tags</code> and <code className="text-cyan-300">color</code> — Dashboard metadata for created agents.</p>
           <p><code className="text-cyan-300">secret_refs</code> — Environment variable to workspace secret name map.</p>
           <p><code className="text-cyan-300">inputs</code> — Manual trigger inputs.</p>
-          <p><code className="text-cyan-300">concurrency_group</code> — Limit parallel claws by group.</p>
+          <p><code className="text-cyan-300">concurrency_group</code> — Limit parallel agents by group.</p>
           <p><code className="text-cyan-300">enable_manual_trigger</code> — Allow dashboard and CLI manual triggers.</p>
-          <p><code className="text-cyan-300">jobs</code> — Lifecycle stages. Jobs become the workflow pipeline used by the hub.</p>
+          <p><code className="text-cyan-300">stages</code> — Lifecycle stages used by the workflow.</p>
         </div>
       </Section>
 
