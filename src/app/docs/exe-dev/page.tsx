@@ -88,8 +88,8 @@ export default function ExedevPage() {
         </p>
       </Section>
 
-      <Section title="Use in Templates">
-        <p>Set exe.dev as the default provider for a template:</p>
+      <Section title="Use in Workspaces">
+        <p>Set exe.dev as the default provider for a workspace:</p>
         <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
 provider: exedev
 resources:
@@ -98,12 +98,12 @@ resources:
   disk: 20GB
 nix: false                       # exe.dev VMs are bare; enable if you need Nix
 docker: false                    # enable if you need Docker`}</CodeBlock>
-        <p>Or set per-factory:</p>
-        <CodeBlock lang="yaml">{`# factories/long-running-agent/factory.yaml
+        <p>Or set per-workflow:</p>
+        <CodeBlock lang="yaml">{`# workflows/long-running-agent/workflow.yaml
 name: long-running-agent
 integration: linear
 provider: exedev
-template: my-template
+workspace: my-workspace
 trigger_status: "Ready for Agent"`}</CodeBlock>
       </Section>
 

@@ -83,9 +83,11 @@ elasticclaw profile show`}</CodeBlock>
       </Section>
 
       <Section id="create" title="elasticclaw create">
-        <p>Create a new agent (claw).</p>
-        <CodeBlock lang="bash">{`elasticclaw create --name my-agent --template my-template
-elasticclaw create --name my-agent --template my-template --ttl 4h --tag urgent`}</CodeBlock>
+        <p>
+          Legacy template-based claw creation. This command is hidden and
+          deprecated; use <code>elasticclaw workspace push</code> and{" "}
+          <code>elasticclaw workflow trigger</code> for workflow-created claws.
+        </p>
       </Section>
 
       <Section id="chat" title="elasticclaw chat">
@@ -109,26 +111,40 @@ elasticclaw ls --json`}</CodeBlock>
         <CodeBlock lang="bash">{`elasticclaw kill my-agent`}</CodeBlock>
       </Section>
 
-      <Section id="template" title="elasticclaw template">
-        <p>Manage templates.</p>
-        <CodeBlock lang="bash">{`elasticclaw template create my-template  # scaffold .elasticclaw/templates/my-template
-elasticclaw template list                # list local and hub templates
-elasticclaw template push my-template    # push template to hub
-elasticclaw template rm my-template      # remove from hub
-elasticclaw template show my-template    # show template config`}</CodeBlock>
+      <Section id="workspace" title="elasticclaw workspace">
+        <p>Manage workspaces.</p>
+        <CodeBlock lang="bash">{`elasticclaw workspace create --name my-workspace  # scaffold .elasticclaw/workspaces/my-workspace
+elasticclaw workspace list                # list hub workspaces
+elasticclaw workspace push my-workspace    # push workspace files to hub
+elasticclaw workspace rm my-workspace      # remove from hub
+elasticclaw workspace show my-workspace    # show workspace config`}</CodeBlock>
       </Section>
 
-      <Section id="factory" title="elasticclaw factory">
-        <p>Manage factories.</p>
-        <CodeBlock lang="bash">{`elasticclaw factory create --name my-factory --integration linear
-elasticclaw factory create --name bugfix-bot --integration github-issues
-elasticclaw factory push                   # push all factories to hub
-elasticclaw factory push my-factory        # push specific factory
-elasticclaw factory list                   # list factories on hub
-elasticclaw factory show my-factory        # show factory config
-elasticclaw factory trigger my-factory --input key=value
-elasticclaw factory rm my-factory          # remove from hub`}</CodeBlock>
-        <p><code>factory create</code> generates <code>.elasticclaw/factories/&lt;name&gt;/factory.yaml</code> and <code>pipeline.yaml</code>.</p>
+      <Section id="workflow" title="elasticclaw workflow">
+        <p>Push, inspect, and manually trigger workflows in a workspace.</p>
+        <CodeBlock lang="bash">{`elasticclaw workflow push --workspace my-workspace .elasticclaw/workflows
+elasticclaw workflow list --workspace my-workspace
+elasticclaw workflow show triage --workspace my-workspace
+elasticclaw workflow trigger triage --workspace my-workspace --input key=value`}</CodeBlock>
+      </Section>
+
+      <Section id="secret" title="elasticclaw secret">
+        <p>Manage workspace-scoped secrets.</p>
+        <CodeBlock lang="bash">{`elasticclaw secret create openai_api_key --workspace my-workspace --value "$OPENAI_API_KEY"
+printf '%s' "$TOKEN" | elasticclaw secret create deploy_token --workspace my-workspace
+elasticclaw secret list --workspace my-workspace
+elasticclaw secret rm deploy_token --workspace my-workspace`}</CodeBlock>
+      </Section>
+
+      <Section id="github-app" title="elasticclaw github-app">
+        <p>Manage workspace-scoped GitHub Apps for repository access.</p>
+        <CodeBlock lang="bash">{`elasticclaw github-app create app-bot --workspace my-workspace \\
+  --app-id 123456 \\
+  --url https://github.com/apps/app-bot \\
+  --installation my-org \\
+  --private-key-file ./app-bot.private-key.pem
+elasticclaw github-app list --workspace my-workspace
+elasticclaw github-app rm app-bot --workspace my-workspace`}</CodeBlock>
       </Section>
 
       <Section id="provider" title="elasticclaw provider">

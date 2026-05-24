@@ -7,25 +7,25 @@ export default function GitHubActionsPage() {
   return (
     <DocsPage
       title="GitHub Actions"
-      description="Publish ElasticClaw templates and factories from GitHub Actions using the elasticclaw CLI."
+      description="Publish ElasticClaw workspaces and workflows from GitHub Actions using the elasticclaw CLI."
     >
       <Note>
         The ElasticClaw source currently ships CLI commands for publishing
-        templates and factories. It does not ship separate first-party GitHub
+        workspaces and workflows. It does not ship separate first-party GitHub
         Actions in this repository; use the CLI in your workflow.
       </Note>
 
       <Section title="Directory structure">
         <p>Your repository should keep local definitions under <code>.elasticclaw/</code>:</p>
         <CodeBlock lang="text">{`.elasticclaw/
-  factories/
-    my-factory/
-      factory.yaml
-      pipeline.yaml
-  templates/
-    my-template/
+  workspaces/
+    my-workspace/
       elasticclaw-config.yaml
-      AGENTS.md`}</CodeBlock>
+      AGENTS.md
+      TOOLS.md
+  workflows/
+    triage.yaml
+    resolution.yaml`}</CodeBlock>
       </Section>
 
       <Section title="Required secrets">
@@ -68,21 +68,22 @@ jobs:
           ELASTICCLAW_HUB_URL: \${{ secrets.ELASTICCLAW_HUB_URL }}
           ELASTICCLAW_TOKEN: \${{ secrets.ELASTICCLAW_TOKEN }}
 
-      - name: Push templates
+      - name: Push workspaces
         run: |
-          for dir in .elasticclaw/templates/*; do
+          for dir in .elasticclaw/workspaces/*; do
             [ -d "$dir" ] || continue
-            elasticclaw template push "$dir"
+            elasticclaw workspace push "$(basename "$dir")"
           done
 
-      - name: Push factories
-        run: elasticclaw factory push`}</CodeBlock>
+      - name: Push workflows
+        run: |
+          elasticclaw workflow push --workspace my-workspace .elasticclaw/workflows`}</CodeBlock>
       </Section>
 
       <Section title="Commands used">
         <div className="space-y-2 text-sm text-zinc-400">
-          <p><code className="text-cyan-300">elasticclaw template push &lt;name-or-path&gt;</code> — Publishes one template directory.</p>
-          <p><code className="text-cyan-300">elasticclaw factory push [name]</code> — Publishes all factories, or one named factory.</p>
+          <p><code className="text-cyan-300">elasticclaw workspace push &lt;name&gt;</code> — Publishes one local workspace from <code>.elasticclaw/workspaces/</code>.</p>
+          <p><code className="text-cyan-300">elasticclaw workflow push --workspace &lt;name&gt; &lt;file-or-dir&gt;</code> — Publishes workflow YAML into that workspace.</p>
         </div>
       </Section>
 

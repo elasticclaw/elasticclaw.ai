@@ -7,7 +7,7 @@ export default function HubPage() {
   return (
     <DocsPage
       title="Hub Config"
-      description="hub.yaml is your central ElasticClaw configuration file — it defines providers, LLM keys, integrations, secrets, MCP servers, and auth."
+      description="hub.yaml is your central ElasticClaw configuration file for providers, LLM keys, authentication, and hub-level settings."
     >
       <Section title="Overview">
         <p>
@@ -15,15 +15,15 @@ export default function HubPage() {
           in your project root (or at{" "}
           <code className="text-cyan-300">~/.elasticclaw/hub.yaml</code> for
           global config). It tells ElasticClaw where to provision sandboxes, which
-          credentials to use, and how to connect integrations.
+          credentials to use, and which shared services are available to
+          workspaces.
         </p>
         <p className="mt-2">
-          Templates and factories are not stored inline in <code>hub.yaml</code>.
-          The hub keeps them as files next to the config:{" "}
-          <code className="text-cyan-300">templates/&lt;name&gt;/</code> for
-          templates and{" "}
-          <code className="text-cyan-300">factories/&lt;name&gt;/factory.yaml</code>
-          {" "}plus optional <code>pipeline.yaml</code> for factories.
+          Workspaces and workflows are not stored inline in <code>hub.yaml</code>.
+          After you push them, the hub keeps them as files next to the config:{" "}
+          <code className="text-cyan-300">workspaces/&lt;name&gt;/</code> for
+          workspaces, with workflow YAML files nested under each workspace&apos;s{" "}
+          <code className="text-cyan-300">workflows/</code> directory.
         </p>
       </Section>
 
@@ -61,44 +61,6 @@ llm_keys:
 # Default model (provider/model format)
 default_model: anthropic/claude-sonnet-4-6
 
-# GitHub App (for repo access and token minting)
-github:
-  - app_id: 123456
-    private_key_pem: |
-      -----BEGIN RSA PRIVATE KEY-----
-      ...
-
-# Integrations
-integrations:
-  linear:
-    - workspace: my-company
-      token: \${LINEAR_API_TOKEN}
-      # webhook_secret is a shared default for all Linear webhooks.
-      # Each factory can override with webhook_secret_ref (preferred).
-      webhook_secret: \${LINEAR_WEBHOOK_SECRET}
-  shortcut:
-    - workspace: my-company
-      token: \${SHORTCUT_TOKEN}
-  github_issues:
-    - workspace: my-org
-      token: \${GITHUB_TOKEN}
-      # Same pattern: integration-level default, factory-level override.
-      webhook_secret: \${GITHUB_WEBHOOK_SECRET}
-
-# Secrets
-secrets:
-  linear_webhook_secret: whsec_xxx
-  github_token: ghp_xxx
-
-# MCP Servers
-mcp_servers:
-  - name: github
-    source: npx
-    package: "@modelcontextprotocol/server-github"
-    enabled: true
-    secrets:
-      GITHUB_TOKEN: github_token
-
 # Authentication
 auth:
   github_oauth:
@@ -119,28 +81,26 @@ ssh_public_keys:
   - ssh-ed25519 AAAAC3NzaC...`}</CodeBlock>
       </Section>
 
-      <Section title="External templates and factories">
+      <Section title="External workspaces and workflows">
         <p>
-          The hub creates <code>templates/</code> and <code>factories/</code>{" "}
-          alongside <code>hub.yaml</code>. Use <code>elasticclaw template push</code>{" "}
-          and <code>elasticclaw factory push</code> to publish local definitions
-          into those external directories.
+          The hub creates <code>workspaces/</code> alongside{" "}
+          <code>hub.yaml</code>. Use <code>elasticclaw workspace push</code> to
+          publish workspace files, then <code>elasticclaw workflow push</code> to
+          publish workflow YAML into a workspace.
         </p>
         <CodeBlock lang="text">{`~/.elasticclaw/
   hub.yaml
-  templates/
+  workspaces/
     elasticclaw/
       elasticclaw-config.yaml
       AGENTS.md
       TOOLS.md
-  factories/
-    feature-factory/
-      factory.yaml
-      pipeline.yaml`}</CodeBlock>
+      workflows/
+        feature-workflow.yaml`}</CodeBlock>
         <Note>
-          Older configs with inline <code>factories:</code> are migrated on hub
-          startup. The hub writes them to <code>factories/</code> and removes the
-          inline entries from <code>hub.yaml</code> to avoid split-brain config.
+          This is the hub&apos;s storage layout after publishing. Author workspace
+          files under <code>.elasticclaw/workspaces/</code> and workflow YAML
+          under <code>.elasticclaw/workflows/</code> before pushing them.
         </Note>
       </Section>
 
@@ -155,10 +115,7 @@ ssh_public_keys:
             { field: "providers", desc: "Sandbox provider configs. See Providers docs." },
             { field: "llm_keys", desc: "Named LLM API keys. One can be marked default:true." },
             { field: "default_model", desc: "Global default model (provider/model format)." },
-            { field: "github", desc: "GitHub App credentials for repo access and token minting." },
-            { field: "integrations", desc: "External service configs: linear, shortcut, github_issues." },
-            { field: "secrets", desc: "Named secret values referenced by factories and MCP servers." },
-            { field: "mcp_servers", desc: "MCP server configs available to claws." },
+            { field: "secrets", desc: "Named hub-level secret values for hub-managed services. Workspace runtime secrets are managed with elasticclaw secret." },
             { field: "auth", desc: "GitHub OAuth and tag-based access control for the web UI." },
             { field: "branding", desc: "White-label: app_name, logo_url." },
             { field: "ssh_public_keys", desc: "Extra SSH keys injected into every provisioned sandbox." },

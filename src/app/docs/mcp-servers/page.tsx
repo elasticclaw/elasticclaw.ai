@@ -26,7 +26,12 @@ export default function MCPServersPage() {
         </ul>
       </Section>
 
-      <Section title="Configuring in hub.yaml">
+      <Section title="Configure an MCP server">
+        <p>
+          Configure MCP server definitions in the hub settings UI under{" "}
+          <strong>Settings → MCP Servers</strong>. Workspaces opt into the
+          servers they need from <code>elasticclaw-config.yaml</code>.
+        </p>
         <CodeBlock lang="yaml">{`mcp_servers:
   - name: github
     source: npx
@@ -35,7 +40,7 @@ export default function MCPServersPage() {
     config:
       repository: "elasticclaw/elasticclaw"
     secrets:
-      GITHUB_TOKEN: github_token   # resolves hub.yaml secrets.github_token
+      GITHUB_TOKEN: github_mcp_token
 
   - name: postgres
     source: docker
@@ -53,28 +58,26 @@ export default function MCPServersPage() {
       <Section title="Secrets resolution">
         <p>
           The <code className="text-cyan-300">secrets</code> map under each MCP server
-          maps environment variable names to secret names in <code>hub.yaml secrets:</code>.
+          maps environment variable names to secret names configured for that
+          MCP server in settings.
         </p>
-        <CodeBlock lang="yaml">{`secrets:
-  github_token: ghp_xxxxxxxxxxxx
-
-mcp_servers:
+        <CodeBlock lang="yaml">{`mcp_servers:
   - name: github
     secrets:
-      GITHUB_TOKEN: github_token   # injects secrets.github_token as GITHUB_TOKEN`}</CodeBlock>
+      GITHUB_TOKEN: github_mcp_token`}</CodeBlock>
       </Section>
 
-      <Section title="Enabling in templates">
+      <Section title="Enabling in workspaces">
         <p>
-          Add <code className="text-cyan-300">mcps</code> to your template's
+          Add <code className="text-cyan-300">mcps</code> to your workspace's
           <code>elasticclaw-config.yaml</code> to enable specific MCP servers for claws
-          created from that template:
+          created from that workspace:
         </p>
         <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
 mcps:
   - name: github
     config:
-      repository: "my-org/my-repo"   # template-level override`}</CodeBlock>
+      repository: "my-org/my-repo"   # workspace-level override`}</CodeBlock>
         <p>
           Each claw will start the configured MCP servers as subprocesses and register
           their tools with the OpenClaw gateway.

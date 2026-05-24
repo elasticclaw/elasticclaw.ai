@@ -1,6 +1,6 @@
 # elasticclaw.ai
 
-The marketing and documentation site for [ElasticClaw](https://github.com/elasticclaw/elasticclaw) — an open source factory system for issue-triggered coding agents, workflow pipelines, scoped GitHub credentials, and self-hosted execution.
+The marketing and documentation site for [ElasticClaw](https://github.com/elasticclaw/elasticclaw) — an open source workflow system for issue-triggered coding agents, workflow pipelines, scoped GitHub credentials, and self-hosted execution.
 
 ## Stack
 
@@ -32,7 +32,7 @@ src/
       page.tsx            # Overview
       installation/       # Install docs
       hub/                # hub.yaml config docs
-      templates/          # Template docs
+      workspaces/          # Workspace docs
       github-integration/ # GitHub App setup
       linear-integration/ # Linear token setup
       web-ui/             # elasticclaw-web docs

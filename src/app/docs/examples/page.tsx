@@ -7,7 +7,7 @@ export default function ExamplesPage() {
   return (
     <DocsPage
       title="Examples"
-      description="Real-world factory configurations you can adapt to your setup."
+      description="Real-world workflow configurations you can adapt to your setup."
     >
       <Section title="Available examples">
         <ul className="list-disc list-inside space-y-2 text-sm text-zinc-400">

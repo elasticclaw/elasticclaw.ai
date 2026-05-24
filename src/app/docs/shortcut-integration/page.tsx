@@ -10,14 +10,14 @@ export default function ShortcutIntegrationPage() {
       description="Connect ElasticClaw to Shortcut to auto-spawn agents when stories enter a workflow state."
     >
       <Note>
-        Shortcut factories work identically to Linear factories — stories replace issues,
+        Shortcut workflows work identically to Linear workflows — stories replace issues,
         workflow states replace statuses. The <code>[DONE]</code> signal moves the story
         and terminates the claw when the PR merges.
       </Note>
 
       <Section title="How it works">
         <p>
-          When a Shortcut story moves into a configured workflow state, the factory engine
+          When a Shortcut story moves into a configured workflow state, the workflow engine
           creates a claw pre-loaded with the story title, description, and URL in{" "}
           <code>CONTEXT.md</code>. The agent reads it, implements the task, opens a PR,
           and sends <code>[DONE] https://github.com/org/repo/pull/N</code>. The hub moves
@@ -43,43 +43,58 @@ export default function ShortcutIntegrationPage() {
   -H "Shortcut-Token: YOUR_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "url": "https://your-hub.example.com/api/integrations/shortcut/webhook",
-    "description": "ElasticClaw factory",
+    "url": "https://your-hub.example.com/api/workspaces/shortcut-workspace/webhooks/shortcut",
+    "description": "ElasticClaw workflow",
     "story_update": true
   }'`}</CodeBlock>
         <p className="mt-2 text-sm text-zinc-400">
-          You can also find the webhook URL in <strong>Settings → Factories</strong> in the hub web UI.
+          You can also find the webhook URL in the workspace issue tracker settings in the hub web UI.
         </p>
       </Section>
 
-      <Section title="3. Configure hub.yaml">
-        <CodeBlock lang="yaml">{`integrations:
-  shortcut:
-    - workspace: my-company
-      token: \${SHORTCUT_TOKEN}`}</CodeBlock>
+      <Section title="3. Add the issue tracker">
+        <CodeBlock lang="text">{`Settings -> Workspaces -> shortcut-workspace -> Issue Trackers
+Add Shortcut:
+  workspace: my-company
+  token: \${SHORTCUT_TOKEN}`}</CodeBlock>
       </Section>
 
-      <Section title="4. Configure factory.yaml">
-        <CodeBlock lang="yaml">{`# factories/shortcut-factory/factory.yaml
-name: shortcut-factory
+      <Section title="4. Configure workflow.yaml">
+        <CodeBlock lang="yaml">{`# .elasticclaw/workflows/shortcut-workflow.yaml
+name: shortcut-workflow
 integration: shortcut
 workspace: my-company
 trigger_status: "In Development"   # story enters this state -> spawn claw
 done_status: "In Review"           # story moves here on [DONE]
-terminate_on_leave: true           # kill claw if story leaves trigger state
-template: base                     # template name (push to hub first)`}</CodeBlock>
+terminate_on_leave: true           # kill claw if story leaves trigger state`}</CodeBlock>
         <Note>
-          Publish local factory files with <code>elasticclaw factory push shortcut-factory</code>.
+          Publish the workspace with <code>elasticclaw workspace push shortcut-workspace</code>,
+          then publish this file with{" "}
+          <code>elasticclaw workflow push --workspace shortcut-workspace .elasticclaw/workflows/shortcut-workflow.yaml</code>.
         </Note>
       </Section>
 
-      <Section title="5. Add to your template">
+      <Section title="5. Add to your workspace">
         <p>Tell your agent to signal done when finished:</p>
         <CodeBlock lang="markdown">{`When your task is complete, open a PR and send:
 [DONE] https://github.com/org/repo/pull/N
 
 This moves the Shortcut story and keeps you alive to watch for CI and review comments.
 You'll be terminated automatically when the PR merges.`}</CodeBlock>
+      </Section>
+
+      <Section title="Template variables">
+        <p className="text-sm text-zinc-400">
+          Shortcut story context is written to <code>CONTEXT.md</code> when the
+          claw starts. Automatic Shortcut workflow jobs do not currently expose
+          a Go template object such as <code>{"{{.Issue.Title}}"}</code> in
+          <code>jobs[].on_enter.inject</code>.
+        </p>
+        <p className="text-sm text-zinc-400 mt-2">
+          Use <code>CONTEXT.md</code> for the story ID, title, URL, and
+          description. Manual workflow triggers can still render{" "}
+          <code>{"{{.Inputs.name}}"}</code> values from configured inputs.
+        </p>
       </Section>
 
       <Section title="Differences from Linear">

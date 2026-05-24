@@ -20,7 +20,7 @@ export default function DaytonaProviderPage() {
           <p><strong>Type:</strong> Ephemeral sandbox</p>
           <p><strong>Auth:</strong> Daytona API key</p>
           <p><strong>Capabilities:</strong> <code className="text-cyan-300">exec</code>, <code className="text-cyan-300">snapshot</code></p>
-          <p><strong>Best for:</strong> Fast factory-created claws and repeatable development environments</p>
+          <p><strong>Best for:</strong> Fast workflow-created claws and repeatable development environments</p>
         </div>
       </Section>
 
@@ -43,15 +43,15 @@ export default function DaytonaProviderPage() {
         </p>
       </Section>
 
-      <Section title="Use in templates">
-        <p>Set Daytona as the provider for a template:</p>
+      <Section title="Use in workspaces">
+        <p>Set Daytona as the provider for a workspace:</p>
         <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
 provider: daytona
 snapshot: daytona-medium
 ttl: 4h`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
           <code>snapshot</code> overrides <code>providers.daytona.default_snapshot</code>
-          for claws created from that template.
+          for claws created from that workspace.
         </p>
       </Section>
 
@@ -65,7 +65,7 @@ ttl: 4h`}</CodeBlock>
 
       <Note>
         Build your snapshots with the base dependencies your agents need. That
-        keeps factory-created claws fast and reduces per-task bootstrap work.
+        keeps workflow-created claws fast and reduces per-task bootstrap work.
       </Note>
     </DocsPage>
   );

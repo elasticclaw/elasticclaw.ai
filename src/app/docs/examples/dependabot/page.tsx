@@ -7,7 +7,7 @@ export default function DependabotExamplePage() {
   return (
     <DocsPage
       title="Auto-resolve Dependabot alerts"
-      description="A factory that bumps vulnerable packages, runs tests, and auto-merges the PR if CI passes."
+      description="A workflow that bumps vulnerable packages, runs tests, and auto-merges the PR if CI passes."
     >
       <Note>
         This example uses a pipeline to stage the work: bump packages, open a
@@ -26,39 +26,34 @@ export default function DependabotExamplePage() {
         </ul>
       </Section>
 
-      <Section title="hub.yaml">
-        <CodeBlock lang="yaml">{`integrations:
-  github_issues:
-    - workspace: acme/app
-      token: \${GITHUB_TOKEN}
-      webhook_secret: \${GITHUB_WEBHOOK_SECRET}
-
-secrets:
-  github_webhook_secret: whsec_xxx`}</CodeBlock>
+      <Section title="Issue tracker">
+        <CodeBlock lang="text">{`Settings -> Workspaces -> dependabot-workspace -> Issue Trackers
+Add GitHub Issues:
+  token: \${GITHUB_TOKEN}
+  webhook secret: \${GITHUB_WEBHOOK_SECRET}`}</CodeBlock>
       </Section>
 
-      <Section title="Factory: dependabot-fix">
-        <CodeBlock lang="yaml">{`# factories/dependabot-fix/factory.yaml
+      <Section title="Workflow: dependabot-fix">
+        <CodeBlock lang="yaml">{`# .elasticclaw/workflows/dependabot-fix.yaml
+schema_version: v1
 name: dependabot-fix
-integration: github-issues
-workspace: acme/app
-trigger_status: "open"
-labels: [dependencies, security]
-done_status: "closed"
-terminate_on_leave: true
-template: dependabot-template
-webhook_secret_ref: github_webhook_secret
-name_pattern: "dep-{issue_number}"
-tags: [dependabot, security]
-color: orange`}</CodeBlock>
-      </Section>
 
-      <Section title="Pipeline: staged review">
-        <p className="text-sm text-zinc-400 mb-2">
-          Pipelines use stages, triggers, and <code>on_enter</code> actions.
-        </p>
-        <CodeBlock lang="yaml">{`# .elasticclaw/factories/dependabot-fix/pipeline.yaml
-stages:
+trigger:
+  type: github_issues
+  event: issue_labeled
+  repositories:
+    - acme/app
+  states:
+    - open
+  labels:
+    - dependencies
+    - security
+
+name_pattern: "dep-{{.Issue.Number}}"
+tags: [dependabot, security]
+color: orange
+
+jobs:
   - id: working
     label: "Working"
     entry: true
@@ -81,29 +76,32 @@ stages:
     triggers:
       - pr_merged:
     terminal: true`}</CodeBlock>
+      </Section>
+
+      <Section title="Pipeline behavior">
         <p className="text-sm text-zinc-400 mt-2">
           The hub records PR URLs from the <code>[DONE]</code> message and can
           inject CI or review feedback while the claw remains alive.
         </p>
       </Section>
 
-      <Section title="Template: dependabot-template">
+      <Section title="Workspace: dependabot-workspace">
         <p className="text-sm text-zinc-400 mb-2">
-          A lightweight template focused on dependency management and test
+          A lightweight workspace focused on dependency management and test
           validation.
         </p>
-        <CodeBlock lang="yaml">{`# templates/dependabot-template/elasticclaw-config.yaml
+        <CodeBlock lang="yaml">{`# .elasticclaw/workspaces/dependabot-workspace/elasticclaw-config.yaml
+name: dependabot-workspace
 provider: daytona
 llm_key: anthropic-prod
 default_model: anthropic/claude-sonnet-4-6
-github:
-  repos:
-    - repo: acme/app
-      permissions: write
+repositories:
+  - repo: acme/app
+    permissions: write
 tags: [dependabot, security]
 color: orange`}</CodeBlock>
 
-        <CodeBlock lang="markdown">{`# templates/dependabot-template/AGENTS.md
+        <CodeBlock lang="markdown">{`# .elasticclaw/workspaces/dependabot-workspace/AGENTS.md
 You are a security patch agent. Read CONTEXT.md, bump the vulnerable
 package to the minimum safe version, run the test suite, and open a PR.
 Do not change unrelated code. Send [DONE] <pr-url> when the PR is ready.`}</CodeBlock>
@@ -120,7 +118,7 @@ Do not change unrelated code. Send [DONE] <pr-url> when the PR is ready.`}</Code
           <li>Repeat until CI passes or the claw gives up</li>
         </ol>
         <p className="text-sm text-zinc-400 mt-2">
-          The PR watcher behavior is tied to the factory PR lifecycle, not an
+          The PR watcher behavior is tied to the workflow PR lifecycle, not an
           <code>elasticclaw-config.yaml</code> field.
         </p>
       </Section>

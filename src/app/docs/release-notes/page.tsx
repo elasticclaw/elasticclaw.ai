@@ -36,32 +36,32 @@ const RELEASES: Release[] = [
     version: "2026.5.16",
     date: "2026-05-16",
     title: "Mission: Possible – The SSH Key Heist",
-    summary: "A sleek batch of auto‑key magic, smarter factories, and rock‑solid messaging.",
+    summary: "A sleek batch of auto‑key magic, smarter workflows, and rock‑solid messaging.",
   },
   {
     version: "2026.5.15",
     date: "2026-05-15",
-    title: "The One With the New Factory",
-    summary: "New factories, smarter context view, and a slew of under‑the‑hood fixes.",
+    title: "The One With the New Workflow",
+    summary: "New workflows, smarter context view, and a slew of under‑the‑hood fixes.",
   },
   {
     version: "2026.5.14",
     date: "2026-05-15",
     title: "Claw Wars: The Sandbox Strikes Back",
-    summary: "A sandbox‑powered upgrade that adds new providers, analytics, and a Design factory while tightening reliability and fixing a slew of integration quirks.",
+    summary: "A sandbox‑powered upgrade that adds new providers, analytics, and a Design workflow while tightening reliability and fixing a slew of integration quirks.",
   },
   {
     version: "2026.5.13",
     date: "2026-05-13",
     title: "The One With the Codex and the Claws",
-    summary: "Codex joins the LLM lineup, Greptile reviews surface in‑app, and manual factory triggers get a UI makeover—all while tightening security and squashing a host of bugs.",
+    summary: "Codex joins the LLM lineup, Greptile reviews surface in‑app, and manual workflow triggers get a UI makeover—all while tightening security and squashing a host of bugs.",
   },
   // Example entry — removed by automation on first real release
   // {
   //   version: "2026.5.12",
   //   date: "2026-05-12",
   //   title: "The One With Secret Refs",
-  //   summary: "Template secret_refs, doctor improvements, and a whole lot of polish.",
+  //   summary: "Workspace secret_refs, doctor improvements, and a whole lot of polish.",
   // },
 ];
 

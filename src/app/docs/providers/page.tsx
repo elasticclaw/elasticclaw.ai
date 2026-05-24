@@ -15,7 +15,7 @@ export default function ProvidersPage() {
           {[
             { name: "Daytona", href: "/docs/providers/daytona", status: "Supported", desc: "Cloud dev environments with snapshot support. Good for fast sandbox startup.", type: "ephemeral" },
             { name: "Replicated CMX", href: "/docs/providers/replicated", status: "Supported", desc: "Cloud-hosted sandbox infrastructure via Replicated's Compatibility Matrix.", type: "ephemeral" },
-            { name: "exe.dev", href: "/docs/exe-dev", status: "Supported", desc: "Persistent VMs with SSH access. No cloud account needed — just SSH key authentication.", type: "stateful" },
+            { name: "exedev", href: "/docs/exe-dev", status: "Supported", desc: "Persistent VMs with SSH access through exe.dev. No cloud account needed — just SSH key authentication.", type: "stateful" },
           ].map((p) => (
             <div key={p.name} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
               <div className="flex items-center gap-3 mb-1">
@@ -37,7 +37,7 @@ export default function ProvidersPage() {
         <div className="space-y-2 text-sm text-zinc-400">
           <p><code className="text-cyan-300">exec</code> — Execute commands in the sandbox (all providers)</p>
           <p><code className="text-cyan-300">snapshot</code> — Start from a prebuilt sandbox image (Daytona)</p>
-          <p><code className="text-cyan-300">ssh</code> — Direct SSH access (exe.dev)</p>
+          <p><code className="text-cyan-300">ssh</code> — Direct SSH access (exedev)</p>
         </div>
       </Section>
 
@@ -47,7 +47,7 @@ export default function ProvidersPage() {
 
       <Note>
         TTL-based auto-destroy helps control costs for ephemeral providers
-        (Daytona, CMX). exe.dev VMs are persistent and not subject to
+        (Daytona, CMX). exedev VMs are persistent and not subject to
         TTL — delete them explicitly when no longer needed.
       </Note>
     </DocsPage>
