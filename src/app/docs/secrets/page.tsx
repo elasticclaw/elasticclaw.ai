@@ -67,16 +67,16 @@ secret_refs:
 
       <Section title="Referencing secrets in MCP servers">
         <p>
-          MCP servers reference hub-level secrets in their <code>secrets</code>{" "}
-          map. The key is the environment variable name and the value is the
-          secret name configured for the hub.
+          MCP servers reference secrets configured with the MCP server in
+          settings. The key is the environment variable name and the value is
+          the secret name.
         </p>
         <CodeBlock lang="yaml">{`mcp_servers:
   - name: github
     source: npx
     package: "@modelcontextprotocol/server-github"
     secrets:
-      GITHUB_TOKEN: github_token   # injects secrets.github_token as GITHUB_TOKEN`}</CodeBlock>
+      GITHUB_TOKEN: github_token`}</CodeBlock>
       </Section>
 
       <Section title="API endpoints">

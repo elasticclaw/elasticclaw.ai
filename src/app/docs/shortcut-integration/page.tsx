@@ -83,6 +83,20 @@ This moves the Shortcut story and keeps you alive to watch for CI and review com
 You'll be terminated automatically when the PR merges.`}</CodeBlock>
       </Section>
 
+      <Section title="Template variables">
+        <p className="text-sm text-zinc-400">
+          Shortcut story context is written to <code>CONTEXT.md</code> when the
+          claw starts. Automatic Shortcut workflow jobs do not currently expose
+          a Go template object such as <code>{"{{.Issue.Title}}"}</code> in
+          <code>jobs[].on_enter.inject</code>.
+        </p>
+        <p className="text-sm text-zinc-400 mt-2">
+          Use <code>CONTEXT.md</code> for the story ID, title, URL, and
+          description. Manual workflow triggers can still render{" "}
+          <code>{"{{.Inputs.name}}"}</code> values from configured inputs.
+        </p>
+      </Section>
+
       <Section title="Differences from Linear">
         <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
           <li>No HMAC signing — Shortcut doesn't provide webhook signatures</li>

@@ -8,7 +8,7 @@ export default function GitHubIntegrationPage() {
   return (
     <DocsPage
       title="GitHub Integration"
-      description="Connect ElasticClaw to GitHub to let agents read issues, open pull requests, and leave review comments."
+      description="Connect ElasticClaw to GitHub so agents can read code, write code, and manage pull requests with scoped installation tokens."
     >
       <Section title="How it works">
         <p>
@@ -18,9 +18,10 @@ export default function GitHubIntegrationPage() {
         </p>
         <p>Agents can:</p>
         <ul className="list-disc list-inside space-y-1 text-sm mt-2">
-          <li>List and read issues and pull requests</li>
-          <li>Create branches and open PRs</li>
-          <li>Post comments and status checks</li>
+          <li>Clone and read repositories installed on the app</li>
+          <li>Create branches and push commits</li>
+          <li>Open, update, and manage pull requests</li>
+          <li>Read checks and publish status updates when workflows need them</li>
           <li>Clone private repos using the app&apos;s installation token</li>
         </ul>
       </Section>
@@ -44,7 +45,7 @@ export default function GitHubIntegrationPage() {
         </p>
         <ul className="list-disc list-inside space-y-1 text-sm mt-2 text-zinc-400">
           <li><strong>Repo-scoped installs</strong> — install the app only on repos claws should access</li>
-          <li><strong>Permission-scoped access</strong> — request only contents, issues, pull requests, and checks permissions needed for the workflow</li>
+          <li><strong>Permission-scoped access</strong> — request only contents, pull requests, checks, and any issue-tracker permissions needed by the workflow</li>
           <li><strong>Short-lived tokens</strong> — the hub mints installation tokens when a claw needs repo access instead of storing a long-lived user token</li>
           <li><strong>Bot identity</strong> — commits, comments, and PRs are attributed to the app instead of a maintainer's personal account</li>
           <li><strong>Revocation boundary</strong> — uninstalling or restricting the app cuts off access without rotating a human's credentials</li>
@@ -84,18 +85,23 @@ export default function GitHubIntegrationPage() {
         </p>
       </Section>
 
-      <Section title="3. Configure hub.yaml">
-        <CodeBlock lang="yaml">{`github:
-  - app_id: \${GITHUB_APP_ID}          # e.g. 123456
-    private_key_pem: |
-      -----BEGIN RSA PRIVATE KEY-----
-      ...
-    url: https://github.com/apps/my-app`}</CodeBlock>
-        <p>Set environment variables:</p>
-        <CodeBlock lang="bash">{`export GITHUB_APP_ID=123456`}</CodeBlock>
+      <Section title="3. Add the app to a workspace">
+        <p>
+          Store GitHub App credentials on the workspace that needs repository
+          access. You can use the hub settings UI or the CLI:
+        </p>
+        <CodeBlock lang="bash">{`elasticclaw github-app create app-bot \\
+  --workspace my-app \\
+  --app-id 123456 \\
+  --url https://github.com/apps/my-app \\
+  --installation my-org \\
+  --private-key-file ./my-app.private-key.pem
+
+elasticclaw github-app list --workspace my-app`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
-          The hub tries each configured app to find one whose installation covers
-          the requested repos. One app can cover multiple orgs if installed on all of them.
+          The hub tries the GitHub Apps configured on the workspace to find an
+          installation that covers the requested repos. One app can cover
+          multiple orgs if installed on all of them.
         </p>
       </Section>
 

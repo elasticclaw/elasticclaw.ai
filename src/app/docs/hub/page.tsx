@@ -7,7 +7,7 @@ export default function HubPage() {
   return (
     <DocsPage
       title="Hub Config"
-      description="hub.yaml is your central ElasticClaw configuration file for providers, LLM keys, GitHub Apps, MCP servers, and auth."
+      description="hub.yaml is your central ElasticClaw configuration file for providers, LLM keys, authentication, and hub-level settings."
     >
       <Section title="Overview">
         <p>
@@ -60,26 +60,6 @@ llm_keys:
 
 # Default model (provider/model format)
 default_model: anthropic/claude-sonnet-4-6
-
-# GitHub App (for repo access and token minting)
-github:
-  - app_id: 123456
-    private_key_pem: |
-      -----BEGIN RSA PRIVATE KEY-----
-      ...
-
-# Hub-level secrets for MCP servers
-secrets:
-  github_mcp_token: \${GITHUB_MCP_TOKEN}
-
-# MCP Servers
-mcp_servers:
-  - name: github
-    source: npx
-    package: "@modelcontextprotocol/server-github"
-    enabled: true
-    secrets:
-      GITHUB_TOKEN: github_mcp_token
 
 # Authentication
 auth:
@@ -135,9 +115,7 @@ ssh_public_keys:
             { field: "providers", desc: "Sandbox provider configs. See Providers docs." },
             { field: "llm_keys", desc: "Named LLM API keys. One can be marked default:true." },
             { field: "default_model", desc: "Global default model (provider/model format)." },
-            { field: "github", desc: "GitHub App credentials for repo access and token minting." },
-            { field: "secrets", desc: "Named hub-level secret values referenced by MCP server configs. Workspace runtime secrets are managed with elasticclaw secret." },
-            { field: "mcp_servers", desc: "MCP server configs available to claws." },
+            { field: "secrets", desc: "Named hub-level secret values for hub-managed services. Workspace runtime secrets are managed with elasticclaw secret." },
             { field: "auth", desc: "GitHub OAuth and tag-based access control for the web UI." },
             { field: "branding", desc: "White-label: app_name, logo_url." },
             { field: "ssh_public_keys", desc: "Extra SSH keys injected into every provisioned sandbox." },

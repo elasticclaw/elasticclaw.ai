@@ -21,7 +21,7 @@ const CORE_PRIMITIVES = [
   },
   {
     title: "Plugin-based extensions",
-    desc: "Attach MCP servers, secrets, model providers, issue trackers, sandbox providers, and workspace files to each class of work.",
+    desc: "Attach MCP servers, environment variables, model providers, issue trackers, sandbox providers, and workspace files to each class of work.",
   },
   {
     title: "Local-first operation",
@@ -56,7 +56,7 @@ const WORKFLOWS = [
   },
   {
     title: "Research -> plan -> code -> test",
-    desc: "Compose longer workflows from staged instructions, workspaces, tools, secrets, and provider-backed execution environments.",
+    desc: "Compose longer workflows from staged instructions, workspaces, tools, environment, and provider-backed execution environments.",
   },
 ];
 
@@ -144,8 +144,10 @@ export default function Home() {
                     <code>{`schema_version: v1
 name: ci-repair
 repositories: ["elasticclaw/*"]
-secrets: ["github_app"]
-provider: replicated
+env:
+  NODE_ENV: test
+  CI: "true"
+provider: exedev
 
 ---
 name: github-issues

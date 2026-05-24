@@ -34,7 +34,7 @@ export default function DocsOverviewPage() {
             <h3 className="font-semibold text-zinc-100">Hub</h3>
             <p className="mt-1 text-sm text-zinc-400">
               The self-hosted control point: web dashboard, API,{" "}
-              <code>hub.yaml</code>, GitHub App credentials, MCP servers,
+              <code>hub.yaml</code>, workspace-managed GitHub Apps, MCP servers,
               issue tracker settings, and workflow state.
             </p>
           </div>
@@ -58,7 +58,7 @@ export default function DocsOverviewPage() {
             <h3 className="font-semibold text-zinc-100">Sandboxes</h3>
             <p className="mt-1 text-sm text-zinc-400">
               Isolated execution environments from providers like Daytona,
-              Replicated CMX, or exe.dev where claws clone, test, build, and
+              Replicated CMX, or exedev where claws clone, test, build, and
               push code.
             </p>
           </div>
@@ -219,7 +219,7 @@ brew install elasticclaw`}</CodeBlock>
             <Link href="/docs/providers" className="text-cyan-400 hover:underline">
               Sandbox Providers
             </Link>{" "}
-            — configure where claws run: Daytona, Replicated CMX, or exe.dev
+            — configure where claws run: Daytona, Replicated CMX, or exedev
           </li>
         </ul>
       </Section>

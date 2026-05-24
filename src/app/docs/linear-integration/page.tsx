@@ -98,6 +98,19 @@ elasticclaw workflow push --workspace my-app .elasticclaw/workflows/bugfix.yaml`
         </p>
       </Section>
 
+      <Section title="Template variables">
+        <p className="text-sm text-zinc-400">
+          In <code>jobs[].on_enter.inject</code>, automatic Linear workflows
+          expose this complete issue object:
+        </p>
+        <div className="space-y-2 text-sm text-zinc-400 mt-2">
+          <p><code className="text-cyan-300">{"{{.Issue.Identifier}}"}</code> — Linear issue key, such as <code>ENG-123</code>.</p>
+          <p><code className="text-cyan-300">{"{{.Issue.Title}}"}</code> — Linear issue title.</p>
+          <p><code className="text-cyan-300">{"{{.Issue.URL}}"}</code> — Browser URL for the issue.</p>
+          <p><code className="text-cyan-300">{"{{.Issue.Description}}"}</code> — Linear issue description.</p>
+        </div>
+      </Section>
+
       <Note>
         Linear API tokens have full read/write access to your workspace. Use a
         dedicated service account for production deployments.

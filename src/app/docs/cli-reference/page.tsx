@@ -136,6 +136,17 @@ elasticclaw secret list --workspace my-workspace
 elasticclaw secret rm deploy_token --workspace my-workspace`}</CodeBlock>
       </Section>
 
+      <Section id="github-app" title="elasticclaw github-app">
+        <p>Manage workspace-scoped GitHub Apps for repository access.</p>
+        <CodeBlock lang="bash">{`elasticclaw github-app create app-bot --workspace my-workspace \\
+  --app-id 123456 \\
+  --url https://github.com/apps/app-bot \\
+  --installation my-org \\
+  --private-key-file ./app-bot.private-key.pem
+elasticclaw github-app list --workspace my-workspace
+elasticclaw github-app rm app-bot --workspace my-workspace`}</CodeBlock>
+      </Section>
+
       <Section id="provider" title="elasticclaw provider">
         <p>List available sandbox providers.</p>
         <CodeBlock lang="bash">{`elasticclaw provider list`}</CodeBlock>

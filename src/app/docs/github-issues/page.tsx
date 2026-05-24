@@ -22,6 +22,11 @@ export default function GitHubIssuesPage() {
           <li>All configured <code>labels</code> are present on the issue (AND)</li>
           <li><code>assigned_to</code> filter matches (if configured)</li>
         </ul>
+        <p className="mt-2 text-sm text-zinc-400">
+          This page assumes you already have a workspace, such as{" "}
+          <code>my-app</code>. Add the issue tracker to that workspace, then
+          publish workflow YAML into it.
+        </p>
       </Section>
 
       <Section title="1. Configure the issue tracker">
@@ -36,9 +41,19 @@ Add GitHub Issues:
         </p>
       </Section>
 
-      <Section title="2. Create a workspace and workflow">
-        <CodeBlock lang="bash">{`elasticclaw workspace create --name my-app`}</CodeBlock>
-        <p className="text-sm text-zinc-400 mt-2">
+      <Section title="2. Set up the webhook">
+        <p>In your GitHub repository settings:</p>
+        <ol className="list-decimal list-inside space-y-2 text-sm text-zinc-400">
+          <li>Go to <strong>Settings → Webhooks → Add webhook</strong></li>
+          <li>Payload URL: <code>https://hub.example.com/api/workspaces/my-app/webhooks/github-issues</code></li>
+          <li>Content type: <code>application/json</code></li>
+          <li>Secret: your webhook secret</li>
+          <li>Events: <strong>Issues</strong></li>
+        </ol>
+      </Section>
+
+      <Section title="3. Create a workflow">
+        <p>
           Create a workflow YAML file for your repository, labels, and lifecycle jobs:
         </p>
         <CodeBlock lang="yaml">{`# .elasticclaw/workflows/bugfix-bot.yaml
@@ -88,20 +103,21 @@ jobs:
         </Note>
       </Section>
 
-      <Section title="3. Set up the webhook">
-        <p>In your GitHub repository settings:</p>
-        <ol className="list-decimal list-inside space-y-2 text-sm text-zinc-400">
-          <li>Go to <strong>Settings → Webhooks → Add webhook</strong></li>
-          <li>Payload URL: <code>https://hub.example.com/api/workspaces/my-app/webhooks/github-issues</code></li>
-          <li>Content type: <code>application/json</code></li>
-          <li>Secret: your webhook secret</li>
-          <li>Events: <strong>Issues</strong></li>
-        </ol>
+      <Section title="4. Push the workflow">
+        <CodeBlock lang="bash">{`elasticclaw workflow push --workspace my-app .elasticclaw/workflows/bugfix-bot.yaml`}</CodeBlock>
       </Section>
 
-      <Section title="4. Push the workflow">
-        <CodeBlock lang="bash">{`elasticclaw workspace push my-app
-elasticclaw workflow push --workspace my-app .elasticclaw/workflows/bugfix-bot.yaml`}</CodeBlock>
+      <Section title="Template variables">
+        <p className="text-sm text-zinc-400">
+          In <code>jobs[].on_enter.inject</code>, automatic GitHub Issues
+          workflows expose this complete issue object:
+        </p>
+        <div className="space-y-2 text-sm text-zinc-400 mt-2">
+          <p><code className="text-cyan-300">{"{{.Issue.Identifier}}"}</code> — Issue number as <code>#42</code>.</p>
+          <p><code className="text-cyan-300">{"{{.Issue.Title}}"}</code> — GitHub issue title.</p>
+          <p><code className="text-cyan-300">{"{{.Issue.URL}}"}</code> — Browser URL for the issue.</p>
+          <p><code className="text-cyan-300">{"{{.Issue.Description}}"}</code> — GitHub issue body.</p>
+        </div>
       </Section>
 
       <Section title="Filters">
