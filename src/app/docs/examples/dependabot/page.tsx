@@ -39,17 +39,15 @@ schema_version: v1
 name: dependabot-fix
 
 trigger:
-  type: github_issues
-  event: issue_labeled
-  repositories:
-    - acme/app
-  states:
-    - open
-  labels:
-    - dependencies
-    - security
-
-name_pattern: "dep-{{.Issue.Number}}"
+  github_issues:
+    event: issue_labeled
+    repositories:
+      - acme/app
+    states:
+      - open
+    labels:
+      - dependencies
+      - security
 tags: [dependabot, security]
 color: orange
 
@@ -74,7 +72,7 @@ jobs:
   - id: merged
     label: "Merged"
     triggers:
-      - pr_merged:
+      - pr_merged: {}
     terminal: true`}</CodeBlock>
       </Section>
 

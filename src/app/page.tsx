@@ -151,7 +151,12 @@ provider: exedev
 
 ---
 name: github-issues
-integration: github-issues
+trigger:
+  github_issues:
+    event: issue_labeled
+    repositories: ["elasticclaw/*"]
+    states: [open]
+    labels: [ci-failing]
 concurrency_group: ci-repair
 secret_refs:
   GITHUB_TOKEN: scoped_github_app

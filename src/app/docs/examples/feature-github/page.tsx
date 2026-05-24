@@ -37,16 +37,15 @@ Add GitHub Issues:
 schema_version: v1
 name: feature-bot
 trigger:
-  type: github_issues
-  event: issue_labeled
-  repositories:
-    - acme/app
-  states:
-    - open
-  labels:
-    - claw-ready
-    - feature
-name_pattern: "feat-{issue_number}"
+  github_issues:
+    event: issue_labeled
+    repositories:
+      - acme/app
+    states:
+      - open
+    labels:
+      - claw-ready
+      - feature
 tags: [feature]
 
 jobs:

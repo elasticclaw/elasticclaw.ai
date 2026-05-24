@@ -21,7 +21,6 @@ export default function BugfixLinearExamplePage() {
           <li>Triggers when an issue enters <code>Triage</code> status</li>
           <li>Spawns a claw using a dedicated <code>bugfix-workspace</code></li>
           <li>Moves the issue to <code>In Review</code> when the claw sends <code>[DONE]</code></li>
-          <li>Kills the claw immediately if the issue leaves <code>Triage</code></li>
         </ul>
       </Section>
 
@@ -35,16 +34,34 @@ Add Linear:
 
       <Section title="Workflow: eng-bugfix">
         <CodeBlock lang="yaml">{`# .elasticclaw/workflows/eng-bugfix.yaml
+schema_version: v1
 name: eng-bugfix
-integration: linear
-workspace: acme
-team: ENG
-trigger_status: "Triage"
-done_status: "In Review"
-terminate_on_leave: true
-labels: [bug]
+trigger:
+  linear:
+    event: status_changed
+    team: ENG
+    states:
+      - Triage
+    labels:
+      - bug
 tags: [bugfix]
-color: red`}</CodeBlock>
+color: red
+
+jobs:
+  - id: working
+    label: Working
+    entry: true
+    on_enter:
+      move_issue: "In Progress"
+      inject: |
+        Read CONTEXT.md, reproduce the bug, and open a PR.
+
+  - id: pr_opened
+    label: PR Opened
+    triggers:
+      - message_contains: "[DONE]"
+    on_enter:
+      move_issue: "In Review"`}</CodeBlock>
       </Section>
 
       <Section title="Workspace: bugfix-workspace">
