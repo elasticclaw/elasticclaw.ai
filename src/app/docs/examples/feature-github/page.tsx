@@ -28,7 +28,6 @@ export default function FeatureGitHubExamplePage() {
       <Section title="Issue tracker">
         <CodeBlock lang="text">{`Settings -> Workspaces -> feature-workspace -> Issue Trackers
 Add GitHub Issues:
-  workspace: acme/app
   token: \${GITHUB_TOKEN}
   webhook secret: \${GITHUB_WEBHOOK_SECRET}`}</CodeBlock>
       </Section>
