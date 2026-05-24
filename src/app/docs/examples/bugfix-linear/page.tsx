@@ -21,7 +21,6 @@ export default function BugfixLinearExamplePage() {
           <li>Triggers when an issue enters <code>Triage</code> status</li>
           <li>Spawns a claw using a dedicated <code>bugfix-workspace</code></li>
           <li>Moves the issue to <code>In Review</code> when the claw sends <code>[DONE]</code></li>
-          <li>Kills the claw immediately if the issue leaves <code>Triage</code></li>
         </ul>
       </Section>
 
@@ -34,7 +33,7 @@ Add Linear:
       </Section>
 
       <Section title="Workflow: eng-bugfix">
-<CodeBlock lang="yaml">{`# .elasticclaw/workflows/eng-bugfix.yaml
+        <CodeBlock lang="yaml">{`# .elasticclaw/workflows/eng-bugfix.yaml
 schema_version: v1
 name: eng-bugfix
 trigger:

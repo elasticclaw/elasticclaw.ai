@@ -72,7 +72,7 @@ jobs:
   - id: merged
     label: "Merged"
     triggers:
-      - pr_merged:
+      - pr_merged: {}
     terminal: true`}</CodeBlock>
       </Section>
 
