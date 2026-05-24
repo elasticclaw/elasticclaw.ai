@@ -60,16 +60,16 @@ Add GitHub Issues:
 schema_version: v1
 name: bugfix-bot
 trigger:
-  type: github_issues
-  event: issue_labeled
-  repositories:
-    - my-org/my-app
-  states:
-    - open
-  labels:
-    - claw-ready
-
-name_pattern: "{repo}-{issue_number}"
+  github_issues:
+    event: issue_labeled
+    repositories:
+      - my-org/my-app
+    states:
+      - open
+    labels:
+      - claw-ready
+    labelers:
+      - "*"
 
 jobs:
   - id: working
@@ -136,17 +136,6 @@ jobs:
           <li><code>!@username</code> — exclude this user</li>
           <li><code>any</code> — must have an assignee</li>
           <li><code>none</code> — must be unassigned</li>
-        </ul>
-      </Section>
-
-      <Section title="Name pattern placeholders">
-        <p className="text-sm text-zinc-400">
-          The <code>name_pattern</code> field supports placeholders for dynamic claw names:
-        </p>
-        <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
-          <li><code>{"{issue_id}"}</code> — <code>gh-owner/repo/42</code></li>
-          <li><code>{"{issue_number}"}</code> — <code>42</code></li>
-          <li><code>{"{repo}"}</code> — <code>owner/repo</code></li>
         </ul>
       </Section>
 

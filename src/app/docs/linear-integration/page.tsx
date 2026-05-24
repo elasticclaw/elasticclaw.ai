@@ -12,10 +12,10 @@ export default function LinearIntegrationPage() {
     >
       <Section title="How it works">
         <p>
-          ElasticClaw watches Linear issue update webhooks for workflows whose
-          <code>integration</code> is <code>linear</code>. When an issue enters a
-          workflow&apos;s <code>trigger_status</code>, the hub creates a claw, injects
-          issue context, and passes the Linear token as <code>LINEAR_API_KEY</code>.
+          ElasticClaw watches Linear issue update webhooks for workflows with a
+          <code>trigger.linear</code> source. When an issue enters a matching
+          state, the hub creates a claw, injects issue context, and passes the
+          Linear token as <code>LINEAR_API_KEY</code>.
         </p>
         <ul className="list-disc list-inside space-y-1 text-sm mt-2">
           <li>Read the issue title, description, comments, state, team, labels, and assignee</li>
@@ -68,21 +68,50 @@ Add Linear:
 
       <Section title="Workflow configuration">
         <p>
-          Linear workflows use the human <code>workspace</code> label from the
-          workspace issue tracker settings. The optional <code>team</code> field
-          is the Linear team key from issue identifiers, such as <code>ENG</code>
-          in <code>ENG-123</code>; it is not a Linear team ID.
+          Linear workflows use <code>trigger.linear</code>. If the ElasticClaw
+          workspace has one Linear connection, the workflow uses it automatically.
+          The optional <code>team</code> field is the Linear team key from issue
+          identifiers, such as <code>ENG</code> in <code>ENG-123</code>; it is
+          not a Linear team ID.
         </p>
         <CodeBlock lang="yaml">{`# .elasticclaw/workflows/bugfix.yaml
+schema_version: v1
 name: bugfix
-integration: linear
-workspace: my-company
-team: ENG
-trigger_status: "Ready for Agent"
-working_status: "In Progress"
-finished_status: "In Review"
-done_status: "Done"
-terminate_on_leave: true`}</CodeBlock>
+trigger:
+  linear:
+    event: status_changed
+    team: ENG
+    states:
+      - "Ready for Agent"
+    labels:
+      - bug
+
+jobs:
+  - id: working
+    label: Working
+    entry: true
+    on_enter:
+      move_issue: "In Progress"
+      inject: |
+        Issue: {{.Issue.Identifier}} - {{.Issue.Title}}
+        URL: {{.Issue.URL}}
+
+        Read CONTEXT.md and start working.
+
+  - id: pr_opened
+    label: PR Opened
+    triggers:
+      - message_contains: "[DONE]"
+    on_enter:
+      move_issue: "In Review"
+
+  - id: merged
+    label: Merged
+    triggers:
+      - pr_merged: {}
+    on_enter:
+      move_issue: Done
+    terminal: true`}</CodeBlock>
       </Section>
 
       <Section title="Workspace integration">
@@ -92,9 +121,8 @@ terminate_on_leave: true`}</CodeBlock>
         <CodeBlock lang="bash">{`elasticclaw workspace push my-app
 elasticclaw workflow push --workspace my-app .elasticclaw/workflows/bugfix.yaml`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
-          The workflow&apos;s <code>workspace</code> field matches the Linear issue
-          tracker name configured in the ElasticClaw workspace. Workflow filtering
-          uses <code>team</code> in <code>workflow.yaml</code>.
+          The workflow uses the Linear connection configured for the ElasticClaw
+          workspace. Workflow filtering uses <code>trigger.linear.team</code>.
         </p>
       </Section>
 

@@ -34,17 +34,35 @@ Add Linear:
       </Section>
 
       <Section title="Workflow: eng-bugfix">
-        <CodeBlock lang="yaml">{`# .elasticclaw/workflows/eng-bugfix.yaml
+<CodeBlock lang="yaml">{`# .elasticclaw/workflows/eng-bugfix.yaml
+schema_version: v1
 name: eng-bugfix
-integration: linear
-workspace: acme
-team: ENG
-trigger_status: "Triage"
-done_status: "In Review"
-terminate_on_leave: true
-labels: [bug]
+trigger:
+  linear:
+    event: status_changed
+    team: ENG
+    states:
+      - Triage
+    labels:
+      - bug
 tags: [bugfix]
-color: red`}</CodeBlock>
+color: red
+
+jobs:
+  - id: working
+    label: Working
+    entry: true
+    on_enter:
+      move_issue: "In Progress"
+      inject: |
+        Read CONTEXT.md, reproduce the bug, and open a PR.
+
+  - id: pr_opened
+    label: PR Opened
+    triggers:
+      - message_contains: "[DONE]"
+    on_enter:
+      move_issue: "In Review"`}</CodeBlock>
       </Section>
 
       <Section title="Workspace: bugfix-workspace">

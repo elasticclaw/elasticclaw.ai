@@ -101,10 +101,12 @@ docker: false                    # enable if you need Docker`}</CodeBlock>
         <p>Or set per-workflow:</p>
         <CodeBlock lang="yaml">{`# workflows/long-running-agent/workflow.yaml
 name: long-running-agent
-integration: linear
 provider: exedev
-workspace: my-workspace
-trigger_status: "Ready for Agent"`}</CodeBlock>
+trigger:
+  linear:
+    event: status_changed
+    states:
+      - "Ready for Agent"`}</CodeBlock>
       </Section>
 
       <Section title="Provider Behavior">
