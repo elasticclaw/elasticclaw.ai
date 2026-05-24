@@ -43,33 +43,34 @@ export default function ShortcutIntegrationPage() {
   -H "Shortcut-Token: YOUR_TOKEN" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "url": "https://your-hub.example.com/api/integrations/shortcut/webhook",
+    "url": "https://your-hub.example.com/api/workspaces/shortcut-workspace/webhooks/shortcut",
     "description": "ElasticClaw workflow",
     "story_update": true
   }'`}</CodeBlock>
         <p className="mt-2 text-sm text-zinc-400">
-          You can also find the webhook URL in <strong>Settings → Workflows</strong> in the hub web UI.
+          You can also find the webhook URL in the workspace issue tracker settings in the hub web UI.
         </p>
       </Section>
 
-      <Section title="3. Configure hub.yaml">
-        <CodeBlock lang="yaml">{`integrations:
-  shortcut:
-    - workspace: my-company
-      token: \${SHORTCUT_TOKEN}`}</CodeBlock>
+      <Section title="3. Add the issue tracker">
+        <CodeBlock lang="text">{`Settings -> Workspaces -> shortcut-workspace -> Issue Trackers
+Add Shortcut:
+  workspace: my-company
+  token: \${SHORTCUT_TOKEN}`}</CodeBlock>
       </Section>
 
       <Section title="4. Configure workflow.yaml">
-        <CodeBlock lang="yaml">{`# workflows/shortcut-workflow/workflow.yaml
+        <CodeBlock lang="yaml">{`# .elasticclaw/workflows/shortcut-workflow.yaml
 name: shortcut-workflow
 integration: shortcut
 workspace: my-company
 trigger_status: "In Development"   # story enters this state -> spawn claw
 done_status: "In Review"           # story moves here on [DONE]
-terminate_on_leave: true           # kill claw if story leaves trigger state
-workspace: base                     # workspace name (push to hub first)`}</CodeBlock>
+terminate_on_leave: true           # kill claw if story leaves trigger state`}</CodeBlock>
         <Note>
-          Publish local workflow files with <code>elasticclaw workspace push shortcut-workspace</code>.
+          Publish the workspace with <code>elasticclaw workspace push shortcut-workspace</code>,
+          then publish this file with{" "}
+          <code>elasticclaw workflow push --workspace shortcut-workspace .elasticclaw/workflows/shortcut-workflow.yaml</code>.
         </Note>
       </Section>
 

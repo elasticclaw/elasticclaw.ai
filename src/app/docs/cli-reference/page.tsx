@@ -83,9 +83,11 @@ elasticclaw profile show`}</CodeBlock>
       </Section>
 
       <Section id="create" title="elasticclaw create">
-        <p>Create a new agent (claw).</p>
-        <CodeBlock lang="bash">{`elasticclaw create --name my-agent --workspace my-workspace
-elasticclaw create --name my-agent --workspace my-workspace --ttl 4h --tag urgent`}</CodeBlock>
+        <p>
+          Legacy template-based claw creation. This command is hidden and
+          deprecated; use <code>elasticclaw workspace push</code> and{" "}
+          <code>elasticclaw workflow trigger</code> for workflow-created claws.
+        </p>
       </Section>
 
       <Section id="chat" title="elasticclaw chat">
@@ -111,18 +113,27 @@ elasticclaw ls --json`}</CodeBlock>
 
       <Section id="workspace" title="elasticclaw workspace">
         <p>Manage workspaces.</p>
-        <CodeBlock lang="bash">{`elasticclaw workspace create my-workspace  # scaffold .elasticclaw/workspaces/my-workspace
-elasticclaw workspace list                # list local and hub workspaces
-elasticclaw workspace push my-workspace    # push workspace to hub
+        <CodeBlock lang="bash">{`elasticclaw workspace create --name my-workspace  # scaffold .elasticclaw/workspaces/my-workspace
+elasticclaw workspace list                # list hub workspaces
+elasticclaw workspace push my-workspace    # push workspace files to hub
 elasticclaw workspace rm my-workspace      # remove from hub
 elasticclaw workspace show my-workspace    # show workspace config`}</CodeBlock>
       </Section>
 
       <Section id="workflow" title="elasticclaw workflow">
-        <p>Inspect and manually trigger workflows that were pushed with a workspace.</p>
-        <CodeBlock lang="bash">{`elasticclaw workflow list --workspace bugbot
-elasticclaw workflow show triage --workspace bugbot
-elasticclaw workflow trigger triage --workspace bugbot --input key=value`}</CodeBlock>
+        <p>Push, inspect, and manually trigger workflows in a workspace.</p>
+        <CodeBlock lang="bash">{`elasticclaw workflow push --workspace my-workspace .elasticclaw/workflows
+elasticclaw workflow list --workspace my-workspace
+elasticclaw workflow show triage --workspace my-workspace
+elasticclaw workflow trigger triage --workspace my-workspace --input key=value`}</CodeBlock>
+      </Section>
+
+      <Section id="secret" title="elasticclaw secret">
+        <p>Manage workspace-scoped secrets.</p>
+        <CodeBlock lang="bash">{`elasticclaw secret create openai_api_key --workspace my-workspace --value "$OPENAI_API_KEY"
+printf '%s' "$TOKEN" | elasticclaw secret create deploy_token --workspace my-workspace
+elasticclaw secret list --workspace my-workspace
+elasticclaw secret rm deploy_token --workspace my-workspace`}</CodeBlock>
       </Section>
 
       <Section id="provider" title="elasticclaw provider">

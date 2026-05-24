@@ -43,18 +43,15 @@ export default function LinearIntegrationPage() {
         <CodeBlock lang="bash">{`export LINEAR_API_TOKEN=lin_api_xxxxxxxxxxxxx`}</CodeBlock>
       </Section>
 
-      <Section title="2. Configure hub.yaml">
-        <CodeBlock lang="yaml">{`integrations:
-  linear:
-    - workspace: my-company
-      token: \${LINEAR_API_TOKEN}
-      webhook_secret: \${LINEAR_WEBHOOK_SECRET}`}</CodeBlock>
+      <Section title="2. Configure the workspace issue tracker">
+        <CodeBlock lang="text">{`Settings -> Workspaces -> my-app -> Issue Trackers
+Add Linear:
+  workspace: my-company
+  token: \${LINEAR_API_TOKEN}
+  webhook secret: \${LINEAR_WEBHOOK_SECRET}`}</CodeBlock>
         <Note>
-          The integration-level <code>webhook_secret</code> is a shared default
-          used to validate all incoming webhooks for this integration. Each workflow
-          can override it with <code>webhook_secret_ref</code> (preferred) to use a
-          per-workflow secret from the hub <code>secrets</code> map. If both are set,
-          the workflow-level <code>webhook_secret_ref</code> takes precedence.
+          Issue tracker credentials and webhook secrets are stored with the
+          workspace.
         </Note>
       </Section>
 
@@ -64,19 +61,19 @@ export default function LinearIntegrationPage() {
           <code>Issue</code> update events.
         </p>
         <ul className="list-disc list-inside space-y-1 text-sm mt-2">
-          <li>Payload URL: <code>https://hub.example.com/api/integrations/linear/webhook</code></li>
-          <li>Secret: match either <code>integrations.linear[].webhook_secret</code> or the workflow&apos;s <code>webhook_secret_ref</code></li>
+          <li>Payload URL: <code>https://hub.example.com/api/workspaces/my-app/webhooks/linear</code></li>
+          <li>Secret: the Linear webhook secret configured for the workspace issue tracker</li>
         </ul>
       </Section>
 
       <Section title="Workflow configuration">
         <p>
-          Linear workflows use the human <code>workspace</code> label from
-          <code>integrations.linear[]</code>. The optional <code>team</code> field
+          Linear workflows use the human <code>workspace</code> label from the
+          workspace issue tracker settings. The optional <code>team</code> field
           is the Linear team key from issue identifiers, such as <code>ENG</code>
           in <code>ENG-123</code>; it is not a Linear team ID.
         </p>
-        <CodeBlock lang="yaml">{`# workflows/bugfix/workflow.yaml
+        <CodeBlock lang="yaml">{`# .elasticclaw/workflows/bugfix.yaml
 name: bugfix
 integration: linear
 workspace: my-company
@@ -85,22 +82,18 @@ trigger_status: "Ready for Agent"
 working_status: "In Progress"
 finished_status: "In Review"
 done_status: "Done"
-terminate_on_leave: true
-workspace: elasticclaw
-webhook_secret_ref: linear_webhook_secret`}</CodeBlock>
+terminate_on_leave: true`}</CodeBlock>
       </Section>
 
       <Section title="Workspace integration">
         <p>
-          Workspaces can specify which Linear workspace to use:
+          Push the workspace and workflow separately:
         </p>
-        <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
-linear:
-  workspace: my-company`}</CodeBlock>
+        <CodeBlock lang="bash">{`elasticclaw workspace push my-app
+elasticclaw workflow push --workspace my-app .elasticclaw/workflows/bugfix.yaml`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
-          The workspace matches against <code>integrations.linear[].workspace</code>
-          to resolve the API token injected into the claw. Workspace-level
-          <code>linear.team</code> is only descriptive context; workflow filtering
+          The workflow&apos;s <code>workspace</code> field matches the Linear issue
+          tracker name configured in the ElasticClaw workspace. Workflow filtering
           uses <code>team</code> in <code>workflow.yaml</code>.
         </p>
       </Section>

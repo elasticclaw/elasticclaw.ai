@@ -25,21 +25,16 @@ export default function BugfixLinearExamplePage() {
         </ul>
       </Section>
 
-      <Section title="hub.yaml">
-        <CodeBlock lang="yaml">{`integrations:
-  linear:
-    - workspace: acme
-      token: \${LINEAR_API_TOKEN}
-      # Shared default for all Linear webhooks.
-      # Per-workflow overrides use webhook_secret_ref.
-      webhook_secret: \${LINEAR_WEBHOOK_SECRET}
-
-secrets:
-  linear_webhook_secret: whsec_xxx`}</CodeBlock>
+      <Section title="Issue tracker">
+        <CodeBlock lang="text">{`Settings -> Workspaces -> bugfix-workspace -> Issue Trackers
+Add Linear:
+  workspace: acme
+  token: \${LINEAR_API_TOKEN}
+  webhook secret: \${LINEAR_WEBHOOK_SECRET}`}</CodeBlock>
       </Section>
 
       <Section title="Workflow: eng-bugfix">
-        <CodeBlock lang="yaml">{`# workflows/eng-bugfix/workflow.yaml
+        <CodeBlock lang="yaml">{`# .elasticclaw/workflows/eng-bugfix.yaml
 name: eng-bugfix
 integration: linear
 workspace: acme
@@ -47,9 +42,7 @@ team: ENG
 trigger_status: "Triage"
 done_status: "In Review"
 terminate_on_leave: true
-workspace: bugfix-workspace
 labels: [bug]
-webhook_secret_ref: linear_webhook_secret
 tags: [bugfix]
 color: red`}</CodeBlock>
       </Section>
@@ -59,20 +52,18 @@ color: red`}</CodeBlock>
           A dedicated workspace with extra logging, test tooling, and a
           conservative model for debugging work.
         </p>
-        <CodeBlock lang="yaml">{`# workspaces/bugfix-workspace/elasticclaw-config.yaml
+        <CodeBlock lang="yaml">{`# .elasticclaw/workspaces/bugfix-workspace/elasticclaw-config.yaml
+name: bugfix-workspace
 provider: daytona
 llm_key: anthropic-prod
 default_model: anthropic/claude-sonnet-4-6
-github:
-  repos:
-    - repo: acme/app
-      permissions: write
-linear:
-  workspace: acme
+repositories:
+  - repo: acme/app
+    permissions: write
 tags: [bugfix]
 color: red`}</CodeBlock>
 
-        <CodeBlock lang="markdown">{`# workspaces/bugfix-workspace/AGENTS.md
+        <CodeBlock lang="markdown">{`# .elasticclaw/workspaces/bugfix-workspace/AGENTS.md
 You are a bug-fix agent. Read CONTEXT.md carefully, reproduce the bug,
 write a minimal fix, and open a PR. Send [DONE] <pr-url> when ready.`}</CodeBlock>
       </Section>
@@ -80,9 +71,9 @@ write a minimal fix, and open a PR. Send [DONE] <pr-url> when ready.`}</CodeBloc
       <Section title="Linear webhook setup">
         <ol className="list-decimal list-inside space-y-2 text-sm text-zinc-400">
           <li>Go to <strong>Linear → Settings → API → Webhooks</strong></li>
-          <li>Payload URL: <code>https://hub.example.com/api/integrations/linear/webhook</code></li>
+          <li>Payload URL: <code>https://hub.example.com/api/workspaces/bugfix-workspace/webhooks/linear</code></li>
           <li>Events: <strong>Issues</strong></li>
-          <li>Copy the signing secret into <code>secrets.linear_webhook_secret</code></li>
+          <li>Use the signing secret from the workspace issue tracker settings</li>
         </ol>
       </Section>
     </DocsPage>

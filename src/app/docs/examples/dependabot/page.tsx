@@ -26,39 +26,35 @@ export default function DependabotExamplePage() {
         </ul>
       </Section>
 
-      <Section title="hub.yaml">
-        <CodeBlock lang="yaml">{`integrations:
-  github_issues:
-    - workspace: acme/app
-      token: \${GITHUB_TOKEN}
-      webhook_secret: \${GITHUB_WEBHOOK_SECRET}
-
-secrets:
-  github_webhook_secret: whsec_xxx`}</CodeBlock>
+      <Section title="Issue tracker">
+        <CodeBlock lang="text">{`Settings -> Workspaces -> dependabot-workspace -> Issue Trackers
+Add GitHub Issues:
+  workspace: acme/app
+  token: \${GITHUB_TOKEN}
+  webhook secret: \${GITHUB_WEBHOOK_SECRET}`}</CodeBlock>
       </Section>
 
       <Section title="Workflow: dependabot-fix">
-        <CodeBlock lang="yaml">{`# workflows/dependabot-fix/workflow.yaml
+        <CodeBlock lang="yaml">{`# .elasticclaw/workflows/dependabot-fix.yaml
+schema_version: v1
 name: dependabot-fix
-integration: github-issues
-workspace: acme/app
-trigger_status: "open"
-labels: [dependencies, security]
-done_status: "closed"
-terminate_on_leave: true
-workspace: dependabot-workspace
-webhook_secret_ref: github_webhook_secret
-name_pattern: "dep-{issue_number}"
-tags: [dependabot, security]
-color: orange`}</CodeBlock>
-      </Section>
 
-      <Section title="Pipeline: staged review">
-        <p className="text-sm text-zinc-400 mb-2">
-          Pipelines use stages, triggers, and <code>on_enter</code> actions.
-        </p>
-        <CodeBlock lang="yaml">{`# .elasticclaw/workflows/dependabot-fix/pipeline.yaml
-stages:
+trigger:
+  type: github_issues
+  event: issue_labeled
+  repositories:
+    - acme/app
+  states:
+    - open
+  labels:
+    - dependencies
+    - security
+
+name_pattern: "dep-{{.Issue.Number}}"
+tags: [dependabot, security]
+color: orange
+
+jobs:
   - id: working
     label: "Working"
     entry: true
@@ -81,6 +77,9 @@ stages:
     triggers:
       - pr_merged:
     terminal: true`}</CodeBlock>
+      </Section>
+
+      <Section title="Pipeline behavior">
         <p className="text-sm text-zinc-400 mt-2">
           The hub records PR URLs from the <code>[DONE]</code> message and can
           inject CI or review feedback while the claw remains alive.
@@ -92,18 +91,18 @@ stages:
           A lightweight workspace focused on dependency management and test
           validation.
         </p>
-        <CodeBlock lang="yaml">{`# workspaces/dependabot-workspace/elasticclaw-config.yaml
+        <CodeBlock lang="yaml">{`# .elasticclaw/workspaces/dependabot-workspace/elasticclaw-config.yaml
+name: dependabot-workspace
 provider: daytona
 llm_key: anthropic-prod
 default_model: anthropic/claude-sonnet-4-6
-github:
-  repos:
-    - repo: acme/app
-      permissions: write
+repositories:
+  - repo: acme/app
+    permissions: write
 tags: [dependabot, security]
 color: orange`}</CodeBlock>
 
-        <CodeBlock lang="markdown">{`# workspaces/dependabot-workspace/AGENTS.md
+        <CodeBlock lang="markdown">{`# .elasticclaw/workspaces/dependabot-workspace/AGENTS.md
 You are a security patch agent. Read CONTEXT.md, bump the vulnerable
 package to the minimum safe version, run the test suite, and open a PR.
 Do not change unrelated code. Send [DONE] <pr-url> when the PR is ready.`}</CodeBlock>

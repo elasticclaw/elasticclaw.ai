@@ -7,87 +7,69 @@ export default function SecretsPage() {
   return (
     <DocsPage
       title="Secrets"
-      description="Manage sensitive values in hub.yaml without exposing them in version control."
+      description="Manage workspace-scoped secrets without committing sensitive values to version control."
     >
       <Section title="Overview">
         <p>
-          ElasticClaw uses a <code className="text-cyan-300">secrets</code> map in
-          <code>hub.yaml</code> to store sensitive values — API tokens, webhook secrets,
-          and custom credentials. Secrets are referenced by name and injected into claws
-          and MCP servers at runtime.
+          ElasticClaw stores secrets on the hub per workspace. Create them with
+          the CLI, then reference them by name from <code>elasticclaw-config.yaml</code>
+          or workflow YAML when a claw needs an environment variable.
         </p>
         <Note>
-          Never commit <code>hub.yaml</code> with real secret values to version control.
-          Use environment variable substitution (e.g. <code>{"${TOKEN}"}</code>) or a
-          secrets manager.
+          Never commit real secret values to version control. Commit only the
+          secret names referenced by your workspace and workflow YAML.
         </Note>
       </Section>
 
-      <Section title="Defining secrets">
-        <CodeBlock lang="yaml">{`secrets:
-  linear_token: \${LINEAR_API_TOKEN}
-  github_webhook_secret: whsec_xxxxxxxx
-  my_custom_key: sk-xxxxxxxx`}</CodeBlock>
+      <Section title="Create secrets">
+        <CodeBlock lang="bash">{`elasticclaw secret create openai_api_key --workspace my-app --value "$OPENAI_API_KEY"
+printf '%s' "$SLACK_BOT_TOKEN" | elasticclaw secret create slack_bot_token --workspace my-app
+elasticclaw secret list --workspace my-app
+elasticclaw secret rm slack_bot_token --workspace my-app`}</CodeBlock>
         <p>
-          Each key is a secret name. The value can be a literal string or an environment
-          variable reference using <code>{"${VAR}"}</code> syntax.
+          Secret values are sent to the hub. <code>secret list</code> returns names
+          only, never values.
         </p>
       </Section>
 
-      <Section title="Referencing secrets in workflows">
+      <Section title="Use secrets in workspaces">
         <p>
-          Use <code className="text-cyan-300">webhook_secret_ref</code> in workflow.yaml
-          to reference a secret by name instead of inlining it:
-        </p>
-        <CodeBlock lang="yaml">{`# workflow.yaml
-name: my-workflow
-integration: linear
-webhook_secret_ref: linear_webhook_secret   # references hub.yaml secrets.linear_webhook_secret
-workspace: base`}</CodeBlock>
-      </Section>
-
-      <Section title="Referencing secrets in workspaces">
-        <p>
-          Workspaces can request secrets via <code className="text-cyan-300">secret_refs</code>
-          in <code>elasticclaw-config.yaml</code>. This maps environment variable names
-          to hub secret names — simple and explicit.
+          Use <code className="text-cyan-300">env</code> in{" "}
+          <code>elasticclaw-config.yaml</code> to inject a workspace secret into
+          every claw created from that workspace:
         </p>
         <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
-secret_refs:
-  LINEAR_API_KEY: linear_token        # injects secrets.linear_token as LINEAR_API_KEY
-  MY_CUSTOM_KEY: my_custom_key        # injects secrets.my_custom_key as MY_CUSTOM_KEY`}</CodeBlock>
+env:
+  NODE_ENV: production
+  OPENAI_API_KEY:
+    secret: openai_api_key
+  MY_CUSTOM_KEY:
+    secret: my_custom_key`}</CodeBlock>
+      </Section>
+
+      <Section title="Use secrets in workflows">
         <p>
-          The legacy <code className="text-cyan-300">secrets</code> list format is still
-          supported but deprecated. It uses typed objects that resolve secrets indirectly:
+          Use <code className="text-cyan-300">secret_refs</code> in workflow YAML
+          for secrets needed only by that workflow:
         </p>
-        <CodeBlock lang="yaml">{`# DEPRECATED — still works, but migrate to secret_refs
-secrets:
-  - type: linear
-    workspace: my-company    # resolves integrations.linear[].token
-  - type: github-issues
-    workspace: my-org        # resolves integrations.github_issues[].token
-  - type: custom
-    name: my_custom_key
-    as: MY_API_KEY            # optional: override env var name`}</CodeBlock>
-        <p>Supported types and their default env var names (legacy format):</p>
-        <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
-          <li><code>linear</code> → <code>LINEAR_API_KEY</code></li>
-          <li><code>shortcut</code> → <code>SHORTCUT_API_KEY</code></li>
-          <li><code>github-issues</code> → <code>GITHUB_ISSUES_API_KEY</code></li>
-          <li><code>github</code> → <code>GITHUB_TOKEN</code></li>
-          <li><code>custom</code> → uppercase of the secret name (override with <code>as</code>)</li>
-        </ul>
+        <CodeBlock lang="yaml">{`# workflow.yaml
+name: deploy-preview
+
+secret_refs:
+  SLACK_TOKEN: slack_bot_token
+  DEPLOY_TOKEN: deploy_token`}</CodeBlock>
         <Note>
-          The Doctor dashboard will warn you if any workspaces still use the deprecated
-          <code>secrets:</code> list format. Migrate to <code>secret_refs:</code> for
-          consistency with workflow-level secret references.
+          Configure Linear, Shortcut, and GitHub Issues tokens and webhook
+          signing secrets in workspace issue tracker settings, not in workflow
+          YAML.
         </Note>
       </Section>
 
       <Section title="Referencing secrets in MCP servers">
         <p>
-          MCP servers reference secrets in their <code>secrets</code> map. The key is the
-          env var name, the value is the secret name in <code>hub.yaml secrets:</code>.
+          MCP servers reference hub-level secrets in their <code>secrets</code>{" "}
+          map. The key is the environment variable name and the value is the
+          secret name configured for the hub.
         </p>
         <CodeBlock lang="yaml">{`mcp_servers:
   - name: github
@@ -99,9 +81,9 @@ secrets:
 
       <Section title="API endpoints">
         <div className="space-y-2 text-sm text-zinc-400">
-          <p><code className="text-cyan-300">GET /api/secrets</code> — List secret names only (never values)</p>
-          <p><code className="text-cyan-300">PUT /api/secrets</code> — Upsert a secret <code>{'{"name":"...","value":"..."}'}</code></p>
-          <p><code className="text-cyan-300">DELETE /api/secrets?name=&lt;name&gt;</code> — Delete a secret</p>
+          <p><code className="text-cyan-300">GET /api/workspaces/&lt;workspace&gt;/secrets</code> — List secret names only</p>
+          <p><code className="text-cyan-300">PUT /api/workspaces/&lt;workspace&gt;/secrets</code> — Create or update a secret</p>
+          <p><code className="text-cyan-300">DELETE /api/workspaces/&lt;workspace&gt;/secrets?name=&lt;name&gt;</code> — Delete a secret</p>
         </div>
       </Section>
     </DocsPage>

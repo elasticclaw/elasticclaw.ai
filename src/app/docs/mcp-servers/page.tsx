@@ -35,7 +35,7 @@ export default function MCPServersPage() {
     config:
       repository: "elasticclaw/elasticclaw"
     secrets:
-      GITHUB_TOKEN: github_token   # resolves hub.yaml secrets.github_token
+      GITHUB_TOKEN: github_mcp_token   # resolves hub.yaml secrets.github_mcp_token
 
   - name: postgres
     source: docker
@@ -56,12 +56,12 @@ export default function MCPServersPage() {
           maps environment variable names to secret names in <code>hub.yaml secrets:</code>.
         </p>
         <CodeBlock lang="yaml">{`secrets:
-  github_token: ghp_xxxxxxxxxxxx
+  github_mcp_token: ghp_xxxxxxxxxxxx
 
 mcp_servers:
   - name: github
     secrets:
-      GITHUB_TOKEN: github_token   # injects secrets.github_token as GITHUB_TOKEN`}</CodeBlock>
+      GITHUB_TOKEN: github_mcp_token   # injects secrets.github_mcp_token as GITHUB_TOKEN`}</CodeBlock>
       </Section>
 
       <Section title="Enabling in workspaces">

@@ -11,6 +11,28 @@ type NavItem = {
 };
 
 const NAV_ITEMS: NavItem[] = [
+  {
+    href: "/docs/cli-reference",
+    label: "CLI Reference",
+    children: [
+      { href: "/docs/cli-reference#global-flags", label: "Global Flags" },
+      { href: "/docs/cli-reference#upgrade", label: "upgrade" },
+      { href: "/docs/cli-reference#install", label: "install" },
+      { href: "/docs/cli-reference#hub-management", label: "hub management" },
+      { href: "/docs/cli-reference#profile", label: "profile" },
+      { href: "/docs/cli-reference#create", label: "create" },
+      { href: "/docs/cli-reference#chat", label: "chat" },
+      { href: "/docs/cli-reference#list", label: "list / ls" },
+      { href: "/docs/cli-reference#inspect", label: "inspect" },
+      { href: "/docs/cli-reference#kill", label: "kill" },
+      { href: "/docs/cli-reference#workspace", label: "workspace" },
+      { href: "/docs/cli-reference#workflow", label: "workflow" },
+      { href: "/docs/cli-reference#secret", label: "secret" },
+      { href: "/docs/cli-reference#provider", label: "provider" },
+      { href: "/docs/cli-reference#login", label: "login" },
+      { href: "/docs/cli-reference#hub-server", label: "hub server" },
+    ],
+  },
   { href: "/docs", label: "Overview" },
   {
     href: "/docs/concepts",
@@ -28,24 +50,11 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   {
-    href: "/docs/cli-reference",
-    label: "CLI Reference",
+    href: "/docs/hub",
+    label: "Configuration",
     children: [
-      { href: "/docs/cli-reference#global-flags", label: "Global Flags" },
-      { href: "/docs/cli-reference#upgrade", label: "upgrade" },
-      { href: "/docs/cli-reference#install", label: "install" },
-      { href: "/docs/cli-reference#hub-management", label: "hub management" },
-      { href: "/docs/cli-reference#profile", label: "profile" },
-      { href: "/docs/cli-reference#create", label: "create" },
-      { href: "/docs/cli-reference#chat", label: "chat" },
-      { href: "/docs/cli-reference#list", label: "list / ls" },
-      { href: "/docs/cli-reference#inspect", label: "inspect" },
-      { href: "/docs/cli-reference#kill", label: "kill" },
-      { href: "/docs/cli-reference#workspace", label: "workspace" },
-      { href: "/docs/cli-reference#workflow", label: "workflow" },
-      { href: "/docs/cli-reference#provider", label: "provider" },
-      { href: "/docs/cli-reference#login", label: "login" },
-      { href: "/docs/cli-reference#hub-server", label: "hub server" },
+      { href: "/docs/hub", label: "Hub Config" },
+      { href: "/docs/authentication", label: "Authentication" },
     ],
   },
   {
@@ -58,6 +67,7 @@ const NAV_ITEMS: NavItem[] = [
       { href: "/docs/exe-dev", label: "exe.dev" },
     ],
   },
+  { href: "/docs/models", label: "Models & LLM Keys" },
   {
     href: "/docs/workspaces",
     label: "Workspaces",
@@ -66,8 +76,6 @@ const NAV_ITEMS: NavItem[] = [
       { href: "/docs/secrets", label: "Secrets" },
     ],
   },
-  { href: "/docs/mcp-servers", label: "MCP Servers" },
-  { href: "/docs/models", label: "Models & LLM Keys" },
   {
     href: "/docs/workflows",
     label: "Workflows",
@@ -91,20 +99,13 @@ const NAV_ITEMS: NavItem[] = [
   },
   {
     href: "/docs/github-integration",
-    label: "GitHub",
+    label: "GitHub App",
     children: [
       { href: "/docs/github-integration", label: "GitHub App" },
-      { href: "/docs/github-actions", label: "GitHub Actions" },
     ],
   },
-  {
-    href: "/docs/hub",
-    label: "Configuration",
-    children: [
-      { href: "/docs/hub", label: "Hub Config" },
-      { href: "/docs/authentication", label: "Authentication" },
-    ],
-  },
+  { href: "/docs/mcp-servers", label: "MCP Servers" },
+  { href: "/docs/github-actions", label: "GitHub Actions" },
   { href: "/docs/analytics", label: "Analytics" },
   { href: "/docs/troubleshooting", label: "Troubleshooting" },
 ];

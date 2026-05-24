@@ -23,9 +23,9 @@ export default function GitHubActionsPage() {
       elasticclaw-config.yaml
       AGENTS.md
       TOOLS.md
-      workflows/
-        triage.yaml
-        resolution.yaml`}</CodeBlock>
+  workflows/
+    triage.yaml
+    resolution.yaml`}</CodeBlock>
       </Section>
 
       <Section title="Required secrets">
@@ -72,14 +72,18 @@ jobs:
         run: |
           for dir in .elasticclaw/workspaces/*; do
             [ -d "$dir" ] || continue
-            elasticclaw workspace push "$dir"
-          done`}</CodeBlock>
+            elasticclaw workspace push "$(basename "$dir")"
+          done
+
+      - name: Push workflows
+        run: |
+          elasticclaw workflow push --workspace my-workspace .elasticclaw/workflows`}</CodeBlock>
       </Section>
 
       <Section title="Commands used">
         <div className="space-y-2 text-sm text-zinc-400">
-          <p><code className="text-cyan-300">elasticclaw workspace push &lt;name-or-path&gt;</code> — Publishes one workspace directory.</p>
-          <p><code className="text-cyan-300">elasticclaw workflow list --workspace &lt;name&gt;</code> — Confirms published workflows are available on the hub.</p>
+          <p><code className="text-cyan-300">elasticclaw workspace push &lt;name&gt;</code> — Publishes one local workspace from <code>.elasticclaw/workspaces/</code>.</p>
+          <p><code className="text-cyan-300">elasticclaw workflow push --workspace &lt;name&gt; &lt;file-or-dir&gt;</code> — Publishes workflow YAML into that workspace.</p>
         </div>
       </Section>
 

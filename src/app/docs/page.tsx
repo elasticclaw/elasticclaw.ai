@@ -34,8 +34,8 @@ export default function DocsOverviewPage() {
             <h3 className="font-semibold text-zinc-100">Hub</h3>
             <p className="mt-1 text-sm text-zinc-400">
               The self-hosted control point: web dashboard, API,{" "}
-              <code>hub.yaml</code>, GitHub App credentials, secrets,
-              integrations, and workflow state.
+              <code>hub.yaml</code>, GitHub App credentials, MCP servers,
+              issue tracker settings, and workflow state.
             </p>
           </div>
           <div className="rounded-lg border border-zinc-800 bg-zinc-900/45 p-4">

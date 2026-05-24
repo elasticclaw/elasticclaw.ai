@@ -104,12 +104,11 @@ export default function GitHubIntegrationPage() {
           Workspaces can specify which repos the claw needs access to:
         </p>
         <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
-github:
-  repos:
-    - repo: "my-org/my-repo"
-      permissions: "write"
-    - repo: "my-org/other-repo"
-      permissions: "read"`}</CodeBlock>
+repositories:
+  - repo: "my-org/my-repo"
+    permissions: "write"
+  - repo: "my-org/other-repo"
+    permissions: "read"`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
           The hub resolves the right GitHub App installation and mints a token
           with the requested repo permissions. <code>permissions</code> is either

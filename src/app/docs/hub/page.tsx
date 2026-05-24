@@ -7,7 +7,7 @@ export default function HubPage() {
   return (
     <DocsPage
       title="Hub Config"
-      description="hub.yaml is your central ElasticClaw configuration file — it defines providers, LLM keys, integrations, secrets, MCP servers, and auth."
+      description="hub.yaml is your central ElasticClaw configuration file for providers, LLM keys, GitHub Apps, MCP servers, and auth."
     >
       <Section title="Overview">
         <p>
@@ -15,15 +15,15 @@ export default function HubPage() {
           in your project root (or at{" "}
           <code className="text-cyan-300">~/.elasticclaw/hub.yaml</code> for
           global config). It tells ElasticClaw where to provision sandboxes, which
-          credentials to use, and how to connect integrations.
+          credentials to use, and which shared services are available to
+          workspaces.
         </p>
         <p className="mt-2">
           Workspaces and workflows are not stored inline in <code>hub.yaml</code>.
-          The hub keeps them as files next to the config:{" "}
+          After you push them, the hub keeps them as files next to the config:{" "}
           <code className="text-cyan-300">workspaces/&lt;name&gt;/</code> for
-          workspaces and{" "}
-          <code className="text-cyan-300">workflows/&lt;name&gt;/workflow.yaml</code>
-          {" "}plus optional <code>pipeline.yaml</code> for workflows.
+          workspaces, with workflow YAML files nested under each workspace&apos;s{" "}
+          <code className="text-cyan-300">workflows/</code> directory.
         </p>
       </Section>
 
@@ -68,27 +68,9 @@ github:
       -----BEGIN RSA PRIVATE KEY-----
       ...
 
-# Integrations
-integrations:
-  linear:
-    - workspace: my-company
-      token: \${LINEAR_API_TOKEN}
-      # webhook_secret is a shared default for all Linear webhooks.
-      # Each workflow can override with webhook_secret_ref (preferred).
-      webhook_secret: \${LINEAR_WEBHOOK_SECRET}
-  shortcut:
-    - workspace: my-company
-      token: \${SHORTCUT_TOKEN}
-  github_issues:
-    - workspace: my-org
-      token: \${GITHUB_TOKEN}
-      # Same pattern: integration-level default, workflow-level override.
-      webhook_secret: \${GITHUB_WEBHOOK_SECRET}
-
-# Secrets
+# Hub-level secrets for MCP servers
 secrets:
-  linear_webhook_secret: whsec_xxx
-  github_token: ghp_xxx
+  github_mcp_token: \${GITHUB_MCP_TOKEN}
 
 # MCP Servers
 mcp_servers:
@@ -97,7 +79,7 @@ mcp_servers:
     package: "@modelcontextprotocol/server-github"
     enabled: true
     secrets:
-      GITHUB_TOKEN: github_token
+      GITHUB_TOKEN: github_mcp_token
 
 # Authentication
 auth:
@@ -121,10 +103,10 @@ ssh_public_keys:
 
       <Section title="External workspaces and workflows">
         <p>
-          The hub creates <code>workspaces/</code> and <code>workflows/</code>{" "}
-          alongside <code>hub.yaml</code>. Use <code>elasticclaw workspace push</code>{" "}
-          and <code>elasticclaw workspace push</code> to publish local definitions
-          into those external directories.
+          The hub creates <code>workspaces/</code> alongside{" "}
+          <code>hub.yaml</code>. Use <code>elasticclaw workspace push</code> to
+          publish workspace files, then <code>elasticclaw workflow push</code> to
+          publish workflow YAML into a workspace.
         </p>
         <CodeBlock lang="text">{`~/.elasticclaw/
   hub.yaml
@@ -136,9 +118,9 @@ ssh_public_keys:
       workflows/
         feature-workflow.yaml`}</CodeBlock>
         <Note>
-          Older configs with inline <code>workflows:</code> are migrated on hub
-          startup. The hub writes them to <code>workflows/</code> and removes the
-          inline entries from <code>hub.yaml</code> to avoid split-brain config.
+          This is the hub&apos;s storage layout after publishing. Author workspace
+          files under <code>.elasticclaw/workspaces/</code> and workflow YAML
+          under <code>.elasticclaw/workflows/</code> before pushing them.
         </Note>
       </Section>
 
@@ -154,8 +136,7 @@ ssh_public_keys:
             { field: "llm_keys", desc: "Named LLM API keys. One can be marked default:true." },
             { field: "default_model", desc: "Global default model (provider/model format)." },
             { field: "github", desc: "GitHub App credentials for repo access and token minting." },
-            { field: "integrations", desc: "External service configs: linear, shortcut, github_issues." },
-            { field: "secrets", desc: "Named secret values referenced by workflows and MCP servers." },
+            { field: "secrets", desc: "Named hub-level secret values referenced by MCP server configs. Workspace runtime secrets are managed with elasticclaw secret." },
             { field: "mcp_servers", desc: "MCP server configs available to claws." },
             { field: "auth", desc: "GitHub OAuth and tag-based access control for the web UI." },
             { field: "branding", desc: "White-label: app_name, logo_url." },

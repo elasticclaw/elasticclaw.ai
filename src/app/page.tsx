@@ -63,7 +63,7 @@ const WORKFLOWS = [
 const TERMINAL_LINES = [
   "$ brew tap elasticclaw/elasticclaw && brew install elasticclaw",
   "$ elasticclaw hub init",
-  "$ elasticclaw workspace create ci-repair",
+  "$ elasticclaw workspace create --name ci-repair",
   "$ elasticclaw workspace push ci-repair",
 ];
 

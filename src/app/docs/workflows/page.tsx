@@ -7,7 +7,7 @@ export default function WorkflowsPage() {
   return (
     <DocsPage
       title="Workflows"
-      description="Workflows define triggers, runtime settings, inputs, and lifecycle behavior inside a workspace."
+      description="Workflows define triggers, manual inputs, and lifecycle jobs, then run inside a published workspace."
     >
       <Section title="How workflows work">
         <p>
@@ -16,6 +16,10 @@ export default function WorkflowsPage() {
           context, and tracks the job through issue, code, PR, review, and
           completion states.
         </p>
+        <p>
+          Author workflow YAML under <code>.elasticclaw/workflows/</code>, then
+          publish it to a workspace with <code>elasticclaw workflow push</code>.
+        </p>
       </Section>
 
       <Section title="Workflow file">
@@ -23,22 +27,22 @@ export default function WorkflowsPage() {
 name: triage
 enabled: true
 
-integration: github-issues
-trigger_status: open
-working_status: in-progress
-finished_status: done
-terminate_on_leave: true
+trigger:
+  type: github_issues
+  event: issue_labeled
+  repositories:
+    - my-org/my-app
+  states:
+    - open
+  labels:
+    - claw-ready
+  labelers:
+    - "*"
 
 provider: daytona
 name_pattern: "{repo}-{issue_number}"
-tags: ["bugbot"]
+tags: ["triage"]
 color: teal
-
-trigger_repos:
-  - elasticclaw/*
-
-labels:
-  - bug
 
 secret_refs:
   GITHUB_TOKEN: github_app
@@ -47,15 +51,43 @@ enable_manual_trigger: true
 inputs:
   - name: issue
     type: string
-    required: true`}</CodeBlock>
+    required: true
+
+jobs:
+  - id: working
+    label: Working
+    entry: true
+    on_enter:
+      remove_labels: [claw-ready]
+      add_labels: [claw-working]
+      inject: |
+        Issue: {{.Issue.Identifier}} — {{.Issue.Title}}
+        URL: {{.Issue.URL}}
+
+        Read CONTEXT.md and start working.
+
+  - id: pr_opened
+    label: PR Opened
+    triggers:
+      - message_contains: "[DONE]"
+    on_enter:
+      add_labels: [needs-review]
+      remove_labels: [claw-working]
+
+  - id: merged
+    label: Merged
+    triggers:
+      - pr_merged: {}
+    terminal: true`}</CodeBlock>
       </Section>
 
       <Section title="Workflow fields">
         <div className="space-y-3 text-sm text-zinc-400">
           <p><code className="text-cyan-300">name</code> — Workflow identifier inside the workspace.</p>
           <p><code className="text-cyan-300">enabled</code> — Set false to pause the workflow.</p>
-          <p><code className="text-cyan-300">integration</code> — Event source such as <code>linear</code>, <code>shortcut</code>, or <code>github-issues</code>.</p>
-          <p><code className="text-cyan-300">workspace</code> — Integration workspace name when the external service needs one.</p>
+          <p><code className="text-cyan-300">trigger</code> — New trigger schema. GitHub Issues supports <code>type: github_issues</code>, issue events, repositories, states, labels, and labelers.</p>
+          <p><code className="text-cyan-300">integration</code> — Legacy/direct event source such as <code>linear</code>, <code>shortcut</code>, or <code>github-issues</code>.</p>
+          <p><code className="text-cyan-300">workspace</code> — Issue tracker workspace name when direct integration fields are used.</p>
           <p><code className="text-cyan-300">team</code> — Linear team key filter.</p>
           <p><code className="text-cyan-300">trigger_status</code> — Status or label that starts work.</p>
           <p><code className="text-cyan-300">working_status</code> — Optional status set after a claw starts.</p>
@@ -69,17 +101,19 @@ inputs:
           <p><code className="text-cyan-300">inputs</code> — Manual trigger inputs.</p>
           <p><code className="text-cyan-300">concurrency_group</code> — Limit parallel claws by group.</p>
           <p><code className="text-cyan-300">enable_manual_trigger</code> — Allow dashboard and CLI manual triggers.</p>
-          <p><code className="text-cyan-300">trigger_repos</code> and <code className="text-cyan-300">trigger</code> — GitHub event filters.</p>
+          <p><code className="text-cyan-300">jobs</code> — Lifecycle stages. Jobs become the workflow pipeline used by the hub.</p>
+          <p><code className="text-cyan-300">trigger_repos</code> — Legacy GitHub repository filters.</p>
         </div>
       </Section>
 
       <Section title="CLI commands">
-        <CodeBlock lang="bash">{`elasticclaw workspace create bugbot
-elasticclaw workspace push bugbot
+        <CodeBlock lang="bash">{`elasticclaw workspace create --name my-app
+elasticclaw workspace push my-app
+elasticclaw workflow push --workspace my-app .elasticclaw/workflows/triage.yaml
 
-elasticclaw workflow list --workspace bugbot
-elasticclaw workflow show triage --workspace bugbot
-elasticclaw workflow trigger triage --workspace bugbot --input issue=ENG-123`}</CodeBlock>
+elasticclaw workflow list --workspace my-app
+elasticclaw workflow show triage --workspace my-app
+elasticclaw workflow trigger triage --workspace my-app --input issue=ENG-123`}</CodeBlock>
       </Section>
     </DocsPage>
   );
