@@ -75,7 +75,7 @@ sudo elasticclaw hub caddy uninstall`}</CodeBlock>
       <Section id="profile" title="elasticclaw profile">
         <p>Manage server connection profiles. Each profile stores a server URL and token.</p>
         <CodeBlock lang="bash">{`elasticclaw profile ls
-elasticclaw profile create work --url https://hub2.example.com --token mytoken
+elasticclaw profile create work --url https://server2.example.com --token mytoken
 elasticclaw profile use work
 elasticclaw profile rename work prod
 elasticclaw profile rm work
