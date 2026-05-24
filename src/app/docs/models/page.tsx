@@ -25,11 +25,11 @@ export default function ModelsPage() {
   return (
     <DocsPage
       title="Models & LLM Keys"
-      description="Configure multiple LLM providers and API keys. Set per-workspace or per-claw model overrides."
+      description="Configure multiple LLM providers and API keys. Set per-workspace or per-agent model overrides."
     >
       <Section title="Supported providers">
         <p>
-          ElasticClaw currently supports these LLM providers in the hub UI and
+          ElasticClaw currently supports these LLM providers in the server UI and
           bootstrap path. Use these provider IDs in <code>llm_keys[].provider</code>
           {" "}and as the prefix in <code>default_model</code>.
         </p>
@@ -88,9 +88,9 @@ export default function ModelsPage() {
         </p>
       </Section>
 
-      <Section title="Hub default model">
+      <Section title="Server default model">
         <p>
-          Set a global default model at the hub level. All claws use this unless overridden.
+          Set a global default model at the server level. All agents use this unless overridden.
         </p>
         <CodeBlock lang="yaml">{`default_model: anthropic/claude-sonnet-4-6`}</CodeBlock>
       </Section>
@@ -103,10 +103,10 @@ export default function ModelsPage() {
 default_model: fireworks/accounts/fireworks/models/kimi-k2p6
 llm_key: fireworks-kimi`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
-          If <code>llm_key</code> is set and <code>default_model</code> is empty, the hub
+          If <code>llm_key</code> is set and <code>default_model</code> is empty, ElasticClaw Server
           resolves the model from the named key&apos;s <code>default_model</code>. If no
-          <code>llm_key</code> is set, the hub uses the key marked{" "}
-          <code>default: true</code>, then the hub-level <code>default_model</code>.
+          <code>llm_key</code> is set, ElasticClaw Server uses the key marked{" "}
+          <code>default: true</code>, then the server-level <code>default_model</code>.
         </p>
       </Section>
 

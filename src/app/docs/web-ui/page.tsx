@@ -7,11 +7,11 @@ export default function WebUIPage() {
   return (
     <DocsPage
       title="Web UI"
-      description="The hub includes an embedded real-time dashboard for managing agents, streaming conversations, and accessing terminals. No separate server needed."
+      description="ElasticClaw Server includes an embedded real-time dashboard for managing agents, streaming conversations, and accessing terminals. No separate web service needed."
     >
       <Section title="Overview">
         <p>
-          The web UI is embedded in the hub binary — no separate installation needed.
+          The web UI is embedded in ElasticClaw Server. No separate installation is needed.
           It provides a browser-based interface for everything you can do with the CLI,
           plus real-time streaming of agent output, an in-browser SSH terminal, and
           conversation history.
@@ -29,10 +29,10 @@ export default function WebUIPage() {
 
       <Section title="Configuration">
         <p>
-          The web UI is served by the hub on the same address as the API. For a
-          local or manually managed hub, configure the UI password in
+          The web UI is served by ElasticClaw Server on the same address as the API. For a
+          local or manually managed server, configure the UI password in
           <code className="text-cyan-300">hub.yaml</code> and pass the listen
-          address with the hub command:
+          address with the server command:
         </p>
         <CodeBlock lang="yaml">{`token: mytoken
 claw_token: myclawtoken
@@ -42,15 +42,15 @@ ui_password: mypassword`}</CodeBlock>
           <code className="text-cyan-300">elasticclaw install</code> writes this
           config for you and generates a random UI password unless you pass{" "}
           <code className="text-cyan-300">--ui-password</code>. TLS is normally
-          handled by Caddy in front of the hub, not by nested web UI settings.
+          handled by Caddy in front of ElasticClaw Server, not by nested web UI settings.
         </p>
       </Section>
 
       <Section title="Starting the Server">
-        <CodeBlock lang="bash">{`# Start with the default hub config search path
+        <CodeBlock lang="bash">{`# Start with the default server config search path
 elasticclaw hub
 
-# Or point to a specific hub config
+# Or point to a specific server config
 ELASTICCLAW_HUB_CONFIG=/path/to/hub.yaml elasticclaw hub`}</CodeBlock>
         <p>
           Open <code className="text-cyan-300">http://localhost:8080</code> and
@@ -60,7 +60,7 @@ ELASTICCLAW_HUB_CONFIG=/path/to/hub.yaml elasticclaw hub`}</CodeBlock>
 
       <Section title="Settings page">
         <p>
-          The Settings page provides a UI for hub settings and workspace-managed
+          The Settings page provides a UI for server settings and workspace-managed
           resources:
         </p>
         <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">

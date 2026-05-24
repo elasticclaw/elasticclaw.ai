@@ -12,13 +12,13 @@ interface SearchDoc {
 }
 
 const DOCS_INDEX: SearchDoc[] = [
-  { title: "Overview", href: "/docs", excerpt: "ElasticClaw as a workflow system: triggers, pipelines, credentials, execution.", tags: ["intro", "getting started", "workflow"] },
+  { title: "Overview", href: "/docs", excerpt: "ElasticClaw as a workflow system: triggers, stages, credentials, execution.", tags: ["intro", "getting started", "workflow"] },
   { title: "Installation", href: "/docs/installation", excerpt: "brew install, upgrade, remote server setup, CLI installation.", tags: ["install", "setup", "brew"] },
-  { title: "CLI Reference", href: "/docs/cli-reference", excerpt: "All elasticclaw commands: create, chat, kill, workflow, workspace, github-app, hub.", tags: ["cli", "commands", "reference"] },
-  { title: "Architecture", href: "/docs/concepts", excerpt: "How ElasticClaw works — workflows, pipelines, workspaces, credentials, lifecycle.", tags: ["concepts", "architecture", "how it works"] },
+  { title: "CLI Reference", href: "/docs/cli-reference", excerpt: "All elasticclaw commands: create, chat, kill, workflow, workspace, github-app, and server commands.", tags: ["cli", "commands", "reference"] },
+  { title: "Architecture", href: "/docs/concepts", excerpt: "How ElasticClaw works — workflows, stages, workspaces, credentials, lifecycle.", tags: ["concepts", "architecture", "how it works"] },
   { title: "Workspaces", href: "/docs/workspaces", excerpt: "Define sandbox bootstrap, repos, secrets, MCP servers, and model config.", tags: ["workspaces", "bootstrap", "config"] },
-  { title: "Pipelines", href: "/docs/pipelines", excerpt: "Workflow state machines for created, done, CI, review, and merge behavior.", tags: ["pipelines", "workflow", "lifecycle"] },
-  { title: "Hub Config", href: "/docs/hub", excerpt: "hub.yaml reference — providers, LLM keys, authentication, and hub-level settings.", tags: ["config", "yaml", "hub"] },
+  { title: "Workflow Stages", href: "/docs/stages", excerpt: "Workflow state machines for created, done, CI, review, and merge behavior.", tags: ["stages", "workflow", "lifecycle"] },
+  { title: "Server Config", href: "/docs/hub", excerpt: "hub.yaml reference — providers, LLM keys, authentication, and server-level settings.", tags: ["config", "yaml", "server"] },
   { title: "Providers", href: "/docs/providers", excerpt: "Sandbox providers: Daytona, Replicated CMX, and exedev.", tags: ["providers", "daytona", "cmx", "sandbox"] },
   { title: "Daytona", href: "/docs/providers/daytona", excerpt: "Configure Daytona cloud development environments as sandbox providers.", tags: ["providers", "daytona", "sandbox", "snapshots"] },
   { title: "Replicated CMX", href: "/docs/providers/replicated", excerpt: "Configure Replicated Compatibility Matrix sandboxes for ElasticClaw.", tags: ["providers", "replicated", "cmx", "sandbox"] },
@@ -31,7 +31,7 @@ const DOCS_INDEX: SearchDoc[] = [
   { title: "GitHub Issues", href: "/docs/github-issues", excerpt: "Setting up GitHub Issues webhooks and workflows.", tags: ["github", "issues", "integration"] },
   { title: "Shortcut Integration", href: "/docs/shortcut-integration", excerpt: "Setting up Shortcut webhooks and workflows.", tags: ["shortcut", "integration", "webhook"] },
   { title: "GitHub App", href: "/docs/github-integration", excerpt: "Workspace GitHub App setup for code access, commits, and pull requests.", tags: ["github", "app", "pr", "ci"] },
-  { title: "Web UI", href: "/docs/web-ui", excerpt: "Dashboard, claw cards, activity log, settings.", tags: ["ui", "dashboard", "web"] },
+  { title: "Web UI", href: "/docs/web-ui", excerpt: "Dashboard, agent cards, activity log, settings.", tags: ["ui", "dashboard", "web"] },
   { title: "Analytics", href: "/docs/analytics", excerpt: "Workflow usage, success rates, PR outcomes, and recent automation events.", tags: ["analytics", "metrics", "workflows"] },
   { title: "exedev Setup", href: "/docs/exe-dev", excerpt: "Provision persistent VMs with SSH access using exedev.", tags: ["exedev", "exe.dev", "provider", "ssh"] },
   { title: "Bug fixes (Linear)", href: "/docs/examples/bugfix-linear", excerpt: "Workflow example: ENG team bug board, Triage trigger.", tags: ["example", "linear", "bug", "workflow"] },

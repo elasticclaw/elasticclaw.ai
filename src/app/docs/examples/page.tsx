@@ -21,13 +21,13 @@ export default function ExamplesPage() {
             <a href="/docs/examples/feature-github" className="text-cyan-400 hover:underline">
               Human-tagged feature work in GitHub Issues
             </a>
-            <span className="text-zinc-500"> — PM labels, claw picks it up</span>
+            <span className="text-zinc-500"> — PM labels, agent picks it up</span>
           </li>
           <li>
             <a href="/docs/examples/dependabot" className="text-cyan-400 hover:underline">
               Auto-resolve Dependabot alerts
             </a>
-            <span className="text-zinc-500"> — bump, test, auto-merge pipeline</span>
+            <span className="text-zinc-500"> — bump, test, auto-merge workflow</span>
           </li>
         </ul>
       </Section>

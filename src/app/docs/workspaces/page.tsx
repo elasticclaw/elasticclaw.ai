@@ -11,11 +11,11 @@ export default function WorkspacesPage() {
     >
       <Section title="Create a workspace">
         <p>
-          A workspace is the runtime environment for workflow-created claws. It
+          A workspace is the runtime environment for workflow-created agents. It
           starts with an <code className="text-cyan-300">elasticclaw-config.yaml</code>
           file plus instruction files such as <code>AGENTS.md</code> and{" "}
           <code>TOOLS.md</code>. Create one locally, edit the generated files,
-          then push it to the hub.
+          then push it to ElasticClaw Server.
         </p>
         <CodeBlock lang="bash">{`elasticclaw workspace create --name my-app
 cd .elasticclaw/workspaces/my-app`}</CodeBlock>
@@ -42,11 +42,11 @@ provider: replicated`}</CodeBlock>
           <p><code className="text-cyan-300">schema_version</code> — Optional schema marker; defaults to <code>v1</code>.</p>
           <p><code className="text-cyan-300">name</code> — Workspace identifier.</p>
           <p><code className="text-cyan-300">repositories</code> — GitHub repositories the workspace can access, with <code>read</code> or <code>write</code> permissions.</p>
-          <p><code className="text-cyan-300">env</code> — Inline environment values or <code>{"{ secret: name }"}</code> references resolved from workspace or hub secrets.</p>
-          <p><code className="text-cyan-300">provider</code> — Optional sandbox provider override for claws created from this workspace.</p>
+          <p><code className="text-cyan-300">env</code> — Inline environment values or <code>{"{ secret: name }"}</code> references resolved from workspace or server secrets.</p>
+          <p><code className="text-cyan-300">provider</code> — Optional sandbox provider override for agents created from this workspace.</p>
           <p><code className="text-cyan-300">llm_key</code> and <code className="text-cyan-300">default_model</code> — Optional model key and model override.</p>
           <p><code className="text-cyan-300">nix</code> and <code className="text-cyan-300">docker</code> — Optional runtime setup flags.</p>
-          <p><code className="text-cyan-300">tags</code> and <code className="text-cyan-300">color</code> — Optional dashboard metadata for claws created from this workspace.</p>
+          <p><code className="text-cyan-300">tags</code> and <code className="text-cyan-300">color</code> — Optional dashboard metadata for agents created from this workspace.</p>
         </div>
       </Section>
 
@@ -64,7 +64,7 @@ elasticclaw workspace rm my-app`}</CodeBlock>
       </Section>
 
       <Note>
-        Workflows belong to exactly one workspace on the hub. Put shared runtime
+        Workflows belong to exactly one workspace on ElasticClaw Server. Put shared runtime
         policy in the workspace and event-specific behavior in each workflow file.
       </Note>
     </DocsPage>

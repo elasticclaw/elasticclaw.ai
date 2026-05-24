@@ -14,13 +14,13 @@ export default function LinearIntegrationPage() {
         <p>
           ElasticClaw watches Linear issue update webhooks for workflows with a
           <code>trigger.linear</code> source. When an issue enters a matching
-          state, the hub creates a claw, injects issue context, and passes the
+          state, ElasticClaw Server creates an agent, injects issue context, and passes the
           Linear token as <code>LINEAR_API_KEY</code>.
         </p>
         <ul className="list-disc list-inside space-y-1 text-sm mt-2">
           <li>Read the issue title, description, comments, state, team, labels, and assignee</li>
-          <li>Move issues through workflow states configured by the workflow or pipeline</li>
-          <li>Post comments when a workflow claw is stopped because the issue left the trigger status</li>
+          <li>Move issues through workflow stages configured by the workflow</li>
+          <li>Post comments when a workflow agent is stopped because the issue left the trigger status</li>
           <li>Expose a small <code>claw-bridge linear</code> CLI inside the sandbox for issue get, update, search, and teams</li>
         </ul>
       </Section>
@@ -57,11 +57,11 @@ Add Linear:
 
       <Section title="3. Configure Linear webhook">
         <p>
-          Point a Linear webhook at the hub. ElasticClaw handles only Linear
+          Point a Linear webhook at ElasticClaw Server. ElasticClaw handles only Linear
           <code>Issue</code> update events.
         </p>
         <ul className="list-disc list-inside space-y-1 text-sm mt-2">
-          <li>Payload URL: <code>https://hub.example.com/api/workspaces/my-app/webhooks/linear</code></li>
+          <li>Payload URL: <code>https://server.example.com/api/workspaces/my-app/webhooks/linear</code></li>
           <li>Secret: the Linear webhook secret configured for the workspace issue tracker</li>
         </ul>
       </Section>
@@ -86,7 +86,7 @@ trigger:
     labels:
       - bug
 
-jobs:
+stages:
   - id: working
     label: Working
     entry: true
@@ -128,7 +128,7 @@ elasticclaw workflow push --workspace my-app .elasticclaw/workflows/bugfix.yaml`
 
       <Section title="Template variables">
         <p className="text-sm text-zinc-400">
-          In <code>jobs[].on_enter.inject</code>, automatic Linear workflows
+          In <code>stages[].on_enter.inject</code>, automatic Linear workflows
           expose this complete issue object:
         </p>
         <div className="space-y-2 text-sm text-zinc-400 mt-2">

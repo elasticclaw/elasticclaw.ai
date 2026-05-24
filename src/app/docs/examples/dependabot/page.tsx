@@ -10,7 +10,7 @@ export default function DependabotExamplePage() {
       description="A workflow that bumps vulnerable packages, runs tests, and auto-merges the PR if CI passes."
     >
       <Note>
-        This example uses a pipeline to stage the work: bump packages, open a
+        This example uses workflow stages to structure the work: bump packages, open a
         PR, move the issue when <code>[DONE]</code> is received, and terminate
         when the PR merges. Requires a GitHub App with write access to the repo.
       </Note>
@@ -19,10 +19,10 @@ export default function DependabotExamplePage() {
         <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
           <li>Watches <code>acme/app</code> for Dependabot security advisories</li>
           <li>Triggers on issues with <code>dependencies</code> + <code>security</code> labels</li>
-          <li>Claw bumps the package, runs the test suite</li>
+          <li>Agent bumps the package, runs the test suite</li>
           <li>Opens a PR and sends <code>[DONE]</code> with the PR URL</li>
           <li>Watches CI and PR activity after <code>[DONE]</code></li>
-          <li>If tests fail, CI failure messages are injected back to the claw for retry</li>
+          <li>If tests fail, CI failure messages are injected back to the agent for retry</li>
         </ul>
       </Section>
 
@@ -51,7 +51,7 @@ trigger:
 tags: [dependabot, security]
 color: orange
 
-jobs:
+stages:
   - id: working
     label: "Working"
     entry: true
@@ -76,10 +76,10 @@ jobs:
     terminal: true`}</CodeBlock>
       </Section>
 
-      <Section title="Pipeline behavior">
+      <Section title="Stage behavior">
         <p className="text-sm text-zinc-400 mt-2">
-          The hub records PR URLs from the <code>[DONE]</code> message and can
-          inject CI or review feedback while the claw remains alive.
+          ElasticClaw Server records PR URLs from the <code>[DONE]</code> message and can
+          inject CI or review feedback while the agent remains alive.
         </p>
       </Section>
 
@@ -107,13 +107,13 @@ Do not change unrelated code. Send [DONE] <pr-url> when the PR is ready.`}</Code
 
       <Section title="Retry loop on failure">
         <p className="text-sm text-zinc-400">
-          If CI fails after the claw sends <code>[DONE]</code>, the hub:
+          If CI fails after the agent sends <code>[DONE]</code>, ElasticClaw Server:
         </p>
         <ol className="list-decimal list-inside space-y-1 text-sm text-zinc-400 mt-2">
           <li>Injects the failed check output as a user message</li>
-          <li>The claw sees the failure and can push a fix commit</li>
-          <li>CI re-runs, hub watches again</li>
-          <li>Repeat until CI passes or the claw gives up</li>
+          <li>The agent sees the failure and can push a fix commit</li>
+          <li>CI re-runs, ElasticClaw Server watches again</li>
+          <li>Repeat until CI passes or the agent gives up</li>
         </ol>
         <p className="text-sm text-zinc-400 mt-2">
           The PR watcher behavior is tied to the workflow PR lifecycle, not an

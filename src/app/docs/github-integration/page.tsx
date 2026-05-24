@@ -36,7 +36,7 @@ export default function GitHubIntegrationPage() {
       <Section title="Why a GitHub App instead of a PAT?">
         <p>
           A personal access token belongs to a human user. If you give it to an
-          agent system, every claw effectively inherits that user's reachable
+          agent system, every agent effectively inherits that user's reachable
           repositories and permissions. That is too broad for automated coding
           work.
         </p>
@@ -44,15 +44,15 @@ export default function GitHubIntegrationPage() {
           GitHub Apps give ElasticClaw a narrower security model:
         </p>
         <ul className="list-disc list-inside space-y-1 text-sm mt-2 text-zinc-400">
-          <li><strong>Repo-scoped installs</strong> — install the app only on repos claws should access</li>
+          <li><strong>Repo-scoped installs</strong> — install the app only on repos agents should access</li>
           <li><strong>Permission-scoped access</strong> — request only contents, pull requests, checks, and any issue-tracker permissions needed by the workflow</li>
-          <li><strong>Short-lived tokens</strong> — the hub mints installation tokens when a claw needs repo access instead of storing a long-lived user token</li>
+          <li><strong>Short-lived tokens</strong> — ElasticClaw Server mints installation tokens when an agent needs repo access instead of storing a long-lived user token</li>
           <li><strong>Bot identity</strong> — commits, comments, and PRs are attributed to the app instead of a maintainer's personal account</li>
           <li><strong>Revocation boundary</strong> — uninstalling or restricting the app cuts off access without rotating a human's credentials</li>
         </ul>
         <p className="mt-3">
           In practice, this lets each workspace declare the repos it needs and
-          lets the hub mint a token for that installation at claw creation time.
+          lets ElasticClaw Server mint a token for that installation at agent creation time.
         </p>
       </Section>
 
@@ -88,7 +88,7 @@ export default function GitHubIntegrationPage() {
       <Section title="3. Add the app to a workspace">
         <p>
           Store GitHub App credentials on the workspace that needs repository
-          access. You can use the hub settings UI or the CLI:
+          access. You can use the server settings UI or the CLI:
         </p>
         <CodeBlock lang="bash">{`elasticclaw github-app create app-bot \\
   --workspace my-app \\
@@ -99,7 +99,7 @@ export default function GitHubIntegrationPage() {
 
 elasticclaw github-app list --workspace my-app`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
-          The hub tries the GitHub Apps configured on the workspace to find an
+          ElasticClaw Server tries the GitHub Apps configured on the workspace to find an
           installation that covers the requested repos. One app can cover
           multiple orgs if installed on all of them.
         </p>
@@ -107,7 +107,7 @@ elasticclaw github-app list --workspace my-app`}</CodeBlock>
 
       <Section title="Workspace repo access">
         <p>
-          Workspaces can specify which repos the claw needs access to:
+          Workspaces can specify which repos the agent needs access to:
         </p>
         <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
 repositories:
@@ -116,7 +116,7 @@ repositories:
   - repo: "my-org/other-repo"
     permissions: "read"`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
-          The hub resolves the right GitHub App installation and mints a token
+          ElasticClaw Server resolves the right GitHub App installation and mints a token
           with the requested repo permissions. <code>permissions</code> is either
           <code>read</code> or <code>write</code>; omitted values default to read.
         </p>

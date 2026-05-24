@@ -27,8 +27,8 @@ export default function TroubleshootingPage() {
           workflows, check that the issue tracker is configured in the workspace
           and that the webhook URL includes the workspace name:
         </p>
-        <CodeBlock lang="text">{`https://hub.example.com/api/workspaces/my-workspace/webhooks/linear
-https://hub.example.com/api/workspaces/my-workspace/webhooks/github-issues`}</CodeBlock>
+        <CodeBlock lang="text">{`https://server.example.com/api/workspaces/my-workspace/webhooks/linear
+https://server.example.com/api/workspaces/my-workspace/webhooks/github-issues`}</CodeBlock>
         <p>
           Configure tokens and webhook signing secrets in{" "}
           <strong>Settings → Workspaces → Issue Trackers</strong>.

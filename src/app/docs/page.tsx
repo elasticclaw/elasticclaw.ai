@@ -9,19 +9,19 @@ export default function DocsOverviewPage() {
   return (
     <DocsPage
       title="Overview"
-      description="ElasticClaw is an open source workflow system for coding agents: issue tracker triggers, workflow pipelines, scoped GitHub credentials, and self-hosted execution."
+      description="ElasticClaw is an open source workflow system for coding agents: issue tracker triggers, workflow stages, scoped GitHub credentials, and self-hosted execution."
     >
       <Section title="What is ElasticClaw?">
         <p>
-          ElasticClaw turns external events into repeatable coding pipelines. A
+          ElasticClaw turns external events into repeatable coding workflows. A
           workflow can watch Linear, GitHub Issues, Shortcut, webhooks, GitHub
           releases, or any other signal you want to use as a trigger; start the
           right agent from the right workspace; grant scoped GitHub access; drive
           the pull request through review and CI; and tear down the workspace
-          when the job reaches a terminal state.
+          when the work reaches a terminal state.
         </p>
         <p>
-          Sandboxes are a critical part of the workflow: they give each job an
+          Sandboxes are a critical part of the workflow: they give each agent an
           isolated place to clone, test, build, and push code. ElasticClaw adds
           the workflow layer around that execution environment: triggers,
           workflow gates, credentials, context, and lifecycle policy that let
@@ -31,7 +31,7 @@ export default function DocsOverviewPage() {
         <p>The core components are:</p>
         <div className="grid gap-4 mt-3 sm:grid-cols-2">
           <div className="rounded-lg border border-zinc-800 bg-zinc-900/45 p-4">
-            <h3 className="font-semibold text-zinc-100">Hub</h3>
+            <h3 className="font-semibold text-zinc-100">ElasticClaw Server</h3>
             <p className="mt-1 text-sm text-zinc-400">
               The self-hosted control point: web dashboard, API,{" "}
               <code>hub.yaml</code>, workspace-managed GitHub Apps, MCP servers,
@@ -42,8 +42,8 @@ export default function DocsOverviewPage() {
             <h3 className="font-semibold text-zinc-100">Workflows</h3>
             <p className="mt-1 text-sm text-zinc-400">
               Workstream definitions that decide when to start work, which
-              workspace to use, what access to grant, and which pipeline drives
-              the job through PR review, CI, merge, and cleanup.
+              workspace to use, what access to grant, and which stages drive
+              the work through PR review, CI, merge, and cleanup.
             </p>
           </div>
           <div className="rounded-lg border border-zinc-800 bg-zinc-900/45 p-4">
@@ -58,15 +58,15 @@ export default function DocsOverviewPage() {
             <h3 className="font-semibold text-zinc-100">Sandboxes</h3>
             <p className="mt-1 text-sm text-zinc-400">
               Isolated execution environments from providers like Daytona,
-              Replicated CMX, or exedev where claws clone, test, build, and
+              Replicated CMX, or exedev where agents clone, test, build, and
               push code.
             </p>
           </div>
           <div className="rounded-lg border border-zinc-800 bg-zinc-900/45 p-4">
             <h3 className="font-semibold text-zinc-100">Models and tools</h3>
             <p className="mt-1 text-sm text-zinc-400">
-              Named LLM keys, model defaults, and MCP servers that give claws
-              the reasoning model and external tools required for the job.
+              Named LLM keys, model defaults, and MCP servers that give agents
+              the reasoning model and external tools required for the work.
             </p>
           </div>
           <div className="rounded-lg border border-zinc-800 bg-zinc-900/45 p-4">
@@ -89,21 +89,21 @@ brew install elasticclaw`}</CodeBlock>
         <ol className="list-decimal list-inside space-y-2 text-sm text-zinc-400 mt-2">
           <li>
             <Link href="/docs/installation" className="text-cyan-400 hover:underline">
-              Deploy a hub
+              Deploy ElasticClaw Server
             </Link>{" "}
-            so workflows, credentials, and claw lifecycle state have a home.
+            so workflows, credentials, and agent lifecycle state have a home.
           </li>
           <li>
             <Link href="/docs/providers" className="text-cyan-400 hover:underline">
               Configure a sandbox provider
             </Link>{" "}
-            so claws have an isolated place to clone, test, build, and push code.
+            so agents have an isolated place to clone, test, build, and push code.
           </li>
           <li>
             <Link href="/docs/github-integration" className="text-cyan-400 hover:underline">
               Configure a GitHub App
             </Link>{" "}
-            so claws can receive scoped repo credentials and open pull requests.
+            so agents can receive scoped repo credentials and open pull requests.
           </li>
           <li>
             <Link href="/docs/workspaces" className="text-cyan-400 hover:underline">
@@ -187,7 +187,7 @@ brew install elasticclaw`}</CodeBlock>
           </li>
           <li>
             <Link href="/docs/hub" className="text-cyan-400 hover:underline">
-              Hub Config
+              Server Config
             </Link>{" "}
             — configure providers, workspaces, auth, secrets, MCP servers
           </li>
@@ -201,13 +201,13 @@ brew install elasticclaw`}</CodeBlock>
             <Link href="/docs/workflows" className="text-cyan-400 hover:underline">
               Workflows
             </Link>{" "}
-            — define triggers, pipelines, access, and lifecycle rules
+            — define triggers, stages, access, and lifecycle rules
           </li>
           <li>
             <Link href="/docs/concepts" className="text-cyan-400 hover:underline">
               Concepts
             </Link>{" "}
-            — architecture, workflow pipeline, claw lifecycle
+            — architecture, workflow stages, agent lifecycle
           </li>
           <li>
             <Link href="/docs/mcp-servers" className="text-cyan-400 hover:underline">
@@ -219,7 +219,7 @@ brew install elasticclaw`}</CodeBlock>
             <Link href="/docs/providers" className="text-cyan-400 hover:underline">
               Sandbox Providers
             </Link>{" "}
-            — configure where claws run: Daytona, Replicated CMX, or exedev
+            — configure where agents run: Daytona, Replicated CMX, or exedev
           </li>
         </ul>
       </Section>

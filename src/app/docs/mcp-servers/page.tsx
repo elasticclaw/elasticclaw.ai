@@ -28,7 +28,7 @@ export default function MCPServersPage() {
 
       <Section title="Configure an MCP server">
         <p>
-          Configure MCP server definitions in the hub settings UI under{" "}
+          Configure MCP server definitions in the server settings UI under{" "}
           <strong>Settings → MCP Servers</strong>. Workspaces opt into the
           servers they need from <code>elasticclaw-config.yaml</code>.
         </p>
@@ -70,7 +70,7 @@ export default function MCPServersPage() {
       <Section title="Enabling in workspaces">
         <p>
           Add <code className="text-cyan-300">mcps</code> to your workspace's
-          <code>elasticclaw-config.yaml</code> to enable specific MCP servers for claws
+          <code>elasticclaw-config.yaml</code> to enable specific MCP servers for agents
           created from that workspace:
         </p>
         <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
@@ -79,7 +79,7 @@ mcps:
     config:
       repository: "my-org/my-repo"   # workspace-level override`}</CodeBlock>
         <p>
-          Each claw will start the configured MCP servers as subprocesses and register
+          Each agent will start the configured MCP servers as subprocesses and register
           their tools with the OpenClaw gateway.
         </p>
       </Section>
