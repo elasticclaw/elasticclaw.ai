@@ -15,6 +15,26 @@ interface ReleaseDetail {
 
 // This map is updated by the release automation workflow.
 const RELEASE_DETAILS: Record<string, ReleaseDetail> = {
+  "2026.5.24": {
+    version: "2026.5.24",
+    date: "2026-05-25",
+    title: "No More Missed Triggers",
+    whatsNew: [
+    "Added a polling mechanism that captures workflow triggers that were previously missed, ensuring no events slip through the cracks.",
+    "Introduced upsert support for pushed workflows, allowing seamless create-or-update operations in a single call.",
+    "Renamed core entities: ‘claws’ are now called ‘agents’ and ‘workflow jobs’ are now ‘stages’, aligning terminology with industry standards.",
+    ],
+    improvements: [
+    "Optimized Linear issue tracker configuration, simplifying story-to-workflow mapping and reducing setup friction.",
+    "Implemented logic to skip duplicate pipeline-stage transitions, cutting down unnecessary processing and improving performance.",
+    ],
+    fixes: [
+    "Blocked duplicate workflow issue creation, eliminating redundant records.",
+    "Fixed static routing in workspace settings, restoring correct navigation for all workspace contexts.",
+    "Resolved multiple workspace-related bugs that caused UI glitches and inconsistent state.",
+    ],
+    rawChangelog: "fcd0e7f Poll missed workflow triggers (#318) (Marc Campbell)\nd264757 Rename claws to agents and workflow jobs to stages (#315) (Marc Campbell)\n57d992a Skip duplicate pipeline stage transitions (#314) (Marc Campbell)\na0bd465 Upsert pushed workflows (#312) (Marc Campbell)\nee436b9 Configure Linear story workflow (#311) (Marc Campbell)\n4f7e7a9 Prevent duplicate workflow issue claws (#310) (Marc Campbell)\n4aa3cc8 Improve Linear issue tracker setup (#308) (Marc Campbell)\n9a0548f Fix workspace settings static routing (#307) (Marc Campbell)\n5d31a5a fixes for workspaces (#306) (Marc Campbell)\n4f37314 workspaces and workflows (#297) (Marc Campbell)",
+  },
   "2026.5.23": {
     version: "2026.5.23",
     date: "2026-05-23",
