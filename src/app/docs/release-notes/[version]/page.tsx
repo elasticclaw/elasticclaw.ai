@@ -17,7 +17,7 @@ interface ReleaseDetail {
 const RELEASE_DETAILS: Record<string, ReleaseDetail> = {
   "2026.5.24": {
     version: "2026.5.24",
-    date: "2026-05-25",
+    date: "2026-05-24",
     title: "No More Missed Triggers",
     whatsNew: [
     "Added a polling mechanism that captures workflow triggers that were previously missed, ensuring no events slip through the cracks.",
