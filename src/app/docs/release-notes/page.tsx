@@ -16,7 +16,7 @@ interface Release {
 const RELEASES: Release[] = [
   {
     version: "2026.5.24",
-    date: "2026-05-25",
+    date: "2026-05-24",
     title: "No More Missed Triggers",
     summary: "Catch every trigger, streamline agents, and clean up duplicate workflow noise.",
   },
