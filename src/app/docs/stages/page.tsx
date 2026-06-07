@@ -51,6 +51,56 @@ export default function StagesPage() {
         PR was closed without merging. Decide: reopen, new PR, or ask the user.`}</CodeBlock>
       </Section>
 
+      <Section title="Tool gates">
+        <p>
+          Stages can run a command and evaluate its structured output before
+          deciding what happens next. The command runs in the agent workspace,
+          and the named output is available to later templates as
+          <code>{"{{ .Outputs.<name>.<field> }}"}</code>.
+        </p>
+        <CodeBlock lang="yaml">{`stages:
+  - id: validate
+    label: Validate
+    triggers:
+      - message_contains: "[DONE]"
+    on_enter:
+      run:
+        command: python3 scripts/check.py
+        output: check
+        timeout: 10m
+    gate:
+      output: check
+      pass:
+        path: status
+        values: [passed, skipped]
+      fail:
+        path: status
+        values: [failed, error]
+      required: true
+
+  - id: create_pr
+    triggers:
+      - gate_result:
+          stage: validate
+          verdict: pass
+    on_enter:
+      inject: |
+        Validation passed with status {{ .Outputs.check.status }}.
+
+  - id: fix
+    triggers:
+      - gate_result:
+          stage: validate
+          verdict: fail
+    on_enter:
+      inject: |
+        Validation failed: {{ .Outputs.check.reason }}`}</CodeBlock>
+        <Note>
+          Gates are deterministic. They inspect command output; they do not ask
+          a model to reinterpret logs.
+        </Note>
+      </Section>
+
       <Section title="Stage fields">
         <div className="space-y-3 text-sm text-zinc-400">
           <p><code className="text-cyan-300">id</code> — Unique stage identifier (kebab-case)</p>
@@ -59,6 +109,7 @@ export default function StagesPage() {
           <p><code className="text-cyan-300">terminal: true</code> — Marks a terminal stage (the agent will be terminated)</p>
           <p><code className="text-cyan-300">triggers</code> — Conditions that transition into this stage</p>
           <p><code className="text-cyan-300">on_enter</code> — Actions to run when entering this stage</p>
+          <p><code className="text-cyan-300">gate</code> — Optional deterministic pass/fail evaluation over a named run output</p>
         </div>
       </Section>
 
@@ -66,6 +117,9 @@ export default function StagesPage() {
         <p>Each trigger defines a condition. Exactly one field should be set per trigger:</p>
         <div className="space-y-3 text-sm text-zinc-400 mt-2">
           <p><code className="text-cyan-300">message_contains: "[DONE]"</code> — Matches when an agent message contains this substring (case-insensitive)</p>
+          <p><code className="text-cyan-300">gate_result</code> — Matches a previous gate verdict, such as <code>pass</code> or <code>fail</code></p>
+          <p><code className="text-cyan-300">judge_verdict</code> — Matches a model review verdict from a judge stage</p>
+          <p><code className="text-cyan-300">output_matches</code> — Matches a persisted output path against one or more expected values</p>
           <p><code className="text-cyan-300">pr_merged:</code> — Triggers when the tracked PR is merged (key presence alone activates it)</p>
           <p><code className="text-cyan-300">pr_closed:</code> — Triggers when the tracked PR is closed without merging</p>
           <p><code className="text-cyan-300">pr_conditions:</code> — Compound conditions that must all pass:</p>
@@ -80,6 +134,8 @@ export default function StagesPage() {
       <Section title="On-enter actions">
         <div className="space-y-3 text-sm text-zinc-400">
           <p><code className="text-cyan-300">inject</code> — Sends a user message to the agent</p>
+          <p><code className="text-cyan-300">run</code> — Runs a command in the agent workspace and can persist stdout as structured output</p>
+          <p><code className="text-cyan-300">judge</code> — Runs a model-backed review over bounded inputs and persists a verdict</p>
           <p><code className="text-cyan-300">move_issue</code> — Moves the associated Linear, Shortcut, or GitHub issue. It accepts a status string or <code>{"{ status, issue_id }"}</code>.</p>
           <p><code className="text-cyan-300">close_issue: true</code> — Closes the associated GitHub issue</p>
           <p><code className="text-cyan-300">add_labels</code> — Adds labels to the associated GitHub issue</p>
