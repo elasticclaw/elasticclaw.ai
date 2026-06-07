@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.6.7",
+    date: "2026-06-07",
+    title: "Deterministic Gates, Docker Ready",
+    summary: "Deterministic gate testing and Docker dev stacks arrive, plus a wave of stability upgrades.",
+  },
+  {
     version: "2026.5.24",
     date: "2026-05-24",
     title: "No More Missed Triggers",
