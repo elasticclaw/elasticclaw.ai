@@ -119,7 +119,6 @@ stages:
         path: status
         values:
           - clean
-          - skipped
       fail:
         path: status
         values:
@@ -152,7 +151,9 @@ stages:
         <Note>
           Commands should print a JSON object to stdout. ElasticClaw also
           accepts noisy stdout when the final line is JSON, such as shell trace
-          output followed by <code>{"{\"status\":\"clean\"}"}</code>.
+          output followed by <code>{"{\"status\":\"clean\"}"}</code>.{" "}
+          <code>treat_skipped_as_pass</code> is for missing or skipped outputs
+          that should continue through <code>gate_result: pass</code>.
         </Note>
       </Section>
 
@@ -187,6 +188,11 @@ stages:
     on_enter:
       inject: |
         Review failed. Apply the requested fixes and say [READY_FOR_REVIEW].`}</CodeBlock>
+        <Note>
+          <code>judge_verdict</code> matches the most recent judge verdict for
+          the workflow. Keep judge branches unambiguous; use deterministic gates
+          when a transition must be scoped to a specific tool stage.
+        </Note>
       </Section>
 
       <Section title="CLI commands">
