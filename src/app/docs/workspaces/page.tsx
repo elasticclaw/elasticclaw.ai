@@ -63,6 +63,48 @@ elasticclaw workspace show my-app
 elasticclaw workspace rm my-app`}</CodeBlock>
       </Section>
 
+      <Section title="Workspace scripts">
+        <p>
+          Workspace scripts are copied into each agent workspace under{" "}
+          <code>scripts/</code>. Use them for deterministic workflow steps such
+          as tests, scanners, deploy-preview checks, or build gates.
+        </p>
+        <CodeBlock lang="text">{`.elasticclaw/workspaces/my-app/
+|-- elasticclaw-config.yaml
+|-- AGENTS.md
+|-- TOOLS.md
+\`-- scripts/
+    |-- validate.py
+    \`-- checks/
+        \`-- security.py`}</CodeBlock>
+        <CodeBlock lang="python">{`# scripts/validate.py
+import json
+
+print("running validation...")
+print(json.dumps({
+    "status": "clean",
+    "reason": "No issues found",
+}))`}</CodeBlock>
+        <CodeBlock lang="yaml">{`stages:
+  - id: validation
+    triggers:
+      - message_contains: "[DONE]"
+    on_enter:
+      run:
+        command: python3 scripts/validate.py
+        output: validation
+    gate:
+      output: validation
+      pass:
+        path: status
+        values: [clean]`}</CodeBlock>
+        <Note>
+          <code>elasticclaw workspace push</code> includes files under{" "}
+          <code>scripts/</code> recursively. Hidden script files and hidden
+          script directories are skipped.
+        </Note>
+      </Section>
+
       <Note>
         Workflows belong to exactly one workspace on ElasticClaw Server. Put shared runtime
         policy in the workspace and event-specific behavior in each workflow file.

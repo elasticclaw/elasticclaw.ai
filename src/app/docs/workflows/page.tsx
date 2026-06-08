@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DocsPage, CodeBlock, Section } from "@/components/docs-page";
+import { DocsPage, CodeBlock, Section, Note } from "@/components/docs-page";
 
 export const metadata: Metadata = { title: "Workflows" };
 
@@ -94,6 +94,105 @@ stages:
           <p><code className="text-cyan-300">enable_manual_trigger</code> — Allow dashboard and CLI manual triggers.</p>
           <p><code className="text-cyan-300">stages</code> — Lifecycle stages used by the workflow.</p>
         </div>
+      </Section>
+
+      <Section title="Run commands and gates">
+        <p>
+          Workflow stages can run deterministic commands in the agent workspace,
+          persist structured output, and use gates to choose the next stage.
+          This is useful for tests, security scanners, deploy previews,
+          CodeBuild jobs, or any tool that can print JSON.
+        </p>
+        <CodeBlock lang="yaml">{`stages:
+  - id: validation
+    label: Validation
+    triggers:
+      - message_contains: "[DONE]"
+    on_enter:
+      run:
+        command: python3 scripts/validate.py
+        output: validation
+        timeout: 30m
+    gate:
+      output: validation
+      pass:
+        path: status
+        values:
+          - clean
+      fail:
+        path: status
+        values:
+          - issues
+          - error
+      required: true
+      treat_skipped_as_pass: true
+
+  - id: create_pr
+    label: Create PR
+    triggers:
+      - gate_result:
+          stage: validation
+          verdict: pass
+    on_enter:
+      inject: |
+        Validation status: {{ .Outputs.validation.status }}.
+        Create the PR now.
+
+  - id: fix_validation
+    label: Fix Validation
+    triggers:
+      - gate_result:
+          stage: validation
+          verdict: fail
+    on_enter:
+      inject: |
+        Validation failed: {{ .Outputs.validation.reason }}
+        Fix the issue, commit locally, then say [DONE].`}</CodeBlock>
+        <Note>
+          Commands should print a JSON object to stdout. ElasticClaw also
+          accepts noisy stdout when the final line is JSON, such as shell trace
+          output followed by <code>{"{\"status\":\"clean\"}"}</code>.{" "}
+          <code>treat_skipped_as_pass</code> is for missing or skipped outputs
+          that should continue through <code>gate_result: pass</code>.
+        </Note>
+      </Section>
+
+      <Section title="Review stages">
+        <p>
+          A judge stage runs a model-backed review over bounded inputs such as
+          the issue, current diff, captured test output, or selected files.
+          Use judge stages for subjective review, and gates for deterministic
+          tool results.
+        </p>
+        <CodeBlock lang="yaml">{`stages:
+  - id: review
+    label: Review
+    triggers:
+      - message_contains: "[READY_FOR_REVIEW]"
+    on_enter:
+      judge:
+        model: anthropic/claude-sonnet-4-6
+        inputs:
+          - issue
+          - git_diff
+          - test_output
+        output: review_result
+        instructions: |
+          Decide whether the implementation satisfies the issue.
+        require:
+          verdict: pass
+
+  - id: fix_review
+    triggers:
+      - judge_verdict: fail
+    on_enter:
+      inject: |
+        Review failed. Apply the requested fixes and say [READY_FOR_REVIEW].`}</CodeBlock>
+        <Note>
+          <code>judge_verdict</code> matches the most recent judge verdict for
+          the workflow. Keep judge branches unambiguous; use deterministic gates
+          when a transition must be scoped to a specific tool stage.
+        </Note>
       </Section>
 
       <Section title="CLI commands">
