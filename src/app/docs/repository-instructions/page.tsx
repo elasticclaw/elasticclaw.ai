@@ -75,7 +75,7 @@ ElasticClaw detected repository-owned agent instruction files. Read the relevant
       <Section title="Workspace AGENTS.md reference">
         <p>
           ElasticClaw also ensures the workspace-level <code>AGENTS.md</code>{" "}
-          points agents to the generated index. If the workspace already has an
+          points agents to the generated index. If the workspace already has an{" "}
           <code>AGENTS.md</code>, ElasticClaw appends the repository instruction
           section once. It does not overwrite existing workspace instructions.
         </p>
