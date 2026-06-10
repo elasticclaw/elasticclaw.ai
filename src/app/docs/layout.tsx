@@ -51,6 +51,7 @@ const NAV_ITEMS: NavItem[] = [
     label: "Workspaces",
     children: [
       { href: "/docs/workspaces", label: "Workspace Config" },
+      { href: "/docs/repository-instructions", label: "Repository Instructions" },
       { href: "/docs/secrets", label: "Secrets" },
     ],
   },
