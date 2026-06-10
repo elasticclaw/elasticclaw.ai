@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { DocsPage, CodeBlock, Section, Note } from "@/components/docs-page";
 
 export const metadata: Metadata = { title: "Server Config" };
@@ -76,9 +77,31 @@ branding:
   app_name: My Platform
   logo_url: https://example.com/logo.png
 
+# Hub-owned artifact storage
+artifact_storage:
+  backend: local
+  local:
+    path: /var/lib/elasticclaw/artifacts
+
 # SSH keys added to every sandbox
 ssh_public_keys:
   - ssh-ed25519 AAAAC3NzaC...`}</CodeBlock>
+      </Section>
+
+      <Section title="Artifact storage">
+        <p>
+          <code>artifact_storage</code> controls where the server stores
+          hub-owned artifacts such as checkpoint payloads, future volumes, and
+          other large non-Git data. The default is local storage under the hub
+          data directory.
+        </p>
+        <p className="mt-2">
+          Use{" "}
+          <Link href="/docs/artifact-storage" className="text-cyan-300">
+            Artifact Storage
+          </Link>{" "}
+          for local path and S3-compatible object store examples.
+        </p>
       </Section>
 
       <Section title="External workspaces and workflows">
@@ -118,6 +141,7 @@ ssh_public_keys:
             { field: "secrets", desc: "Named server-level secret values for server-managed services. Workspace runtime secrets are managed with elasticclaw secret." },
             { field: "auth", desc: "GitHub OAuth and tag-based access control for the web UI." },
             { field: "branding", desc: "White-label: app_name, logo_url." },
+            { field: "artifact_storage", desc: "Local or S3-compatible storage for hub-owned artifacts." },
             { field: "ssh_public_keys", desc: "Extra SSH keys injected into every provisioned sandbox." },
             { field: "bridge_image", desc: "OCI artifact reference for claw-bridge. Defaults to ghcr.io/elasticclaw/claw-bridge:latest." },
           ].map((row) => (

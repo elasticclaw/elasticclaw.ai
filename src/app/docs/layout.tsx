@@ -32,6 +32,7 @@ const NAV_ITEMS: NavItem[] = [
     label: "Configuration",
     children: [
       { href: "/docs/hub", label: "Server Config" },
+      { href: "/docs/artifact-storage", label: "Artifact Storage" },
       { href: "/docs/authentication", label: "Authentication" },
     ],
   },
