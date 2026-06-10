@@ -52,15 +52,17 @@ export default function DependencyUpdatesPage() {
           <p>
             <code className="text-cyan-300">go</code> - Detects{" "}
             <code>go.mod</code> and <code>go.sum</code>. Runs{" "}
-            <code>go list -m -u -json all</code>, <code>go get -u ./...</code>,
-            and <code>go mod tidy</code>.
+            <code>go list -m -u -json all</code>, applies selected updates with{" "}
+            <code>go get module@version</code>, and runs <code>go mod tidy</code>
+            when updates are applied.
           </p>
           <p>
             <code className="text-cyan-300">npm</code> - Detects{" "}
             <code>package.json</code> with <code>package-lock.json</code> or{" "}
             <code>npm-shrinkwrap.json</code>. Runs{" "}
             <code>npm outdated --json</code> and{" "}
-            <code>npm update --package-lock-only</code>.
+            <code>npm update --package-lock-only package</code> for selected
+            updates.
           </p>
         </div>
       </Section>
@@ -102,8 +104,16 @@ export default function DependencyUpdatesPage() {
           </p>
           <p>
             <code className="text-cyan-300">include_major</code> - Defaults to
-            false. Major npm updates are reported as skipped when the latest
-            version is a major bump beyond the wanted version.
+            false. Major updates are reported as skipped instead of being
+            applied.
+          </p>
+          <p>
+            <code className="text-cyan-300">separate_major</code>,{" "}
+            <code className="text-cyan-300">separate_security</code>, and{" "}
+            <code className="text-cyan-300">separate_runtime</code> - Metadata
+            controls for later PR grouping stages. All three default to true;
+            the dependency update action records grouping metadata, and later
+            stages decide how to split or combine PRs.
           </p>
           <p>
             <code className="text-cyan-300">allow</code> and{" "}
