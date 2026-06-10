@@ -60,6 +60,7 @@ const NAV_ITEMS: NavItem[] = [
     children: [
       { href: "/docs/workflows", label: "Overview" },
       { href: "/docs/stages", label: "Stages" },
+      { href: "/docs/cron-triggers", label: "Cron Triggers" },
       { href: "/docs/examples", label: "Examples" },
       { href: "/docs/examples/bugfix-linear", label: "Bug fixes (Linear)" },
       { href: "/docs/examples/feature-github", label: "Feature work (GitHub)" },
