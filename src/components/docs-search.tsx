@@ -20,6 +20,7 @@ const DOCS_INDEX: SearchDoc[] = [
   { title: "Workflow Stages", href: "/docs/stages", excerpt: "Workflow state machines for created, done, CI, review, and merge behavior.", tags: ["stages", "workflow", "lifecycle"] },
   { title: "Server Config", href: "/docs/hub", excerpt: "hub.yaml reference — providers, LLM keys, authentication, and server-level settings.", tags: ["config", "yaml", "server"] },
   { title: "Artifact Storage", href: "/docs/artifact-storage", excerpt: "Configure local or S3-compatible storage for hub-owned artifacts.", tags: ["storage", "artifact", "s3", "local", "checkpoint", "volume"] },
+  { title: "Workflow Volumes", href: "/docs/workflow-volumes", excerpt: "Attach hub-managed artifact-backed directories to workflow agents for non-Git data.", tags: ["workflow", "volumes", "artifact", "storage", "lease", "cache"] },
   { title: "Providers", href: "/docs/providers", excerpt: "Sandbox providers: Daytona, Replicated CMX, and exedev.", tags: ["providers", "daytona", "cmx", "sandbox"] },
   { title: "Daytona", href: "/docs/providers/daytona", excerpt: "Configure Daytona cloud development environments as sandbox providers.", tags: ["providers", "daytona", "sandbox", "snapshots"] },
   { title: "Replicated CMX", href: "/docs/providers/replicated", excerpt: "Configure Replicated Compatibility Matrix sandboxes for ElasticClaw.", tags: ["providers", "replicated", "cmx", "sandbox"] },

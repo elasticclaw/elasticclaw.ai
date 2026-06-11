@@ -64,6 +64,7 @@ const NAV_ITEMS: NavItem[] = [
       { href: "/docs/stages", label: "Stages" },
       { href: "/docs/cron-triggers", label: "Cron Triggers" },
       { href: "/docs/dependency-updates", label: "Dependency Updates" },
+      { href: "/docs/workflow-volumes", label: "Workflow Volumes" },
       { href: "/docs/examples", label: "Examples" },
       { href: "/docs/examples/bugfix-linear", label: "Bug fixes (Linear)" },
       { href: "/docs/examples/feature-github", label: "Feature work (GitHub)" },
