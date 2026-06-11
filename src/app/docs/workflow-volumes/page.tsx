@@ -112,7 +112,7 @@ stages:
       <Section title="Mount path guidance">
         <ul className="list-disc pl-6 space-y-2">
           <li>
-            Mount volumes outside <code>/home/daytona/.openclaw/workspace</code>
+            Mount volumes outside <code>/home/daytona/.elasticclaw/workspace</code>
             and outside <code>/workspace</code>. Repository paths are blocked so
             volume files do not look like normal Git working tree files.
           </li>
