@@ -67,7 +67,7 @@ ELASTICCLAW_HUB_CONFIG=/path/to/hub.yaml elasticclaw hub`}</CodeBlock>
           <li><strong>Providers</strong> — Daytona, Replicated CMX, exe.dev</li>
           <li><strong>LLM Keys</strong> — Named API keys with default model</li>
           <li><strong>GitHub Apps</strong> — App credentials with live permission checks</li>
-          <li><strong>Issue Trackers</strong> — Linear, Shortcut, GitHub Issues</li>
+          <li><strong>Issue Trackers</strong> — Linear, Jira, Shortcut, GitHub Issues</li>
           <li><strong>Workflows</strong> — Create, edit, enable/disable workflows</li>
           <li><strong>Secrets</strong> — Manage secret values (names only in UI, values hidden)</li>
           <li><strong>MCP Servers</strong> — Configure npx/uvx/docker/sse tool servers</li>
