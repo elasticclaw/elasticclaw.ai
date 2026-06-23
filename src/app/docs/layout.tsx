@@ -76,6 +76,7 @@ const NAV_ITEMS: NavItem[] = [
     label: "Issue Trackers",
     children: [
       { href: "/docs/linear-integration", label: "Linear" },
+      { href: "/docs/jira-integration", label: "Jira" },
       { href: "/docs/github-issues", label: "GitHub Issues" },
       { href: "/docs/shortcut-integration", label: "Shortcut" },
     ],
