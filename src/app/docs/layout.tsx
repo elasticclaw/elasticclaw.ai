@@ -43,6 +43,7 @@ const NAV_ITEMS: NavItem[] = [
       { href: "/docs/providers", label: "Provider Overview" },
       { href: "/docs/providers/daytona", label: "Daytona" },
       { href: "/docs/providers/replicated", label: "Replicated CMX" },
+      { href: "/docs/providers/aws-lambda-microvms", label: "AWS Lambda MicroVMs" },
       { href: "/docs/exe-dev", label: "exedev" },
     ],
   },
@@ -76,6 +77,7 @@ const NAV_ITEMS: NavItem[] = [
     label: "Issue Trackers",
     children: [
       { href: "/docs/linear-integration", label: "Linear" },
+      { href: "/docs/jira-integration", label: "Jira" },
       { href: "/docs/github-issues", label: "GitHub Issues" },
       { href: "/docs/shortcut-integration", label: "Shortcut" },
     ],

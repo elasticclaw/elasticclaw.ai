@@ -137,7 +137,7 @@ export default function StagesPage() {
           <p><code className="text-cyan-300">run</code> — Runs a command in the agent workspace and can persist stdout as structured output</p>
           <p><code className="text-cyan-300">dependency_updates</code> — Updates Go and npm dependencies with native tooling and persists structured output</p>
           <p><code className="text-cyan-300">judge</code> — Runs a model-backed review over bounded inputs and persists a verdict</p>
-          <p><code className="text-cyan-300">move_issue</code> — Moves the associated Linear, Shortcut, or GitHub issue. It accepts a status string or <code>{"{ status, issue_id }"}</code>.</p>
+          <p><code className="text-cyan-300">move_issue</code> — Moves the associated Linear, Jira, Shortcut, or GitHub issue. It accepts a status string or <code>{"{ status, issue_id }"}</code>.</p>
           <p><code className="text-cyan-300">close_issue: true</code> — Closes the associated GitHub issue</p>
           <p><code className="text-cyan-300">add_labels</code> — Adds labels to the associated GitHub issue</p>
           <p><code className="text-cyan-300">remove_labels</code> — Removes labels from the associated GitHub issue</p>

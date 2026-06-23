@@ -14,7 +14,7 @@ export default function DocsOverviewPage() {
       <Section title="What is ElasticClaw?">
         <p>
           ElasticClaw turns external events into repeatable coding workflows. A
-          workflow can watch Linear, GitHub Issues, Shortcut, webhooks, GitHub
+          workflow can watch Linear, Jira, GitHub Issues, Shortcut, webhooks, GitHub
           releases, or any other signal you want to use as a trigger; start the
           right agent from the right workspace; grant scoped GitHub access; drive
           the pull request through review and CI; and tear down the workspace
@@ -72,7 +72,7 @@ export default function DocsOverviewPage() {
           <div className="rounded-lg border border-zinc-800 bg-zinc-900/45 p-4">
             <h3 className="font-semibold text-zinc-100">Work sources</h3>
             <p className="mt-1 text-sm text-zinc-400">
-              Issue trackers and event sources such as Linear, GitHub Issues,
+              Issue trackers and event sources such as Linear, Jira, GitHub Issues,
               Shortcut, webhooks, releases, and manual triggers.
             </p>
           </div>
@@ -115,6 +115,10 @@ brew install elasticclaw`}</CodeBlock>
             Connect an issue tracker such as{" "}
             <Link href="/docs/linear-integration" className="text-cyan-400 hover:underline">
               Linear
+            </Link>
+            ,{" "}
+            <Link href="/docs/jira-integration" className="text-cyan-400 hover:underline">
+              Jira
             </Link>
             ,{" "}
             <Link href="/docs/github-issues" className="text-cyan-400 hover:underline">

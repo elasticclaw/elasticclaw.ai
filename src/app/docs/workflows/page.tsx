@@ -86,11 +86,13 @@ stages:
           <p><code className="text-cyan-300">enabled</code> — Set false to pause the workflow.</p>
           <p><code className="text-cyan-300">trigger.github_issues</code> — GitHub Issues source. Supports issue events, repositories, states, labels, labelers, and assignee filters.</p>
           <p><code className="text-cyan-300">trigger.linear</code> — Linear source. Supports status-change events, states, team, labels, and assignee filters.</p>
+          <p><code className="text-cyan-300">trigger.jira</code> — Jira source. Supports status-change events, project keys, states, labels, and assignee filters.</p>
           <p><code className="text-cyan-300">provider</code> — Sandbox provider override for agents created by this workflow.</p>
           <p><code className="text-cyan-300">tags</code> and <code className="text-cyan-300">color</code> — Dashboard metadata for created agents.</p>
           <p><code className="text-cyan-300">secret_refs</code> — Environment variable to workspace secret name map.</p>
           <p><code className="text-cyan-300">inputs</code> — Manual trigger inputs.</p>
           <p><code className="text-cyan-300">concurrency_group</code> — Limit parallel agents by group.</p>
+          <p><code className="text-cyan-300">working_status</code> — Move the source issue to this status when the agent starts.</p>
           <p><code className="text-cyan-300">enable_manual_trigger</code> — Allow dashboard and CLI manual triggers.</p>
           <p><code className="text-cyan-300">stages</code> — Lifecycle stages used by the workflow.</p>
         </div>
