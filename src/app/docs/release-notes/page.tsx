@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.6.23",
+    date: "2026-06-23",
+    title: "MicroVMs Unleashed",
+    summary: "Energize your pipelines with MicroVM sandboxing, fresh auth flows, and smarter cron & artifact handling.",
+  },
+  {
     version: "2026.6.7",
     date: "2026-06-07",
     title: "Deterministic Gates, Docker Ready",
