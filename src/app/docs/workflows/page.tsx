@@ -92,6 +92,7 @@ stages:
           <p><code className="text-cyan-300">secret_refs</code> — Environment variable to workspace secret name map.</p>
           <p><code className="text-cyan-300">inputs</code> — Manual trigger inputs.</p>
           <p><code className="text-cyan-300">concurrency_group</code> — Limit parallel agents by group.</p>
+          <p><code className="text-cyan-300">working_status</code> — Move the source issue to this status when the agent starts.</p>
           <p><code className="text-cyan-300">enable_manual_trigger</code> — Allow dashboard and CLI manual triggers.</p>
           <p><code className="text-cyan-300">stages</code> — Lifecycle stages used by the workflow.</p>
         </div>

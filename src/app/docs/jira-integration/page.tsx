@@ -143,10 +143,10 @@ elasticclaw workflow push --workspace my-app .elasticclaw/workflows/jira-bugfix.
           expose this issue object:
         </p>
         <div className="space-y-2 text-sm text-zinc-400 mt-2">
-          <p><code className="text-cyan-300">{"{{.Issue.Identifier}}"}</code> - Jira issue key, such as <code>KAN-123</code>.</p>
-          <p><code className="text-cyan-300">{"{{.Issue.Title}}"}</code> - Jira issue summary.</p>
-          <p><code className="text-cyan-300">{"{{.Issue.URL}}"}</code> - Browser URL for the issue.</p>
-          <p><code className="text-cyan-300">{"{{.Issue.Description}}"}</code> - Jira issue description.</p>
+          <p><code className="text-cyan-300">{"{{.Issue.Identifier}}"}</code> — Jira issue key, such as <code>KAN-123</code>.</p>
+          <p><code className="text-cyan-300">{"{{.Issue.Title}}"}</code> — Jira issue summary.</p>
+          <p><code className="text-cyan-300">{"{{.Issue.URL}}"}</code> — Browser URL for the issue.</p>
+          <p><code className="text-cyan-300">{"{{.Issue.Description}}"}</code> — Jira issue description.</p>
         </div>
       </Section>
 
