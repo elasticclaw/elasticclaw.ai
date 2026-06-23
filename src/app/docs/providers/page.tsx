@@ -10,7 +10,7 @@ export default function ProvidersPage() {
       title="Providers"
       description="ElasticClaw supports pluggable sandbox providers. Choose the right provider for your workload."
     >
-      <Section title="Supported Providers">
+      <Section title="Provider Options">
         <div className="space-y-3">
           {[
             { name: "Daytona", href: "/docs/providers/daytona", status: "Supported", desc: "Cloud dev environments with snapshot support. Good for fast sandbox startup.", type: "ephemeral" },
@@ -38,6 +38,7 @@ export default function ProvidersPage() {
         <div className="space-y-2 text-sm text-zinc-400">
           <p><code className="text-cyan-300">exec</code> — Execute commands in the sandbox (all providers)</p>
           <p><code className="text-cyan-300">snapshot</code> — Start from a prebuilt sandbox image (Daytona)</p>
+          <p><code className="text-cyan-300">stateful</code> — Keep filesystem and process state across commands during a sandbox session (AWS Lambda MicroVMs, exedev)</p>
           <p><code className="text-cyan-300">https-bridge</code> — Execute through provider-managed HTTPS proxy auth (AWS Lambda MicroVMs)</p>
           <p><code className="text-cyan-300">ssh</code> — Direct SSH access (exedev)</p>
         </div>
