@@ -24,7 +24,7 @@ const DOCS_INDEX: SearchDoc[] = [
   { title: "Providers", href: "/docs/providers", excerpt: "Sandbox providers: Daytona, Replicated CMX, and exedev.", tags: ["providers", "daytona", "cmx", "sandbox"] },
   { title: "Daytona", href: "/docs/providers/daytona", excerpt: "Configure Daytona cloud development environments as sandbox providers.", tags: ["providers", "daytona", "sandbox", "snapshots"] },
   { title: "Replicated CMX", href: "/docs/providers/replicated", excerpt: "Configure Replicated Compatibility Matrix sandboxes for ElasticClaw.", tags: ["providers", "replicated", "cmx", "sandbox"] },
-  { title: "Models & LLM Keys", href: "/docs/models", excerpt: "Supported LLM providers: Anthropic, OpenAI, Codex, Fireworks, Groq, DeepSeek.", tags: ["models", "llm", "anthropic", "openai", "codex", "fireworks", "groq", "deepseek", "api keys"] },
+  { title: "Models & LLM Keys", href: "/docs/models", excerpt: "Configure API-key providers and subscription device logins for Codex and Grok.", tags: ["models", "llm", "anthropic", "openai", "codex", "grok", "fireworks", "api keys", "device login", "subscription"] },
   { title: "Secrets", href: "/docs/secrets", excerpt: "Manage workspace-scoped secrets with elasticclaw secret.", tags: ["secrets", "env", "config", "cli"] },
   { title: "MCP Servers", href: "/docs/mcp-servers", excerpt: "External tool servers configured in settings and enabled by workspaces.", tags: ["mcp", "tools", "servers"] },
   { title: "Authentication", href: "/docs/authentication", excerpt: "GitHub OAuth, UI password, access control.", tags: ["auth", "oauth", "security"] },
