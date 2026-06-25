@@ -89,6 +89,7 @@ stages:
           <p><code className="text-cyan-300">trigger.github_issues</code> — GitHub Issues source. Supports issue events, repositories, states, required labels, excluded labels, labelers, and assignee filters.</p>
           <p><code className="text-cyan-300">trigger.linear</code> — Linear source. Supports status-change events, states, team, required labels, excluded labels, and assignee filters.</p>
           <p><code className="text-cyan-300">trigger.jira</code> — Jira source. Supports status-change events, project keys, states, required labels, excluded labels, and assignee filters.</p>
+          <p><code className="text-cyan-300">trigger.shortcut</code> — Shortcut source. Supports status-change events, workspace, states, required labels, excluded labels, and assignee filters.</p>
           <p><code className="text-cyan-300">provider</code> — Sandbox provider override for agents created by this workflow.</p>
           <p><code className="text-cyan-300">tags</code> and <code className="text-cyan-300">color</code> — Dashboard metadata for created agents.</p>
           <p><code className="text-cyan-300">secret_refs</code> — Environment variable to workspace secret name map.</p>

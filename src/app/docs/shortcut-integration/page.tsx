@@ -61,12 +61,44 @@ Add Shortcut:
 
       <Section title="4. Configure workflow.yaml">
         <CodeBlock lang="yaml">{`# .elasticclaw/workflows/shortcut-workflow.yaml
+schema_version: v1
 name: shortcut-workflow
-integration: shortcut
-workspace: my-company
-trigger_status: "In Development"   # story enters this state -> spawn agent
-done_status: "In Review"           # story moves here on [DONE]
-terminate_on_leave: true           # kill agent if story leaves trigger state`}</CodeBlock>
+
+trigger:
+  shortcut:
+    event: status_changed
+    workspace: my-company
+    states:
+      - "In Development"
+    labels:
+      - agent-ready
+    exclude_labels:
+      - blocked
+
+working_status: "In Progress"
+
+stages:
+  - id: working
+    label: Working
+    entry: true
+    on_enter:
+      inject: |
+        Read CONTEXT.md and start working.
+
+  - id: pr_opened
+    label: PR Opened
+    triggers:
+      - message_contains: "[DONE]"
+    on_enter:
+      move_issue: "In Review"
+
+  - id: merged
+    label: Merged
+    triggers:
+      - pr_merged: {}
+    on_enter:
+      move_issue: Done
+    terminal: true`}</CodeBlock>
         <Note>
           Publish the workspace with <code>elasticclaw workspace push shortcut-workspace</code>,
           then publish this file with{" "}
@@ -85,15 +117,12 @@ You'll be terminated automatically when the PR merges.`}</CodeBlock>
 
       <Section title="Label filters">
         <p className="text-sm text-zinc-400">
-          Shortcut workflow triggers can require labels and reject labels. All
-          configured <code>labels</code> must be present, and no configured{" "}
-          <code>exclude_labels</code> may be present.
+          Shortcut workflow triggers use <code>trigger.shortcut.labels</code>{" "}
+          and <code>trigger.shortcut.exclude_labels</code>. All configured
+          required labels must be present, and no configured excluded labels may
+          be present. In the workflow above, <code>agent-ready</code> is
+          required and <code>blocked</code> prevents automatic agent creation.
         </p>
-        <CodeBlock lang="yaml">{`trigger:
-  shortcut:
-    states: ["In Development"]
-    labels: [agent-ready]
-    exclude_labels: [blocked, do-not-automate]`}</CodeBlock>
       </Section>
 
       <Section title="Template variables">
