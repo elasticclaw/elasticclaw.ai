@@ -83,6 +83,19 @@ This moves the Shortcut story and keeps you alive to watch for CI and review com
 You'll be terminated automatically when the PR merges.`}</CodeBlock>
       </Section>
 
+      <Section title="Label filters">
+        <p className="text-sm text-zinc-400">
+          Shortcut workflow triggers can require labels and reject labels. All
+          configured <code>labels</code> must be present, and no configured{" "}
+          <code>exclude_labels</code> may be present.
+        </p>
+        <CodeBlock lang="yaml">{`trigger:
+  shortcut:
+    states: ["In Development"]
+    labels: [agent-ready]
+    exclude_labels: [blocked, do-not-automate]`}</CodeBlock>
+      </Section>
+
       <Section title="Template variables">
         <p className="text-sm text-zinc-400">
           Shortcut story context is written to <code>CONTEXT.md</code> when the

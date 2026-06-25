@@ -106,6 +106,20 @@ export default function ModelsPage() {
         </p>
       </Section>
 
+      <Section title="Fireworks model catalog">
+        <p>
+          Fireworks model choices in the hub are loaded from the Fireworks List
+          Models API when a Fireworks key is configured. The examples on this
+          page are representative only; the dropdown should show the currently
+          available Fireworks models returned by your account.
+        </p>
+        <p className="text-sm text-zinc-400 mt-2">
+          If a model is not listed yet, choose the custom model option and enter
+          the full Fireworks model ID, such as{" "}
+          <code>fireworks/accounts/fireworks/models/...</code>.
+        </p>
+      </Section>
+
       <Section title="Codex and Grok subscription logins">
         <p>
           Codex and Grok Build are not configured with API tokens. They use the

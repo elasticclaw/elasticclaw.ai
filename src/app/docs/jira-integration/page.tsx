@@ -18,6 +18,7 @@ export default function JiraIntegrationPage() {
         </p>
         <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400 mt-2">
           <li>Read the issue key, title, description, labels, project, status, and assignee</li>
+          <li>Require labels and suppress automation with <code>exclude_labels</code></li>
           <li>Move the issue to a working status when the agent starts</li>
           <li>Move the issue through later workflow stages with <code>move_issue</code></li>
           <li>Use polling as a fallback for missed webhook deliveries</li>
@@ -97,6 +98,8 @@ trigger:
       - "Ready for Agent"
     labels:
       - elasticclaw
+    exclude_labels:
+      - blocked
 
 concurrency_group: jira-bugfix
 working_status: "Agent Working"
@@ -130,6 +133,21 @@ stages:
           <code>working_status</code> moves the Jira issue as soon as the agent
           starts. Later stages can move the same issue with <code>move_issue</code>.
         </p>
+      </Section>
+
+      <Section title="Label filters">
+        <p className="text-sm text-zinc-400">
+          Jira triggers require every configured <code>labels</code> value and
+          reject issues that have any configured <code>exclude_labels</code>{" "}
+          value. The same filters apply to webhook delivery and the polling
+          fallback path.
+        </p>
+        <CodeBlock lang="yaml">{`trigger:
+  jira:
+    projects: [KAN]
+    states: ["Ready for Agent"]
+    labels: [elasticclaw]
+    exclude_labels: [blocked, do-not-automate]`}</CodeBlock>
       </Section>
 
       <Section title="5. Push the workflow">

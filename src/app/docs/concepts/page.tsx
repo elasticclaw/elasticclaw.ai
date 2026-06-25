@@ -84,9 +84,8 @@ graph TD
             </h3>
             <p className="text-sm text-zinc-400">
               The workflow references a workspace that defines the sandbox
-              environment: provider (Replicated, Daytona, etc.), bootstrap
-              scripts, secrets, MCP servers, and the agent&apos;s initial
-              instructions.
+              environment: provider, bootstrap scripts, secrets, MCP servers,
+              and the agent&apos;s initial instructions.
             </p>
           </div>
 
@@ -262,9 +261,9 @@ flowchart TD
           <div>
             <h4 className="font-semibold text-white">Sandbox</h4>
             <p className="text-zinc-400">
-              The isolated compute environment that hosts an agent. Can be a VM
-              (Replicated, Daytona), container, or serverless function depending
-              on the provider.
+              The isolated compute environment that hosts an agent. It can be a
+              VM, cloud development environment, MicroVM, container, or
+              serverless runtime depending on the provider.
             </p>
           </div>
         </div>

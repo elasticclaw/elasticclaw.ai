@@ -58,8 +58,8 @@ export default function DocsOverviewPage() {
             <h3 className="font-semibold text-zinc-100">Sandboxes</h3>
             <p className="mt-1 text-sm text-zinc-400">
               Isolated execution environments from providers like Daytona,
-              Replicated CMX, or exedev where agents clone, test, build, and
-              push code.
+              Replicated CMX, AWS Lambda MicroVMs, or exedev where agents clone,
+              test, build, and push code.
             </p>
           </div>
           <div className="rounded-lg border border-zinc-800 bg-zinc-900/45 p-4">
@@ -223,7 +223,8 @@ brew install elasticclaw`}</CodeBlock>
             <Link href="/docs/providers" className="text-cyan-400 hover:underline">
               Sandbox Providers
             </Link>{" "}
-            — configure where agents run: Daytona, Replicated CMX, or exedev
+            — configure where agents run: Daytona, Replicated CMX, AWS Lambda
+            MicroVMs, or exedev
           </li>
         </ul>
       </Section>

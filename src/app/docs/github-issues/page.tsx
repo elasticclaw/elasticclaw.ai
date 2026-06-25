@@ -20,6 +20,7 @@ export default function GitHubIssuesPage() {
         <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
           <li>Issue state changes to <code>open</code> (or a configured label is applied)</li>
           <li>All configured <code>labels</code> are present on the issue (AND)</li>
+          <li>No configured <code>exclude_labels</code> are present on the issue</li>
           <li><code>assigned_to</code> filter matches (if configured)</li>
         </ul>
         <p className="mt-2 text-sm text-zinc-400">
@@ -68,6 +69,8 @@ trigger:
       - open
     labels:
       - agent-ready
+    exclude_labels:
+      - blocked
     labelers:
       - "*"
 
@@ -126,6 +129,15 @@ stages:
           All configured labels must be present on the issue. The trigger also fires when
           a label is <em>added</em> to an already-open issue (if the label completes the set).
         </p>
+        <p className="text-sm text-zinc-400 mt-2">
+          Add <code>exclude_labels</code> to suppress automation when any listed
+          label is present. For example, <code>blocked</code> can prevent agent
+          creation even if <code>agent-ready</code> is present.
+        </p>
+        <CodeBlock lang="yaml">{`trigger:
+  github_issues:
+    labels: [agent-ready]
+    exclude_labels: [blocked, do-not-automate]`}</CodeBlock>
 
         <h3 className="text-sm font-semibold text-zinc-200 mt-4 mb-2">AssignedTo</h3>
         <p className="text-sm text-zinc-400">
