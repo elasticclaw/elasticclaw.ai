@@ -10,7 +10,7 @@ export default function BrandingPage() {
       title="Custom Branding"
       description="Customize the ElasticClaw Server web UI name and logo from hub.yaml."
     >
-      <Section title="Overview">
+      <Section id="overview" title="Overview">
         <p>
           ElasticClaw Server supports lightweight white-label branding through
           the <code>branding</code> block in <code>hub.yaml</code>. Branding is
@@ -25,7 +25,7 @@ export default function BrandingPage() {
         </p>
       </Section>
 
-      <Section title="Configure hub.yaml">
+      <Section id="configure-hub-yaml" title="Configure hub.yaml">
         <p>
           Add a <code>branding</code> block to the same <code>hub.yaml</code>{" "}
           file that configures your server providers, auth, and model keys:
@@ -52,7 +52,7 @@ branding:
         </div>
       </Section>
 
-      <Section title="Apply changes">
+      <Section id="apply-changes" title="Apply changes">
         <p>
           After changing <code>hub.yaml</code>, restart ElasticClaw Server so it
           reloads the file. For a server installed with the ElasticClaw
@@ -66,7 +66,7 @@ branding:
         </p>
       </Section>
 
-      <Section title="Image guidance">
+      <Section id="image-guidance" title="Image guidance">
         <ul className="list-disc list-inside space-y-2 text-sm text-zinc-400">
           <li>Use an HTTPS URL that is reachable by users' browsers.</li>
           <li>Use PNG, SVG, or WebP for predictable browser rendering.</li>
@@ -79,7 +79,7 @@ branding:
         </Note>
       </Section>
 
-      <Section title="Related configuration">
+      <Section id="related-configuration" title="Related configuration">
         <p>
           See{" "}
           <Link href="/docs/hub" className="text-cyan-400 hover:underline">
