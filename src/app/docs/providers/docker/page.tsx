@@ -19,7 +19,7 @@ export default function DockerProviderPage() {
         <div className="space-y-2 text-sm text-zinc-400 mt-4">
           <p><strong>Type:</strong> Stateful local container</p>
           <p><strong>Auth:</strong> Local Docker daemon access</p>
-          <p><strong>Capabilities:</strong> <code className="text-cyan-300">exec</code></p>
+          <p><strong>Capabilities:</strong> <code className="text-cyan-300">exec</code>, <code className="text-cyan-300">stateful</code></p>
           <p><strong>Best for:</strong> Development, CI-like test hubs, and private hosts with Docker already installed</p>
         </div>
       </Section>

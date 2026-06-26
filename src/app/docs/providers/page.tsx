@@ -52,7 +52,7 @@ export default function ProvidersPage() {
       <Note>
         TTL-based auto-destroy helps control costs for ephemeral providers
         (Daytona, CMX). Local Docker containers and exedev VMs are stateful and
-        should be deleted explicitly when no longer needed.
+        not subject to TTL — delete them explicitly when no longer needed.
       </Note>
     </DocsPage>
   );
