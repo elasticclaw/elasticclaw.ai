@@ -15,6 +15,22 @@ interface ReleaseDetail {
 
 // This map is updated by the release automation workflow.
 const RELEASE_DETAILS: Record<string, ReleaseDetail> = {
+  "2026.6.26": {
+    version: "2026.6.26",
+    date: "2026-06-26",
+    title: "Docker Sandbox UI Unleashed",
+    whatsNew: [
+    "Introduce a UI for configuring Docker sandbox provider settings, letting users set up isolated environments directly from the dashboard.",
+    ],
+    improvements: [
+    "Default the Docker provider to a pinned OpenClaw image, guaranteeing consistent runtime behavior across deployments.",
+    "Add protective guards around Docker provider configuration patches to prevent accidental misconfigurations.",
+    ],
+    fixes: [
+    "Correct the synchronization of OpenClaw API key authentication, restoring reliable auth token handling.",
+    ],
+    rawChangelog: "42bd27d fix: sync openclaw api key auth (Ana Berg)\n11a6bfc Default Docker provider to pinned OpenClaw image (Marc Campbell)\n41a292f Guard Docker provider settings patches (Marc Campbell)\nb41c365 Add Docker sandbox provider settings UI (Marc Campbell)",
+  },
   "2026.6.23": {
     version: "2026.6.23",
     date: "2026-06-23",
