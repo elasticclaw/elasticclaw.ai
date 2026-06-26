@@ -43,6 +43,7 @@ const NAV_ITEMS: NavItem[] = [
       { href: "/docs/providers", label: "Provider Overview" },
       { href: "/docs/providers/daytona", label: "Daytona" },
       { href: "/docs/providers/replicated", label: "Replicated CMX" },
+      { href: "/docs/providers/docker", label: "Local Docker" },
       { href: "/docs/providers/aws-lambda-microvms", label: "AWS Lambda MicroVMs" },
       { href: "/docs/exe-dev", label: "exedev" },
     ],
