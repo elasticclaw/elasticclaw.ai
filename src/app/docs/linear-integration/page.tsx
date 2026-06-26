@@ -19,6 +19,7 @@ export default function LinearIntegrationPage() {
         </p>
         <ul className="list-disc list-inside space-y-1 text-sm mt-2">
           <li>Read the issue title, description, comments, state, team, labels, and assignee</li>
+          <li>Require labels and suppress automation with <code>exclude_labels</code></li>
           <li>Move issues through workflow stages configured by the workflow</li>
           <li>Post comments when a workflow agent is stopped because the issue left the trigger status</li>
           <li>Expose a small <code>claw-bridge linear</code> CLI inside the sandbox for issue get, update, search, and teams</li>
@@ -85,6 +86,8 @@ trigger:
       - "Ready for Agent"
     labels:
       - bug
+    exclude_labels:
+      - blocked
 
 stages:
   - id: working
@@ -124,6 +127,21 @@ elasticclaw workflow push --workspace my-app .elasticclaw/workflows/bugfix.yaml`
           The workflow uses the Linear connection configured for the ElasticClaw
           workspace. Workflow filtering uses <code>trigger.linear.team</code>.
         </p>
+      </Section>
+
+      <Section title="Label filters">
+        <p className="text-sm text-zinc-400">
+          Linear triggers require every configured <code>labels</code> value and
+          reject issues that have any configured <code>exclude_labels</code>{" "}
+          value. Use this to keep automation away from issues that are blocked,
+          on hold, or explicitly reserved for humans.
+        </p>
+        <CodeBlock lang="yaml">{`trigger:
+  linear:
+    team: ENG
+    states: ["Ready for Agent"]
+    labels: [bug]
+    exclude_labels: [blocked, needs-human-review]`}</CodeBlock>
       </Section>
 
       <Section title="Template variables">

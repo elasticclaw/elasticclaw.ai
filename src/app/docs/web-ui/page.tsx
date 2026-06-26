@@ -64,8 +64,8 @@ ELASTICCLAW_HUB_CONFIG=/path/to/hub.yaml elasticclaw hub`}</CodeBlock>
           resources:
         </p>
         <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
-          <li><strong>Providers</strong> — Daytona, Replicated CMX, exe.dev</li>
-          <li><strong>LLM Keys</strong> — Named API keys with default model</li>
+          <li><strong>Providers</strong> — Daytona, Replicated CMX, AWS Lambda MicroVMs, exe.dev</li>
+          <li><strong>LLM Keys</strong> — Named API keys and subscription logins with default models</li>
           <li><strong>GitHub Apps</strong> — App credentials with live permission checks</li>
           <li><strong>Issue Trackers</strong> — Linear, Jira, Shortcut, GitHub Issues</li>
           <li><strong>Workflows</strong> — Create, edit, enable/disable workflows</li>
