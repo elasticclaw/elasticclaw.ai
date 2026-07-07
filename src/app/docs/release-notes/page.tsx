@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.07.07",
+    date: "2026-07-07",
+    title: "Sandboxed Stages, Seamless Flow",
+    summary: "New stage‑skip labeling, Docker sandbox UI, and tighter GitHub/Jira integrations.",
+  },
+  {
     version: "2026.6.23",
     date: "2026-06-23",
     title: "MicroVMs Unleashed",
