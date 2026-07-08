@@ -15,6 +15,38 @@ interface ReleaseDetail {
 
 // This map is updated by the release automation workflow.
 const RELEASE_DETAILS: Record<string, ReleaseDetail> = {
+  "2026.07.07": {
+    version: "2026.07.07",
+    date: "2026-07-07",
+    title: "Sandboxed Stages, Seamless Flow",
+    whatsNew: [
+    "Introduce issue‑label stage skips, letting you fast‑track labeled work items through the pipeline.",
+    "Add a Docker sandbox provider settings UI, giving users a visual way to configure isolated Docker environments.",
+    "Ship an end‑to‑end Docker workflow test suite to catch integration regressions before release.",
+    "Support Jira automation issue payloads, enabling richer automation triggers directly from Jira.",
+    "Start the Docker bridge automatically for the default OpenClaw image, simplifying local development.",
+    ],
+    improvements: [
+    "Copy the Docker workspace into the container’s home directory, improving file accessibility during builds.",
+    "Avoid chown‑ing the Docker container root to prevent permission errors on host‑mounted volumes.",
+    "Default to the sole configured provider when only one is present, reducing required configuration.",
+    "Harden Jira search pagination to guard against oversized result sets and API limits.",
+    "Switch to Jira’s JQL search API for polling, making issue retrieval faster and more reliable.",
+    "Apply updated branding copy across the web UI for a consistent look and feel.",
+    "Pin the default Docker provider to a known OpenClaw image, increasing environment stability.",
+    "Add guard checks around Docker provider settings patches to catch malformed updates early.",
+    ],
+    fixes: [
+    "Harden the GitHub token refresh wrapper installation to survive transient network failures.",
+    "Refresh GitHub App tokens for agent `gh` commands, fixing auth errors in CI pipelines.",
+    "Fix issue‑label skip review feedback loop, ensuring skip actions are recorded correctly.",
+    "Bind the Docker E2E hub for container access, restoring connectivity for integration tests.",
+    "Correct the Docker bridge startup path, allowing the bridge to launch reliably.",
+    "Fix permissions on Docker workspace copies, preventing permission denied errors.",
+    "Synchronize OpenClaw API key authentication, fixing mismatched auth states.",
+    ],
+    rawChangelog: "f56338c fix: harden gh token refresh wrapper install (Ana Berg)\nf94e408 fix: refresh GitHub App tokens for agent gh commands (Ana Berg)\na0968a9 fix: address issue label skip review feedback (Ana Berg)\n6f99936 fix: bind docker e2e hub for container access (Ana Berg)\na770392 feat: support issue label stage skips (Ana Berg)\n11b5c76 Fix Docker bridge startup path (Marc Campbell)\nf79ae78 Start Docker bridge for default image (Marc Campbell)\n0c69621 Copy Docker workspace under container home (Marc Campbell)\n2d8bda2 Avoid chowning Docker container root (Marc Campbell)\nb2e15f9 Add Docker workflow E2E suite (Marc Campbell)\n0db0a16 Fix Docker workspace copy permissions (Marc Campbell)\nefd4cb0 Address single provider test review (Marc Campbell)\n7269c36 Default to sole configured provider (Marc Campbell)\n51afbb5 Harden Jira search pagination (Marc Campbell)\n5e08712 Use Jira JQL search API for polling (Marc Campbell)\nba98f26 Merge main into brand web UI copy (Marc Campbell)\n6093436 Address branding copy review (Marc Campbell)\n8769fc9 Address Jira automation payload review (Marc Campbell)\n8d6b5bb Apply branding to web UI copy (Marc Campbell)\n609b648 Support Jira automation issue payloads (Marc Campbell)\n42bd27d fix: sync openclaw api key auth (Ana Berg)\n11a6bfc Default Docker provider to pinned OpenClaw image (Marc Campbell)\n41a292f Guard Docker provider settings patches (Marc Campbell)\nb41c365 Add Docker sandbox provider settings UI (Marc Campbell)",
+  },
   "2026.6.26": {
     version: "2026.6.26",
     date: "2026-06-26",
