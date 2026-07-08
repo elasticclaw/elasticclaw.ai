@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.6.26",
+    date: "2026-06-26",
+    title: "Docker Sandbox UI Unleashed",
+    summary: "New Docker sandbox UI, tighter defaults, and auth fixes keep ElasticClaw humming.",
+  },
+  {
     version: "2026.6.23",
     date: "2026-06-23",
     title: "MicroVMs Unleashed",
