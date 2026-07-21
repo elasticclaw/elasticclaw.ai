@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.7.21",
+    date: "2026-07-21",
+    title: "DevShells Unlocked for Agents",
+    summary: "Agents now get native devShells, richer analytics, and a sturdier, cost‑aware runtime.",
+  },
+  {
     version: "2026.07.07",
     date: "2026-07-07",
     title: "Sandboxed Stages, Seamless Flow",
