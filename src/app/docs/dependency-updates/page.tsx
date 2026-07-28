@@ -84,6 +84,9 @@ export default function DependencyUpdatesPage() {
       - "*"
     ignore:
       - "example-package"
+    exclude_paths:
+      - "vendor"
+      - "**/legacy/**"
     output: dependency_updates
     timeout: 30m
     continue_on_error: false`}</CodeBlock>
@@ -96,6 +99,11 @@ export default function DependencyUpdatesPage() {
           <p>
             <code className="text-cyan-300">paths</code> - Workspace-relative
             paths to scan. Defaults to <code>.</code>.
+          </p>
+          <p>
+            <code className="text-cyan-300">exclude_paths</code> - Glob or
+            prefix paths to skip while discovering manifests. Matching
+            directories are skipped entirely.
           </p>
           <p>
             <code className="text-cyan-300">grouping</code> - Metadata for later

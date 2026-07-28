@@ -116,8 +116,14 @@ elasticclaw ls --json`}</CodeBlock>
         <CodeBlock lang="bash">{`elasticclaw workspace create --name my-workspace  # scaffold .elasticclaw/workspaces/my-workspace
 elasticclaw workspace list                # list server workspaces
 elasticclaw workspace push my-workspace    # push workspace files to server
+elasticclaw workspace push my-workspace --path ./custom/my-workspace  # push from a specific directory
 elasticclaw workspace rm my-workspace      # remove from server
 elasticclaw workspace show my-workspace    # show workspace config`}</CodeBlock>
+        <p className="text-sm text-zinc-400 mt-2">
+          Use <code>--path</code> with <code>workspace push</code> to publish a
+          workspace from a directory outside the default{" "}
+          <code>.elasticclaw/workspaces/</code> layout.
+        </p>
       </Section>
 
       <Section id="workflow" title="elasticclaw workflow">
@@ -126,6 +132,29 @@ elasticclaw workspace show my-workspace    # show workspace config`}</CodeBlock>
 elasticclaw workflow list --workspace my-workspace
 elasticclaw workflow show triage --workspace my-workspace
 elasticclaw workflow trigger triage --workspace my-workspace --input key=value`}</CodeBlock>
+        <p className="text-sm text-zinc-400 mt-2">
+          <code>workflow show</code> prints the raw workflow YAML as it is stored
+          on the server.
+        </p>
+      </Section>
+
+      <Section id="workflow-runs" title="elasticclaw workflow runs">
+        <p>Show recent execution history for a workflow.</p>
+        <CodeBlock lang="bash">{`elasticclaw workflow runs triage --workspace my-workspace --limit 20`}</CodeBlock>
+        <p className="text-sm text-zinc-400 mt-2">
+          Lists runs for cron and manual triggers, including status, trigger type,
+          timestamps, result, and linked agent ID. Use <code>--limit</code> to
+          control how many runs are returned (default 50, max 200).
+        </p>
+      </Section>
+
+      <Section id="workflow-logs" title="elasticclaw workflow logs">
+        <p>Show detailed agent activity logs for a workflow run.</p>
+        <CodeBlock lang="bash">{`elasticclaw workflow logs triage 5f35f8f6-7a2a-4f32-bb50-6e0cbd53c6ef --workspace my-workspace`}</CodeBlock>
+        <p className="text-sm text-zinc-400 mt-2">
+          Fetches the agent activity log for the given run ID. The run must be
+          linked to an agent. Use <code>--json</code> for machine-readable output.
+        </p>
       </Section>
 
       <Section id="secret" title="elasticclaw secret">

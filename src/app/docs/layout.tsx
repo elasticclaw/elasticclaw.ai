@@ -108,6 +108,8 @@ const NAV_ITEMS: NavItem[] = [
       { href: "/docs/cli-reference#kill", label: "kill" },
       { href: "/docs/cli-reference#workspace", label: "workspace" },
       { href: "/docs/cli-reference#workflow", label: "workflow" },
+      { href: "/docs/cli-reference#workflow-runs", label: "workflow runs" },
+      { href: "/docs/cli-reference#workflow-logs", label: "workflow logs" },
       { href: "/docs/cli-reference#secret", label: "secret" },
       { href: "/docs/cli-reference#github-app", label: "github-app" },
       { href: "/docs/cli-reference#provider", label: "provider" },

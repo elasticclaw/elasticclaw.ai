@@ -14,7 +14,7 @@ const SUPPORTED_PROVIDERS = [
     id: "codex",
     credential: "Subscription login",
     config: "auth_profile: codex-default",
-    models: "codex/gpt-5.5, codex/gpt-5.5-high",
+    models: "codex/gpt-5.6-sol, codex/gpt-5.5",
   },
   {
     id: "grok",
@@ -26,7 +26,7 @@ const SUPPORTED_PROVIDERS = [
     id: "fireworks",
     credential: "API key",
     config: "api_key: ${FIREWORKS_API_KEY}",
-    models: "fireworks/accounts/fireworks/models/kimi-k2p6, fireworks/accounts/fireworks/models/llama-v3p3-70b-instruct",
+    models: "fireworks/accounts/fireworks/models/kimi-k2p7-code, fireworks/accounts/fireworks/models/kimi-k2p6",
   },
 ];
 
@@ -89,12 +89,12 @@ export default function ModelsPage() {
   - name: fireworks-kimi
     provider: fireworks
     api_key: \${FIREWORKS_API_KEY}
-    default_model: fireworks/accounts/fireworks/models/kimi-k2p6
+    default_model: fireworks/accounts/fireworks/models/kimi-k2p7-code
 
   - name: codex-chatgpt
     provider: codex
     auth_profile: codex-default
-    default_model: codex/gpt-5.5
+    default_model: codex/gpt-5.6-sol
 
   - name: grok-build
     provider: grok
@@ -152,7 +152,7 @@ export default function ModelsPage() {
   - name: codex-chatgpt
     provider: codex
     auth_profile: codex-default
-    default_model: codex/gpt-5.5
+    default_model: codex/gpt-5.6-sol
 
 model_auth_profiles:
   - name: codex-default
@@ -178,7 +178,7 @@ model_auth_profiles:
           Workspaces can override the default model and specify which LLM key to use:
         </p>
         <CodeBlock lang="yaml">{`# elasticclaw-config.yaml
-default_model: fireworks/accounts/fireworks/models/kimi-k2p6
+default_model: fireworks/accounts/fireworks/models/kimi-k2p7-code
 llm_key: fireworks-kimi`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
           If <code>llm_key</code> is set and <code>default_model</code> is empty, ElasticClaw Server
