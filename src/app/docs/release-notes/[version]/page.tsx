@@ -15,6 +15,38 @@ interface ReleaseDetail {
 
 // This map is updated by the release automation workflow.
 const RELEASE_DETAILS: Record<string, ReleaseDetail> = {
+  "2026.7.27": {
+      version: "2026.7.27",
+      date: "2026-07-28",
+      title: "Business‑Hour PR Analytics",
+      whatsNew: [
+      "Hub now measures PR analytics only during business hours for more relevant metrics.",
+      "Capture of the GitHub `ready_at` timestamp adds finer‑grained PR timing data.",
+      "Dependency updates can now exclude specific paths, reducing noise in scans.",
+      "CLI gains a `workflow runs` command to list execution history directly from the terminal.",
+      "Web UI adds a workflow run history dialog in the settings page for quick access.",
+      "Bridge injects watchdog nudges into in‑flight OpenClaw turns, improving automated recovery.",
+      ],
+      improvements: [
+      "Go dependency updates are now resilient to replace directives and version conflicts.",
+      "Dependency‑update workflow respects workspace flake contracts, boosting reliability.",
+      "All default workflows are shipped with analytics enabled out of the box.",
+      "Streaming buffer isolation and memoized board cards/markdown renderer cut UI lag dramatically.",
+      "Debounced message‑cache writes keep claw identity stable across sessions.",
+      ],
+      fixes: [
+      "Addressed multiple CodeRabbit findings across the web stack and board performance refactor.",
+      "Fixed lingering React‑hooks lint errors from earlier releases.",
+      "Ensured markdown continues rendering while messages stream live.",
+      "Reconciled dead‑claw PRs on terminal runs and fixed deduplication fail‑open behavior.",
+      "Scoped watchdog flags to the current turn, dropped stale nags, and added auto‑resume after restarts.",
+      "Deduplicated identical pending queued messages to prevent duplicate processing.",
+      "Sanitized result text for the tabwriter, preserved line breaks, and improved scroll/wrap behavior in run‑history dialogs.",
+      "Fixed workspace flake staging errors and limited staging to flake.nix and flake.lock with proper git commands.",
+      "Corrected analytics collection for workflows after prior regression.",
+      ],
+      rawChangelog: "2a588602 fix: address CodeRabbit findings (Ana Berg)\n656afbe0 Merge branch 'main' into claude/aiedev-8-analysis-464b1f (Ana Berg)\n1a959db3 Merge pull request #553 from elasticclaw/add-exclude-path (Marc Campbell)\n182f42b4 fix(web): resolve pre-existing react-hooks lint errors (Ana Berg)\n0d7704d5 feat(hub): measure PR analytics in business hours (Ana Berg)\nbe3ceab8 feat(hub): capture PR ready_at from GitHub (Ana Berg)\n5ce03d34 Merge pull request #555 from elasticclaw/anaberg/aiedev-14-fix-ui-lag-on-the-agents-page (Ana Berg)\nfbf67099 fix(web): address CodeRabbit findings on the board perf refactor (Ana Berg)\n5c92e060 fix(web): keep markdown rendering while a message streams (Ana Berg)\nce58db8c perf(web): isolate streaming buffer and memoize board cards (Ana Berg)\n5bbb95b2 perf(web): debounce message cache writes and keep claw identity stable (Ana Berg)\ne4f7e4eb perf(web): memoize markdown renderer (Ana Berg)\n59dc3fa6 fix(hub): reconcile dead-claw PRs on terminal runs (Ana Berg)\nb4802276 Merge pull request #551 from elasticclaw/claude/watchdog-long-response-issue-205736 (Ana Berg)\n782926ec feat(hub): add exclude_paths to dependency_updates (Xav Paice)\ne7a417e6 fix(hub): make Go dependency updates resilient to replace directives and conflicts (Xav Paice)\n3fd3bb26 fix(hub): make dependency updates reliable with workspace flake contract (Xav Paice)\n92f93bc8 fix(hub): dedup check fails open and tenant lookup failure is logged (Ana Berg)\nb8277ada fix: address review feedback on auto-resume dedup, dedup fail-open, and nudge TOCTOU (Ana Berg)\nd134649d test(hub): pre-create claws row so wake-suppression seed survives FK check (Ana Berg)\nc823e4d7 test(hub): seed watchdog claw messages before registration to kill wake race (Ana Berg)\ne0afac98 fix(hub): address review findings (Ana Berg)\n21ee78a3 feat(bridge): inject watchdog nudges into the in-flight OpenClaw turn (Ana Berg)\na4e6a4c3 fix(hub): scope watchdog flags to the turn, drop stale nags, nudge mid-turn, and auto-resume after restart (Ana Berg)\nd3891ec9 fix(hub): dedup identical pending queued messages (Ana Berg)\n53a3725a fix(cli,web): sanitize result text for tabwriter and stabilize dialog deps (Xav Paice)\nf376a95a fix(web): preserve line breaks and show full result text in run history (Xav Paice)\n1112bab0 fix(web): scroll run history dialog and wrap result text legibly (Xav Paice)\n7d636205 feat(cli): add workflow runs command to list execution history (Xav Paice)\n3f4b5aaf feat(web): add workflow run history dialog to workflows settings page (Xav Paice)\n8256c62d Merge pull request #542 from elasticclaw/fix-analytics-for-workflows (Marc Campbell)\n88b22008 Merge pull request #541 from elasticclaw/fix-flake-workspace (Marc Campbell)\n2d31ae3b fix(hub): propagate workspace flake staging errors (Xav Paice)\n25c27bc4 docs: add test-server deployment instructions for custom builds (Xav Paice)\nfd5651b4 fix(bridge,hub): only stage flake files and use git add -- (Xav Paice)\n7e42dcd7 fix(hub): default workflows to analytics-enabled (Xav Paice)\n137f24d5 fix(bridge,hub): stage flake.nix and flake.lock after workspace sync (Xav Paice)",
+    },
   "2026.7.23.1": {
       version: "2026.7.23.1",
       date: "2026-07-23",
