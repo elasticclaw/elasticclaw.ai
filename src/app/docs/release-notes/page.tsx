@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.7.27",
+    date: "2026-07-28",
+    title: "Business‑Hour PR Analytics",
+    summary: "Business‑hour PR analytics, workflow history, and a smoother, more resilient Claw experience.",
+  },
+  {
     version: "2026.7.23.1",
     date: "2026-07-23",
     title: "No More Phantom Starts",
