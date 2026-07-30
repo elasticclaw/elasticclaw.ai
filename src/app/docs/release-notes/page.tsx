@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.7.23",
+    date: "2026-07-23",
+    title: "Five-State Run Status Unleashed",
+    summary: "A major upgrade adds a five‑state run taxonomy, a brand‑new analytics hub, and dozens of UI and reliability enhancements.",
+  },
+  {
     version: "2026.7.21",
     date: "2026-07-21",
     title: "DevShells Unlocked for Agents",
