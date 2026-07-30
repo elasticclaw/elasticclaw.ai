@@ -15,6 +15,25 @@ interface ReleaseDetail {
 
 // This map is updated by the release automation workflow.
 const RELEASE_DETAILS: Record<string, ReleaseDetail> = {
+  "2026.7.23.1": {
+      version: "2026.7.23.1",
+      date: "2026-07-23",
+      title: "No More Phantom Starts",
+      whatsNew: [
+
+      ],
+      improvements: [
+
+      ],
+      fixes: [
+      "Removed the now‑unused human_interaction_count proof from hub backfill, simplifying the agent‑start validation process.",
+      "Added a guard to stop backfill from fabricating agent start events on provisioning failures, preserving accurate run histories.",
+      "Backfilled missing agent_started_at timestamps for historical runs, closing gaps in legacy data.",
+      "Recorded agent_started timestamps as soon as a claw's sandbox reaches a ready state, improving real‑time visibility.",
+      "Clamped the delivery funnel bar width to 100% in the web UI, preventing overflow and keeping the interface tidy.",
+      ],
+      rawChangelog: "1f413dbf fix(hub): drop human_interaction_count as agent-start proof in backfill (Ana Berg)\n6ee2cb09 fix(hub): stop backfill from fabricating agent starts on provisioning failures (Ana Berg)\n5019c591 fix(hub): backfill agent_started_at for historical runs (Ana Berg)\n17c89fb1 fix(hub): record agent_started when a claw's sandbox becomes ready (Ana Berg)\n5ff4f6b7 fix(web): clamp delivery funnel bar width to 100% (Ana Berg)",
+    },
   "2026.7.23": {
       version: "2026.7.23",
       date: "2026-07-23",

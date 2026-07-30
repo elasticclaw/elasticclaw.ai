@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.7.23.1",
+    date: "2026-07-23",
+    title: "No More Phantom Starts",
+    summary: "Backfill logic gets a reality check and the UI gets a tidy‑up.",
+  },
+  {
     version: "2026.7.23",
     date: "2026-07-23",
     title: "Five-State Run Status Unleashed",
