@@ -23,6 +23,8 @@ export default function WebUIPage() {
           <li>In-browser SSH terminal via xterm.js</li>
           <li>View agent logs and status</li>
           <li>Create and destroy agents via the UI</li>
+          <li>Workflow run history and agent activity logs</li>
+          <li>Analytics command center — triggers, outcomes, cost, and usage</li>
           <li>Settings page — configure providers, LLM keys, integrations, workflows, secrets, MCP servers, auth</li>
         </ul>
       </Section>

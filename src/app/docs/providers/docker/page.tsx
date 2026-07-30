@@ -44,7 +44,7 @@ export default function DockerProviderPage() {
         </p>
         <CodeBlock lang="yaml">{`providers:
   docker:
-    image: ghcr.io/openclaw/openclaw:2026.6.9
+    image: ghcr.io/openclaw/openclaw:2026.7.1
     network: elasticclaw-dev`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
           Leave <code>image</code> blank to use the provider default. Set{" "}

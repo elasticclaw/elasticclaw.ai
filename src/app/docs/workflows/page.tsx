@@ -87,7 +87,7 @@ stages:
           <p><code className="text-cyan-300">name</code> — Workflow identifier inside the workspace.</p>
           <p><code className="text-cyan-300">enabled</code> — Set false to pause the workflow.</p>
           <p><code className="text-cyan-300">trigger.github_issues</code> — GitHub Issues source. Supports issue events, repositories, states, required labels, excluded labels, labelers, and assignee filters.</p>
-          <p><code className="text-cyan-300">trigger.linear</code> — Linear source. Supports status-change events, states, team, required labels, excluded labels, and assignee filters.</p>
+          <p><code className="text-cyan-300">trigger.linear</code> — Linear source. Supports status-change events, states, team, projects, required labels, excluded labels, and assignee filters.</p>
           <p><code className="text-cyan-300">trigger.jira</code> — Jira source. Supports status-change events, project keys, states, required labels, excluded labels, and assignee filters.</p>
           <p><code className="text-cyan-300">trigger.shortcut</code> — Shortcut source. Supports status-change events, workspace, states, required labels, excluded labels, and assignee filters.</p>
           <p><code className="text-cyan-300">provider</code> — Sandbox provider override for agents created by this workflow.</p>
@@ -97,6 +97,7 @@ stages:
           <p><code className="text-cyan-300">concurrency_group</code> — Limit parallel agents by group.</p>
           <p><code className="text-cyan-300">working_status</code> — Move the source issue to this status when the agent starts.</p>
           <p><code className="text-cyan-300">enable_manual_trigger</code> — Allow dashboard and CLI manual triggers.</p>
+          <p><code className="text-cyan-300">analytics_enabled</code> — Enable run analytics for this workflow (defaults to true for new workflows).</p>
           <p><code className="text-cyan-300">stages</code> — Lifecycle stages used by the workflow.</p>
         </div>
       </Section>
@@ -126,6 +127,30 @@ stages:
         </p>
       </Section>
 
+      <Section title="Linear and Jira project filters">
+        <p>
+          Linear and Jira triggers can restrict creation to specific projects.
+          Use project IDs or names for Linear; use project keys for Jira.
+        </p>
+        <CodeBlock lang="yaml">{`trigger:
+  linear:
+    event: status_changed
+    team: ADV
+    projects:
+      - Adversary Labs
+      - 123e4567-e89b-12d3-a456-426614174000
+    states:
+      - Todo
+
+  jira:
+    event: status_changed
+    projects:
+      - ENG
+      - OPS
+    states:
+      - "To Do"`}</CodeBlock>
+      </Section>
+
       <Section title="Run commands and gates">
         <p>
           Workflow stages can run deterministic commands in the agent workspace,
@@ -143,6 +168,7 @@ stages:
         command: python3 scripts/validate.py
         output: validation
         timeout: 30m
+        continue_on_error: false
     gate:
       output: validation
       pass:
@@ -240,6 +266,44 @@ stages:
         </Note>
       </Section>
 
+      <Section title="Skip rules">
+        <p>
+          Stages can skip based on issue labels before the stage is entered.
+          Use <code>skip_if</code> to jump to another stage when the issue has any
+          of the listed labels, or <code>skip_unless</code> to jump when the issue
+          has none of them. The target stage is set with <code>go_to</code>.
+        </p>
+        <CodeBlock lang="yaml">{`stages:
+  - id: working
+    label: Working
+    entry: true
+    skip_if:
+      issue_labels:
+        labels:
+          - skip-agent
+      go_to: skipped
+    on_enter:
+      inject: Read CONTEXT.md and start working.
+
+  - id: skipped
+    label: Skipped
+    terminal: true`}</CodeBlock>
+      </Section>
+
+      <Section title="Run history and logs">
+        <p>
+          Every workflow trigger (cron, manual, or issue tracker) creates a run
+          record. Use the CLI to list recent runs and inspect agent logs for a
+          specific run.
+        </p>
+        <CodeBlock lang="bash">{`elasticclaw workflow runs triage --workspace my-app --limit 20
+elasticclaw workflow logs triage 5f35f8f6-7a2a-4f32-bb50-6e0cbd53c6ef --workspace my-app`}</CodeBlock>
+        <p className="text-sm text-zinc-400 mt-2">
+          Run records include status, trigger type, timestamps, and the linked
+          agent ID. The dashboard also shows run history and agent activity logs.
+        </p>
+      </Section>
+
       <Section title="CLI commands">
         <CodeBlock lang="bash">{`elasticclaw workspace create --name my-app
 elasticclaw workspace push my-app
@@ -247,7 +311,9 @@ elasticclaw workflow push --workspace my-app .elasticclaw/workflows/triage.yaml
 
 elasticclaw workflow list --workspace my-app
 elasticclaw workflow show triage --workspace my-app
-elasticclaw workflow trigger triage --workspace my-app --input issue=ENG-123`}</CodeBlock>
+elasticclaw workflow trigger triage --workspace my-app --input issue=ENG-123
+elasticclaw workflow runs triage --workspace my-app --limit 20
+elasticclaw workflow logs triage <run-id> --workspace my-app`}</CodeBlock>
       </Section>
     </DocsPage>
   );

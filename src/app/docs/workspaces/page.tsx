@@ -41,7 +41,7 @@ provider: replicated`}</CodeBlock>
         <div className="space-y-3 text-sm text-zinc-400">
           <p><code className="text-cyan-300">schema_version</code> — Optional schema marker; defaults to <code>v1</code>.</p>
           <p><code className="text-cyan-300">name</code> — Workspace identifier.</p>
-          <p><code className="text-cyan-300">repositories</code> — GitHub repositories the workspace can access, with <code>read</code> or <code>write</code> permissions.</p>
+          <p><code className="text-cyan-300">repositories</code> — GitHub repositories the workspace can access, with <code>read</code> or <code>write</code> permissions. Supports glob patterns such as <code>owner/*</code> or <code>*-infra-*</code> when a GitHub App is configured.</p>
           <p><code className="text-cyan-300">env</code> — Inline environment values or <code>{"{ secret: name }"}</code> references resolved from workspace or server secrets.</p>
           <p><code className="text-cyan-300">provider</code> — Optional sandbox provider override for agents created from this workspace.</p>
           <p><code className="text-cyan-300">llm_key</code> and <code className="text-cyan-300">default_model</code> — Optional model key and model override.</p>
@@ -57,6 +57,7 @@ provider: replicated`}</CodeBlock>
         </p>
         <CodeBlock lang="bash">{`elasticclaw workspace create --name my-app
 elasticclaw workspace push my-app
+elasticclaw workspace push my-app --path ./custom/my-app
 elasticclaw workflow push --workspace my-app .elasticclaw/workflows
 elasticclaw workspace list
 elasticclaw workspace show my-app
@@ -102,6 +103,27 @@ print(json.dumps({
           <code>elasticclaw workspace push</code> includes files under{" "}
           <code>scripts/</code> recursively. Hidden script files and hidden
           script directories are skipped.
+        </Note>
+      </Section>
+
+      <Section title="Workspace flake devShell">
+        <p>
+          When a workspace includes <code>flake.nix</code>, deterministic workflow
+          run commands and dependency updates execute inside the workspace
+          devShell. This ensures declared tools are available without the agent
+          having to install them manually.
+        </p>
+        <CodeBlock lang="text">{`.elasticclaw/workspaces/my-app/
+|-- flake.nix
+|-- flake.lock
+|-- elasticclaw-config.yaml
+|-- AGENTS.md
+\`-- scripts/
+    \`-- validate.py`}</CodeBlock>
+        <Note>
+          Push <code>flake.nix</code> and <code>flake.lock</code> with the
+          workspace. The server stages both files after syncing the workspace so
+          the flake is available for run actions.
         </Note>
       </Section>
 

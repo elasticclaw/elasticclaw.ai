@@ -73,7 +73,8 @@ Add Linear:
           workspace has one Linear connection, the workflow uses it automatically.
           The optional <code>team</code> field is the Linear team key from issue
           identifiers, such as <code>ENG</code> in <code>ENG-123</code>; it is
-          not a Linear team ID.
+          not a Linear team ID. The optional <code>projects</code> list restricts
+          the workflow to issues in specific Linear projects by name or ID.
         </p>
         <CodeBlock lang="yaml">{`# .elasticclaw/workflows/bugfix.yaml
 schema_version: v1
@@ -82,6 +83,8 @@ trigger:
   linear:
     event: status_changed
     team: ENG
+    projects:
+      - "Adversary Labs"
     states:
       - "Ready for Agent"
     labels:

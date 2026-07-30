@@ -157,7 +157,11 @@ stages:
 
 curl \\
   "$ELASTICCLAW_URL/api/workspaces/engineering/workflows/dependency-maintenance/cron/next" \\
-  -H "Authorization: Bearer $ELASTICCLAW_TOKEN"`}</CodeBlock>
+  -H "Authorization: Bearer $ELASTICCLAW_TOKEN"
+
+# Or use the CLI
+elasticclaw workflow runs dependency-maintenance --workspace engineering --limit 20
+elasticclaw workflow logs dependency-maintenance <run-id> --workspace engineering`}</CodeBlock>
         <p>
           Run statuses include <code>pending</code>, <code>running</code>,
           <code>completed</code>, <code>failed</code>, <code>skipped</code>,

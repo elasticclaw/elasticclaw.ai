@@ -131,12 +131,41 @@ export default function StagesPage() {
         </div>
       </Section>
 
+      <Section title="Stage skip rules">
+        <p>
+          A stage can be skipped before its <code>on_enter</code> actions run
+          based on the source issue labels. <code>skip_if</code> jumps when the
+          issue has any of the listed labels; <code>skip_unless</code> jumps
+          when the issue has none of them. The target stage is given by{" "}
+          <code>go_to</code>.
+        </p>
+        <CodeBlock lang="yaml">{`stages:
+  - id: working
+    entry: true
+    skip_if:
+      issue_labels:
+        labels:
+          - skip-agent
+      go_to: skipped
+    on_enter:
+      inject: Read CONTEXT.md and start working.
+
+  - id: skipped
+    label: Skipped
+    terminal: true`}</CodeBlock>
+        <Note>
+          Skip rules are evaluated before the stage is entered. They cannot
+          reference pipeline outputs, only the issue labels on the triggering
+          issue.
+        </Note>
+      </Section>
+
       <Section title="On-enter actions">
         <div className="space-y-3 text-sm text-zinc-400">
           <p><code className="text-cyan-300">inject</code> — Sends a user message to the agent</p>
-          <p><code className="text-cyan-300">run</code> — Runs a command in the agent workspace and can persist stdout as structured output</p>
+          <p><code className="text-cyan-300">run</code> — Runs a command in the agent workspace and can persist stdout as structured output. Supports <code>command</code>, <code>output</code>, <code>timeout</code>, and <code>continue_on_error</code>.</p>
           <p><code className="text-cyan-300">dependency_updates</code> — Updates Go and npm dependencies with native tooling and persists structured output</p>
-          <p><code className="text-cyan-300">judge</code> — Runs a model-backed review over bounded inputs and persists a verdict</p>
+          <p><code className="text-cyan-300">judge</code> — Runs a model-backed review over bounded inputs and persists a verdict. Supports <code>model</code>, <code>inputs</code>, <code>instructions</code>, <code>output</code>, <code>require.verdict</code>, <code>max_tokens</code>, <code>timeout</code>, and <code>continue_on_error</code>.</p>
           <p><code className="text-cyan-300">move_issue</code> — Moves the associated Linear, Jira, Shortcut, or GitHub issue. It accepts a status string or <code>{"{ status, issue_id }"}</code>.</p>
           <p><code className="text-cyan-300">close_issue: true</code> — Closes the associated GitHub issue</p>
           <p><code className="text-cyan-300">add_labels</code> — Adds labels to the associated GitHub issue</p>
