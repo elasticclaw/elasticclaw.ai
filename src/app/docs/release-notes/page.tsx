@@ -15,6 +15,36 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.7.28",
+    date: "2026-07-28",
+    title: "Live Workflow Histories",
+    summary: "CI webhook wake‑ups, live run history, and a wave of stability fixes arrive in ElasticClaw 2026.7.28.",
+  },
+  {
+    version: "2026.7.27",
+    date: "2026-07-28",
+    title: "Business‑Hour PR Analytics",
+    summary: "Business‑hour PR analytics, workflow history, and a smoother, more resilient Claw experience.",
+  },
+  {
+    version: "2026.7.23.1",
+    date: "2026-07-23",
+    title: "No More Phantom Starts",
+    summary: "Backfill logic gets a reality check and the UI gets a tidy‑up.",
+  },
+  {
+    version: "2026.7.23",
+    date: "2026-07-23",
+    title: "Five-State Run Status Unleashed",
+    summary: "A major upgrade adds a five‑state run taxonomy, a brand‑new analytics hub, and dozens of UI and reliability enhancements.",
+  },
+  {
+    version: "2026.7.21",
+    date: "2026-07-21",
+    title: "DevShells Unlocked for Agents",
+    summary: "Agents now get native devShells, richer analytics, and a sturdier, cost‑aware runtime.",
+  },
+  {
     version: "2026.07.07",
     date: "2026-07-07",
     title: "Sandboxed Stages, Seamless Flow",
