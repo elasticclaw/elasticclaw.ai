@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.7.28",
+    date: "2026-07-28",
+    title: "Live Workflow Histories",
+    summary: "CI webhook wake‑ups, live run history, and a wave of stability fixes arrive in ElasticClaw 2026.7.28.",
+  },
+  {
     version: "2026.7.27",
     date: "2026-07-28",
     title: "Business‑Hour PR Analytics",

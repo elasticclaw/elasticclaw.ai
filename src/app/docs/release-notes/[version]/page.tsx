@@ -15,6 +15,34 @@ interface ReleaseDetail {
 
 // This map is updated by the release automation workflow.
 const RELEASE_DETAILS: Record<string, ReleaseDetail> = {
+  "2026.7.28": {
+      version: "2026.7.28",
+      date: "2026-07-28",
+      title: "Live Workflow Histories",
+      whatsNew: [
+      "Add full workflow run history, agent logs, and message preservation to the hub, CLI, and web UI, giving you instant insight into past executions.",
+      "Enable CI wake‑up directly from GitHub `check_run` and `check_suite` webhooks, so builds fire as soon as code is reviewed.",
+      "Introduce a new reporting framework that aggregates CI outcomes and agent metrics for easier analysis.",
+      ],
+      improvements: [
+
+      ],
+      fixes: [
+      "Validate template file paths before wiping the template directory, preventing accidental data loss.",
+      "Fail startup on unexpected ALTER TABLE errors for `last_ci_conclusion`, ensuring the hub doesn't start in a broken state.",
+      "Wake every claw tracking a PR from a single check webhook, guaranteeing all related agents get notified.",
+      "Pin the workspace file write target and log any skipped template paths to avoid silent write failures.",
+      "Stop the PR watcher from exhausting the GitHub quota by respecting rate‑limit recommendations.",
+      "Wake idle claws automatically when CI status turns green, improving overall responsiveness.",
+      "Deliver workspace files to the live Daytona workspace, ensuring agents work with the correct configuration.",
+      "Exclude session and runtime files from checkpoints and recover from session file lock errors, boosting stability.",
+      "Scope session checkpoint exclusion to the agent directory only, preventing unintended file skips.",
+      "Finalize workflow runs when an agent self‑terminates, cleaning up stray state.",
+      "Never report a non‑green CI conclusion as passing, making status reports accurate.",
+      "Address GitHub rate‑limit client review findings to reduce API throttling.",
+      ],
+      rawChangelog: "47b86787 fix(hub): validate template file paths before wiping the template dir (Ana Berg)\ne5ab5540 Merge pull request #567 from elasticclaw/feat/check-run-webhook (Ana Berg)\n917ff69e fix(hub): fail startup on unexpected ALTER TABLE errors for last_ci_conclusion (Ana Berg)\n9fec626a Merge main into fix/ci-status-wakeup (Ana Berg)\nec5f6c89 Merge pull request #561 from elasticclaw/fix/pr-watcher-rate-limit (Ana Berg)\nf8afa4f3 Merge pull request #560 from elasticclaw/fix/workspace-scripts-subtree-sync (Ana Berg)\n8f159318 fix(hub): wake every claw tracking a PR from one check webhook (Ana Berg)\nc46dd8cf feat(hub): drive CI wake-up from check_run/check_suite webhooks (Ana Berg)\nc28aa745 Merge pull request #559 from elasticclaw/fix-session-file (Xav Paice)\n5adf431d Merge pull request #558 from elasticclaw/add-reporting (Xav Paice)\n73ecf511 fix(bridge): scope sessions checkpoint exclusion to agent directory (Xav Paice)\n6233cd9c fix(hub): finalize workflow runs on agent self-termination (Xav Paice)\nfd2f5f60 fix(hub): never report a non-green CI conclusion as passing (Ana Berg)\n6c991f67 fix(hub): address review findings on the GitHub rate-limit client (Ana Berg)\ne45e6215 fix(hub): pin workspace file write target and log skipped template paths (Ana Berg)\n3bd1141a fix(hub): stop the PR watcher from exhausting the GitHub quota (Ana Berg)\n3237019b fix(hub): wake idle claws when CI turns green (Ana Berg)\nd2a4f9ff fix(hub): deliver workspace files to the live Daytona workspace (Ana Berg)\nc8ee6f02 fix(bridge): exclude session/runtime files from checkpoints and recover session file lock errors (Xav Paice)\n80f3b773 feat(hub,cli,web): workflow run history, agent logs, and message preservation (Xav Paice)",
+    },
   "2026.7.27": {
       version: "2026.7.27",
       date: "2026-07-28",
