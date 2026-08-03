@@ -4,6 +4,7 @@ import { YouTubeVideo } from "@/components/youtube-video";
 
 const GITHUB_URL = "https://github.com/elasticclaw/elasticclaw";
 const X_URL = "https://x.com/elasticclaw";
+const DISCORD_URL = "https://discord.gg/qxNFpbjRZN";
 const FEEDBACK_EMAIL = "marc@elasticclaw.ai";
 
 const CORE_PRIMITIVES = [
@@ -81,6 +82,14 @@ export default function Home() {
           <Link href="/docs" className="transition-colors hover:text-cyan-300">
             Docs
           </Link>
+          <a
+            href={DISCORD_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-cyan-300"
+          >
+            Discord
+          </a>
           <a
             href={GITHUB_URL}
             target="_blank"
@@ -320,6 +329,14 @@ enable_manual_trigger: true`}</code>
                 View on GitHub
               </a>
               <a
+                href={DISCORD_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg border border-zinc-700 px-5 py-3 text-center font-bold text-zinc-100 transition-colors hover:border-cyan-400/60"
+              >
+                Join Discord
+              </a>
+              <a
                 href={X_URL}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -347,6 +364,14 @@ enable_manual_trigger: true`}</code>
             <Link href="/docs" className="transition-colors hover:text-cyan-300">
               Docs
             </Link>
+            <a
+              href={DISCORD_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-cyan-300"
+            >
+              Discord
+            </a>
             <a
               href={GITHUB_URL}
               target="_blank"

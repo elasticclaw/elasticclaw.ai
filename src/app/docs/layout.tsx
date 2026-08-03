@@ -216,6 +216,14 @@ export default function DocsLayout({
             Release Notes
           </Link>
           <a
+            href="https://discord.gg/qxNFpbjRZN"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-zinc-400 hover:text-cyan-400 transition-colors"
+          >
+            Discord
+          </a>
+          <a
             href="https://github.com/elasticclaw/elasticclaw"
             target="_blank"
             rel="noopener noreferrer"
