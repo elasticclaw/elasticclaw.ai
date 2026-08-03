@@ -155,7 +155,17 @@ brew install elasticclaw`}</CodeBlock>
           >
             GitHub repo
           </a>{" "}
-          helps other developers find it.
+          helps other developers find it. Join the{" "}
+          <a
+            href="https://discord.gg/qxNFpbjRZN"
+            className="text-cyan-400 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Discord community
+          </a>{" "}
+          to ask questions, share workflows, and follow along as the project
+          grows.
         </p>
         <p>
           If you try ElasticClaw, post honest feedback or a short demo and tag{" "}
