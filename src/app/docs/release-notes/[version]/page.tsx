@@ -15,6 +15,35 @@ interface ReleaseDetail {
 
 // This map is updated by the release automation workflow.
 const RELEASE_DETAILS: Record<string, ReleaseDetail> = {
+  "2026.8.4": {
+    version: "2026.8.4",
+    date: "2026-08-04",
+    title: "Clearer Agent Signals",
+    whatsNew: [
+    "Combined agent visibility with built‑in noise reduction for cleaner dashboards and faster triage.",
+    "Slack notifications now have unique IDs, support ad‑hoc claws, and cover full agent lifecycle events.",
+    "Pluggable notification provider abstraction lets you swap Slack, email, or custom hooks without code changes.",
+    "Web UI now preserves full chat scrollback and collapses low‑value chatter for a smoother review experience.",
+    "Reduced agent activity log noise by filtering repetitive status updates.",
+    ],
+    improvements: [
+    "Throttled session‑rotated resumes and added a short cooldown between turns to prevent prompt‑lock races.",
+    "Logged successful dependency updates and command output for easier debugging.",
+    "Injected a resume prompt after OpenClaw session rotation to keep workflows flowing.",
+    "Activity deduplication cache now updates only after a successful send, preventing false duplicates.",
+    ],
+    fixes: [
+    "Fixed session rotation resume context errors that caused dead‑locks and lock‑conflict crashes.",
+    "Recovered from stale go.mod files during multi‑module dependency updates.",
+    "Handled lock‑conflicted sessions.send retries gracefully, eliminating lost messages.",
+    "Skipped non‑regular files during checkpoint creation to avoid aborts.",
+    "Appended host binary directories to PATH inside the flake‑run wrapper, fixing tool discovery.",
+    "Closed delivery‑integrity gaps uncovered during triple review.",
+    "Rejected unknown notification `via` values to prevent malformed workflow runs.",
+    "Added notifications when an agent stops making progress, surfacing stalls early.",
+    ],
+    rawChangelog: "c38cda0d Merge pull request #574 from elasticclaw/fix/session-rotation-resume-context (Marc Campbell)\n1188d7ec Merge pull request #576 from elasticclaw/fix/dependency-updates-stale-modules (Marc Campbell)\n992ecfac Merge pull request #577 from elasticclaw/feature/combined-agent-visibility-and-noise-reduction (Marc Campbell)\nfb9347b2 Merge branch 'pr-572' into feature/combined-agent-visibility-and-noise-reduction (Xav Paice)\ne5496ee2 Merge branch 'pr-564' into feature/combined-agent-visibility-and-noise-reduction (Xav Paice)\n492850de fix(hub): use go list -e and skip modules with errors (Xav Paice)\nd2c6525c fix(hub,bridge): throttle session-rotated resumes, drop dead lock-conflict branch (Xav Paice)\n5c97af91 fix(bridge,hub): retry lock-conflicted sessions.send on the same session (Xav Paice)\n85b43da9 fix(hub): recover from stale go.mod in multi-module dependency updates (Xav Paice)\n6db13445 Merge remote-tracking branch 'origin/main' into feature/slack-notifications (Ana Berg)\n88b8d844 fix(hub): address PR review comments (Ana Berg)\na7d6670d feat(hub): reject an unknown notify `via` when a workflow is authored (Ana Berg)\n88aa100e feat(hub): notify when an agent stops making progress (Ana Berg)\nab471cb4 fix(hub): close delivery-integrity gaps found by triple review (Ana Berg)\n0064870e fix(hub,bridge): inject resume prompt after OpenClaw session rotation (Xav Paice)\ncbeea5d5 feat(web): preserve full chat scrollback and collapse activity chatter (Xav Paice)\n98cc3f5c feat(hub): log dependency updates and run command output on success (Xav Paice)\n5717de83 fix(bridge): update activity dedup cache only after successful send (Xav Paice)\n332ca6ac feat(bridge,hub,cli): reduce agent activity log noise (Xav Paice)\nfbe46e3c feat(hub): send notifications from workflow pipeline stages (Ana Berg)\n16e2e5b9 fix(hub): wait a short cooldown between turns to avoid OpenClaw prompt-lock race (Xav Paice)\n82d49217 fix(bridge): deliver session-rotation recovery as activity, not claw message (Xav Paice)\ndc67e3ac fix(bridge): recover session file lock errors when they come from sessions.send (Xav Paice)\na61e326a Merge pull request #563 from elasticclaw/fix/flake-run-host-path-fallback (Xav Paice)\na33b7963 fix(hub): close gaps the notify refactor opened (Ana Berg)\na9dc5fc1 refactor(hub): generalize notifications onto a pluggable provider abstraction (Ana Berg)\nf8ac1fae feat(hub): give each Slack notification a distinct identity (Ana Berg)\n66924a42 feat(hub): notify Slack for ad-hoc claws without a task run (Ana Berg)\na1d3c1eb feat(hub): add Slack notifications for agent lifecycle events (Ana Berg)\n02253251 fix(claw-bridge): skip non-regular files instead of aborting checkpoints (Ana Berg)\nd227024a fix(bridge): append host binary dirs to PATH inside flake-run wrapper (Xav Paice)",
+  },
   "2026.7.28": {
       version: "2026.7.28",
       date: "2026-07-28",
