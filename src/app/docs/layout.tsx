@@ -64,6 +64,10 @@ const NAV_ITEMS: NavItem[] = [
     label: "Workflows",
     children: [
       { href: "/docs/workflows", label: "Overview" },
+      {
+        href: "/docs/workflows#deterministic-steps",
+        label: "Deterministic steps",
+      },
       { href: "/docs/stages", label: "Stages" },
       { href: "/docs/cron-triggers", label: "Cron Triggers" },
       { href: "/docs/dependency-updates", label: "Dependency Updates" },
