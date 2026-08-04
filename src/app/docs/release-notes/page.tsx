@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.8.4",
+    date: "2026-08-04",
+    title: "Clearer Agent Signals",
+    summary: "Boosted visibility, quieter logs, and smarter notifications—ElasticClaw 2026.8.4 keeps your claws sharp.",
+  },
+  {
     version: "2026.7.28",
     date: "2026-07-28",
     title: "Live Workflow Histories",
