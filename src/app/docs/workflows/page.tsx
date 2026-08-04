@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { DocsPage, CodeBlock, Section, Note } from "@/components/docs-page";
 
 export const metadata: Metadata = { title: "Workflows" };
@@ -20,6 +21,246 @@ export default function WorkflowsPage() {
           Author workflow YAML under <code>.elasticclaw/workflows/</code>, then
           publish it to a workspace with <code>elasticclaw workflow push</code>.
         </p>
+      </Section>
+
+      <Section id="deterministic-steps" title="Deterministic steps and capabilities">
+        <p>
+          Not every stage step needs the agent to decide. ElasticClaw Server can
+          advance the workflow graph, run commands, inspect structured output,
+          and call issue/PR APIs without interpreting chat. Prefer these
+          hub-owned steps whenever the condition is known and testable.
+        </p>
+        <p className="text-sm">
+          Full stage field reference lives on the{" "}
+          <Link href="/docs/stages" className="text-cyan-400 hover:underline">
+            Stages
+          </Link>{" "}
+          page. This section is a capability map of what is deterministic today.
+        </p>
+
+        <h3 className="text-base font-semibold text-white pt-2">
+          Hub-owned stage triggers
+        </h3>
+        <p>
+          These conditions transition into a stage without asking the model to
+          restate what happened:
+        </p>
+        <div className="space-y-2 text-sm">
+          <p>
+            <code className="text-cyan-300">pr_merged</code> — Tracked pull
+            request merges.
+          </p>
+          <p>
+            <code className="text-cyan-300">pr_closed</code> — Tracked pull
+            request closes without merge.
+          </p>
+          <p>
+            <code className="text-cyan-300">pr_conditions</code> — Compound PR
+            state. Supports <code>ci: passing</code> (checks success or skipped),{" "}
+            <code>reviews: clean</code> (no changes-requested), and optional{" "}
+            <code>quiet_for</code> (e.g. <code>30m</code>, <code>1h</code>) with
+            no new comments in that window.
+          </p>
+          <p>
+            <code className="text-cyan-300">gate_result</code> — Earlier stage{" "}
+            <code>gate</code> verdict is <code>pass</code> or <code>fail</code>.
+          </p>
+          <p>
+            <code className="text-cyan-300">output_matches</code> — Named pipeline
+            output at a JSON path matches any value in <code>any_of</code>.
+          </p>
+          <p>
+            <code className="text-cyan-300">judge_verdict</code> — Most recent
+            judge stage reported <code>pass</code> or <code>fail</code>. The
+            transition is deterministic; the verdict itself came from a model
+            review.
+          </p>
+        </div>
+        <CodeBlock lang="yaml">{`stages:
+  - id: ready_to_merge
+    label: Ready to merge
+    triggers:
+      - pr_conditions:
+          ci: passing
+          reviews: clean
+          quiet_for: 30m
+    on_enter:
+      inject: |
+        CI is green and reviews are clean. Merge when ready.
+
+  - id: merged
+    label: Merged
+    terminal: true
+    triggers:
+      - pr_merged: {}
+    on_enter:
+      add_labels: [done]
+      remove_labels: [needs-review]
+
+  - id: closed_no_merge
+    label: Closed without merge
+    terminal: true
+    triggers:
+      - pr_closed: {}`}</CodeBlock>
+
+        <h3 className="text-base font-semibold text-white pt-2">
+          Deterministic gates over command output
+        </h3>
+        <p>
+          After <code>on_enter</code>, a stage may evaluate a{" "}
+          <code>gate</code> against JSON produced by a <code>run</code> (or
+          other action that persists <code>output</code>). Gates do not ask a
+          model to reinterpret logs.
+        </p>
+        <div className="space-y-2 text-sm">
+          <p>
+            <code className="text-cyan-300">run</code> — Shell command in the
+            sandbox; optional <code>output</code> stores parsed JSON for later
+            stages and templates (<code>{"{{ .Outputs.name.field }}"}</code>).
+          </p>
+          <p>
+            <code className="text-cyan-300">gate</code> — Pass/fail over a named
+            output path with <code>pass</code> / <code>fail</code> value lists,{" "}
+            <code>required</code>, and <code>treat_skipped_as_pass</code>.
+          </p>
+          <p>
+            <code className="text-cyan-300">gate_result</code> — Branch on that
+            verdict from another stage.
+          </p>
+        </div>
+        <CodeBlock lang="yaml">{`stages:
+  - id: validation
+    label: Validation
+    on_enter:
+      run:
+        command: python3 scripts/validate.py
+        output: validation
+        timeout: 15m
+    gate:
+      output: validation
+      pass:
+        path: status
+        values: [clean]
+      fail:
+        path: status
+        values: [issues, error]
+      required: true
+
+  - id: create_pr
+    triggers:
+      - gate_result:
+          stage: validation
+          verdict: pass
+    on_enter:
+      inject: |
+        Validation status: {{ .Outputs.validation.status }}. Open the PR.
+
+  - id: fix_validation
+    triggers:
+      - gate_result:
+          stage: validation
+          verdict: fail
+    on_enter:
+      inject: |
+        Validation failed: {{ .Outputs.validation.reason }}
+        Fix, re-run checks, then continue.`}</CodeBlock>
+
+        <h3 className="text-base font-semibold text-white pt-2">
+          Hub-owned on-enter actions
+        </h3>
+        <p>
+          These run on the server when a stage is entered (no chat marker
+          required):
+        </p>
+        <div className="space-y-2 text-sm">
+          <p>
+            <code className="text-cyan-300">run</code> — Deterministic command
+            execution (<code>command</code>, <code>timeout</code>,{" "}
+            <code>continue_on_error</code>, <code>output</code>).
+          </p>
+          <p>
+            <code className="text-cyan-300">dependency_updates</code> — Ecosystem
+            dependency bumps with structured JSON output. See{" "}
+            <Link
+              href="/docs/dependency-updates"
+              className="text-cyan-400 hover:underline"
+            >
+              Dependency updates
+            </Link>
+            .
+          </p>
+          <p>
+            <code className="text-cyan-300">add_labels</code> /{" "}
+            <code className="text-cyan-300">remove_labels</code> — GitHub issue
+            labels.
+          </p>
+          <p>
+            <code className="text-cyan-300">move_issue</code> — Linear, Jira,
+            Shortcut, or GitHub issue status (string or{" "}
+            <code>{"{ status, issue_id }"}</code>).
+          </p>
+          <p>
+            <code className="text-cyan-300">close_issue</code> — Close the
+            associated GitHub issue.
+          </p>
+          <p>
+            <code className="text-cyan-300">merge_pr</code> — Request merge of
+            the tracked PR through the server GitHub path.
+          </p>
+          <p>
+            <code className="text-cyan-300">notify</code> — Send a message via a
+            hub-configured notifier (for example Slack).
+          </p>
+        </div>
+
+        <h3 className="text-base font-semibold text-white pt-2">
+          Skip rules
+        </h3>
+        <p>
+          <code>skip_if</code> and <code>skip_unless</code> jump to another
+          stage before <code>on_enter</code> when issue labels match (or do not
+          match). Evaluation is deterministic over tracker labels only—not
+          pipeline outputs.
+        </p>
+        <CodeBlock lang="yaml">{`stages:
+  - id: working
+    entry: true
+    skip_if:
+      issue_labels:
+        labels: [skip-agent]
+      go_to: skipped
+    on_enter:
+      inject: Read CONTEXT.md and start working.
+
+  - id: skipped
+    terminal: true`}</CodeBlock>
+
+        <h3 className="text-base font-semibold text-white pt-2">
+          Not deterministic (agent or model)
+        </h3>
+        <div className="space-y-2 text-sm">
+          <p>
+            <code className="text-cyan-300">message_contains</code> — Matches
+            agent chat text such as <code>[DONE]</code>. Convenient, but prose
+            is not trusted evidence of a PR, CI result, or side effect.
+          </p>
+          <p>
+            <code className="text-cyan-300">inject</code> — Sends instructions to
+            the agent; useful, but not a proof that work completed.
+          </p>
+          <p>
+            <code className="text-cyan-300">judge</code> — Model-backed review
+            with bounded inputs. Use for subjective quality; use{" "}
+            <code>gate</code> for tool JSON and <code>pr_conditions</code> for
+            CI/review state.
+          </p>
+        </div>
+        <Note>
+          Prefer hub-owned triggers and gates when the next step must be
+          reliable: green CI, clean reviews, merge/close, command exit JSON, or
+          label policy. Keep chat markers for agent UX, not as the only proof
+          that an external system changed.
+        </Note>
       </Section>
 
       <Section title="Workflow file">
