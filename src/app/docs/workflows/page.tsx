@@ -242,6 +242,12 @@ export default function WorkflowsPage() {
           except Exception as e:
               print(json.dumps({"status": "incomplete", "reason": f"unreadable: {e}"}))
               sys.exit(0)
+          if not isinstance(data, dict):
+              print(json.dumps({
+                  "status": "incomplete",
+                  "reason": "plan.json must contain a JSON object",
+              }))
+              sys.exit(0)
           # Require non-empty strings (not just truthy values like true/1).
           string_fields = ("understanding", "area", "verification")
           invalid = [
