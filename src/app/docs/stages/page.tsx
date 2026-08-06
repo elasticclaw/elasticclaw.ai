@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { DocsPage, CodeBlock, Section, Note } from "@/components/docs-page";
 
 export const metadata: Metadata = { title: "Workflow Stages" };
@@ -101,6 +102,75 @@ export default function StagesPage() {
         </Note>
       </Section>
 
+      <Section id="plan-gate" title="Plan approval gates">
+        <p>
+          Issue and workflow agents normally get a freeform hub prompt to write
+          a plan in chat before implementing. To replace that with a
+          deterministic gate, mark a stage with{" "}
+          <code>plan_gate: true</code> <em>and</em> configure a{" "}
+          <code>gate:</code> on that stage.
+        </p>
+        <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
+          <li>
+            When any stage has <code>plan_gate: true</code> with a{" "}
+            <code>gate</code>, the hub <strong>skips freeform</strong> plan
+            approval for that pipeline (no keyword scoring, no double proceed).
+          </li>
+          <li>
+            Validation-only gates without <code>plan_gate</code> leave freeform
+            plan approval in place (existing workflows stay compatible).
+          </li>
+          <li>
+            On plan-gate <code>pass</code>, the hub records plan accepted so
+            freeform cannot re-fire; the next stage&apos;s{" "}
+            <code>inject</code> is the proceed signal.
+          </li>
+        </ul>
+        <CodeBlock lang="yaml">{`stages:
+  - id: plan
+    entry: true
+    on_enter:
+      inject: |
+        Write .elasticclaw/plan.json (understanding, area, steps, verification),
+        then say [PLAN_READY]. Do not implement until proceed is injected.
+
+  - id: plan_validate
+    plan_gate: true
+    triggers:
+      - message_contains: "[PLAN_READY]"
+    on_enter:
+      run:
+        command: python3 scripts/validate_plan.py
+        output: plan
+    gate:
+      output: plan
+      pass:
+        path: status
+        values: [ok]
+      fail:
+        path: status
+        values: [incomplete]
+      required: true
+
+  - id: implement
+    triggers:
+      - gate_result:
+          stage: plan_validate
+          verdict: pass
+    on_enter:
+      inject: Plan accepted. Proceed with implementation.`}</CodeBlock>
+        <p className="text-sm text-zinc-400">
+          See the full worked example under{" "}
+          <Link
+            href="/docs/workflows#plan-approval"
+            className="text-cyan-400 hover:underline"
+          >
+            Workflows → Plan approval
+          </Link>
+          .
+        </p>
+      </Section>
+
       <Section title="Stage fields">
         <div className="space-y-3 text-sm text-zinc-400">
           <p><code className="text-cyan-300">id</code> — Unique stage identifier (kebab-case)</p>
@@ -110,6 +180,13 @@ export default function StagesPage() {
           <p><code className="text-cyan-300">triggers</code> — Conditions that transition into this stage</p>
           <p><code className="text-cyan-300">on_enter</code> — Actions to run when entering this stage</p>
           <p><code className="text-cyan-300">gate</code> — Optional deterministic pass/fail evaluation over a named run output</p>
+          <p>
+            <code className="text-cyan-300">plan_gate: true</code> — Marks this
+            stage&apos;s <code>gate</code> as plan approval. When present with a{" "}
+            <code>gate</code> block, freeform hub plan approval is skipped for
+            the workflow. Ordinary gates without this flag do not change plan
+            behavior.
+          </p>
         </div>
       </Section>
 

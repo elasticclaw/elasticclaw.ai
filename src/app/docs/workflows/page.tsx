@@ -165,6 +165,142 @@ export default function WorkflowsPage() {
         Validation failed: {{ .Outputs.validation.reason }}
         Fix, re-run checks, then continue.`}</CodeBlock>
 
+        <h3
+          id="plan-approval"
+          className="text-base font-semibold text-white pt-2 scroll-mt-20"
+        >
+          Plan approval: freeform default vs deterministic{" "}
+          <code className="text-cyan-300">plan_gate</code>
+        </h3>
+        <p>
+          Before implementation, ElasticClaw can require a visible plan. There
+          are two modes — pick one path per workflow so plans are never
+          double-approved:
+        </p>
+        <div className="space-y-2 text-sm">
+          <p>
+            <strong className="text-white">Default (freeform)</strong> — If the
+            workflow has no <code>plan_gate: true</code> stage, issue and
+            workflow agents get a hub prompt to write a plan in chat. The hub
+            accepts a substantial assistant message, then injects proceed.
+            Existing installs keep this behavior without YAML changes.
+          </p>
+          <p>
+            <strong className="text-white">
+              Deterministic (<code className="text-cyan-300">plan_gate</code>)
+            </strong>{" "}
+            — Opt in by setting <code>plan_gate: true</code> on a stage that
+            also has a <code>gate:</code> block. Freeform plan approval is{" "}
+            <em>skipped entirely</em> for that pipeline. Plan acceptance is a
+            normal gate over structured JSON (for example a{" "}
+            <code>plan.json</code> schema check), then{" "}
+            <code>gate_result</code> advances to implementation.
+          </p>
+        </div>
+        <Note>
+          Ordinary validation gates (tests, scanners, CodeBuild) without{" "}
+          <code>plan_gate: true</code> do <strong>not</strong> disable freeform
+          plan approval. Only an explicit plan gate opts out.
+        </Note>
+        <p className="text-sm">
+          Recommended pattern: agent writes a plan artifact, emits a signal
+          token, hub runs a schema validator, gate pass injects proceed.
+        </p>
+        <CodeBlock lang="yaml">{`stages:
+  - id: plan
+    label: Plan
+    entry: true
+    on_enter:
+      move_issue: In Progress
+      inject: |
+        Issue: {{.Issue.Identifier}} — {{.Issue.Title}}
+        URL: {{.Issue.URL}}
+
+        Before implementing, write .elasticclaw/plan.json with:
+          understanding  (string)
+          area           (string)
+          steps          (array of strings)
+          verification   (string)
+
+        Then say exactly: [PLAN_READY]
+        Do not edit product code until the next stage injects proceed.
+
+  - id: plan_validate
+    label: Validate plan
+    plan_gate: true          # opts out of freeform hub plan approval
+    triggers:
+      - message_contains: "[PLAN_READY]"
+    on_enter:
+      run:
+        # Schema-only check — no NLP. Print JSON: {"status":"ok"|"incomplete",...}
+        command: |
+          python3 - <<'PY'
+          import json, pathlib, sys
+          p = pathlib.Path(".elasticclaw/plan.json")
+          required = ("understanding", "area", "steps", "verification")
+          try:
+              data = json.loads(p.read_text())
+          except Exception as e:
+              print(json.dumps({"status": "incomplete", "reason": f"unreadable: {e}"}))
+              sys.exit(0)
+          missing = [k for k in required if not data.get(k)]
+          if missing:
+              print(json.dumps({"status": "incomplete", "reason": f"missing {missing}"}))
+          elif not isinstance(data.get("steps"), list) or not data["steps"]:
+              print(json.dumps({"status": "incomplete", "reason": "steps must be a non-empty list"}))
+          else:
+              print(json.dumps({"status": "ok"}))
+          PY
+        output: plan
+        timeout: 2m
+    gate:
+      output: plan
+      pass:
+        path: status
+        values: [ok]
+      fail:
+        path: status
+        values: [incomplete]
+      required: true
+
+  - id: implement
+    label: Implement
+    triggers:
+      - gate_result:
+          stage: plan_validate
+          verdict: pass
+    on_enter:
+      inject: |
+        Plan accepted (status {{ .Outputs.plan.status }}).
+        Implement now. When the PR is ready, say [DONE] with the PR URL.
+
+  - id: fix_plan
+    label: Fix plan
+    triggers:
+      - gate_result:
+          stage: plan_validate
+          verdict: fail
+    on_enter:
+      inject: |
+        Plan incomplete: {{ .Outputs.plan.reason }}
+        Update .elasticclaw/plan.json, then say [PLAN_READY] again.`}</CodeBlock>
+        <div className="space-y-2 text-sm">
+          <p>
+            On <code>plan_gate</code> pass, the hub marks the plan accepted so
+            freeform approval cannot re-fire if something races. Proceed is the
+            implement stage&apos;s <code>inject</code> — not a keyword match on
+            chat prose.
+          </p>
+          <p>
+            Full stage field notes (including{" "}
+            <code>plan_gate</code>) are on the{" "}
+            <Link href="/docs/stages" className="text-cyan-400 hover:underline">
+              Stages
+            </Link>{" "}
+            page.
+          </p>
+        </div>
+
         <h3 className="text-base font-semibold text-white pt-2">
           Hub-owned on-enter actions
         </h3>

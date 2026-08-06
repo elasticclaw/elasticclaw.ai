@@ -18,6 +18,8 @@ const DOCS_INDEX: SearchDoc[] = [
   { title: "Architecture", href: "/docs/concepts", excerpt: "How ElasticClaw works — workflows, stages, workspaces, credentials, lifecycle.", tags: ["concepts", "architecture", "how it works"] },
   { title: "Workspaces", href: "/docs/workspaces", excerpt: "Define sandbox bootstrap, repos, secrets, MCP servers, and model config.", tags: ["workspaces", "bootstrap", "config"] },
   { title: "Workflow Stages", href: "/docs/stages", excerpt: "Workflow state machines for created, done, CI, review, and merge behavior.", tags: ["stages", "workflow", "lifecycle"] },
+  { title: "Plan approval", href: "/docs/workflows#plan-approval", excerpt: "Freeform plan default vs deterministic plan_gate over structured plan.json.", tags: ["plan", "plan_gate", "gate", "approval", "deterministic"] },
+  { title: "Plan gates", href: "/docs/stages#plan-gate", excerpt: "plan_gate: true skips freeform hub plan approval and uses a schema gate.", tags: ["plan_gate", "stages", "gate", "plan"] },
   { title: "Server Config", href: "/docs/hub", excerpt: "hub.yaml reference — providers, LLM keys, authentication, and server-level settings.", tags: ["config", "yaml", "server"] },
   { title: "Artifact Storage", href: "/docs/artifact-storage", excerpt: "Configure local or S3-compatible storage for hub-owned artifacts.", tags: ["storage", "artifact", "s3", "local", "checkpoint", "volume"] },
   { title: "Workflow Volumes", href: "/docs/workflow-volumes", excerpt: "Attach hub-managed artifact-backed directories to workflow agents for non-Git data.", tags: ["workflow", "volumes", "artifact", "storage", "lease", "cache"] },
