@@ -237,17 +237,27 @@ export default function WorkflowsPage() {
           python3 - <<'PY'
           import json, pathlib, sys
           p = pathlib.Path(".elasticclaw/plan.json")
-          required = ("understanding", "area", "steps", "verification")
           try:
               data = json.loads(p.read_text())
           except Exception as e:
               print(json.dumps({"status": "incomplete", "reason": f"unreadable: {e}"}))
               sys.exit(0)
-          missing = [k for k in required if not data.get(k)]
-          if missing:
-              print(json.dumps({"status": "incomplete", "reason": f"missing {missing}"}))
-          elif not isinstance(data.get("steps"), list) or not data["steps"]:
-              print(json.dumps({"status": "incomplete", "reason": "steps must be a non-empty list"}))
+          # Require non-empty strings (not just truthy values like true/1).
+          string_fields = ("understanding", "area", "verification")
+          invalid = [
+              k for k in string_fields
+              if not isinstance(data.get(k), str) or not data[k].strip()
+          ]
+          steps = data.get("steps")
+          if invalid:
+              print(json.dumps({"status": "incomplete", "reason": f"invalid {invalid}"}))
+          elif not isinstance(steps, list) or not steps or any(
+              not isinstance(step, str) or not step.strip() for step in steps
+          ):
+              print(json.dumps({
+                  "status": "incomplete",
+                  "reason": "steps must be a non-empty list of strings",
+              }))
           else:
               print(json.dumps({"status": "ok"}))
           PY
