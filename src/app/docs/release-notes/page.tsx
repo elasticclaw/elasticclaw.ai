@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.9.4",
+    date: "2026-09-04",
+    title: "Infra Alerts Get Real‑Time Boost",
+    summary: "Infra alerts now ship faster, Slack notifications get scheduled, and the dashboard gets a fresh design overhaul.",
+  },
+  {
     version: "2026.8.10",
     date: "2026-08-10",
     title: "Durable Workflows, Smarter Models",
