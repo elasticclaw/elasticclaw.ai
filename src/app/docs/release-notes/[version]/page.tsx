@@ -15,6 +15,33 @@ interface ReleaseDetail {
 
 // This map is updated by the release automation workflow.
 const RELEASE_DETAILS: Record<string, ReleaseDetail> = {
+  "2026.9.11": {
+    version: "2026.9.11",
+    date: "2026-09-11",
+    title: "Cron Schedules Power v2 Workflows",
+    whatsNew: [
+    "Add native cron schedule triggers for Workflow v2, letting you fire runs on any cron expression.",
+    "Expose GPT‑5.6 models in the OpenAI provider dropdown, expanding AI capabilities for developers.",
+    "Show Workflow v2 state transitions and logs directly in the chat timeline with pagination for easier debugging.",
+    "Introduce per‑repository permissions for GitHub tokens, tightening security for multi‑repo pipelines.",
+    "Enable manual trigger flags, command execution, and dependency‑update effects in Workflow v2, giving fine‑grained control over runs.",
+    ],
+    improvements: [
+    "UI now displays up to 35 characters for workflow names and adds a scrollable create‑agent picker for smoother navigation.",
+    "Merge v2 state transition entries into the run‑log view, presenting a unified chronological history.",
+    "Extended CI test timeouts and added a 1 ns safety timeout to reduce flaky bridge tests.",
+    "Documentation updates: cleaned up ADR references, clarified v2 workflow skill usage, and ignored .opencode/ clutter.",
+    ],
+    fixes: [
+    "Fixed a race condition that could lose cron entries during v2 reloads and cause snapshot data races.",
+    "Added a timeout index to workflow_v2_runs and ensured stuck runs are reaped after timeout_at.",
+    "Cancelled v2 runs when the claw fails to provision, preventing orphaned executions.",
+    "Addressed multiple Greptile and code‑review findings across the v2 cron lifecycle and command handling.",
+    "Corrected task_run_id inclusion in the workflow_v2_runs table and eager task_run_summary updates on terminal states.",
+    "Swallowed comment_issue failures and reverted problematic JIRA payloads to keep pipelines robust.",
+    ],
+    rawChangelog: "8def69bd fix(hub): create workflow_v2_runs timeout index after adding the column (Xav Paice)\naeae688a Merge pull request #681 from elasticclaw/feature/v2-cron-scheduler (Xav Paice)\n129578e5 fix(hub): load v2 cron run before consuming slot-release marker (Xav Paice)\n161a83c0 fix(hub): address code review findings for v2 cron lifecycle (Xav Paice)\n2a4f4912 Merge pull request #683 from elasticclaw/feature/openai-5-6-models-dropdown (Ana Berg)\n4ee3a935 feat(web): offer the GPT-5.6 models under the OpenAI provider (Ana Berg)\n6c888be3 Merge branch 'main' into feat/AIEDEV-23_add_comment_issue_on_enter_action (cabrera-dario-nimble)\n8d0b0f2d fix(hub): preserve cron entries during v2 reload and avoid snapshot data race (Xav Paice)\n3d6124b5 fix(hub): avoid data race on v2 cron workflow reload (Xav Paice)\nbe65a934 fix(hub): address Greptile review findings on cron v2 lifecycle (Xav Paice)\n4e79d522 fix(hub): cancel workflow v2 run when its claw fails to provision (Xav Paice)\nacae02fe fix(hub): reap stuck workflow v2 runs after timeout_at (Xav Paice)\na541dfc6 fix(hub): address Greptile review findings for v2 cron scheduler (Xav Paice)\n073d2d46 feat(hub): add cron schedule triggers for workflow v2 (Xav Paice)\n1b8a4d8b refactor(AIEDEV-23): comment_issue follow-ups from PR #636 review (Gato)\need8e459 fix(AIEDEV-23): swallow comment_issue failures + revert jira fields payload (Gato)\n3679d2b7 test(bridge): use 1ns timeout to avoid process-reaping dependency in CI (Xav Paice)\ndc74f2d0 test(bridge): extend deadline for exec timeout test to reduce CI flakiness (Xav Paice)\n302fe9e4 fix(hub): eagerly update task_run_summaries when v2 run reaches terminal state (Xav Paice)\n4c9d6dc6 fix(review): address v2 command/history issues from review (Xav Paice)\ne2eacaa2 fix(hub): include task_run_id in workflow_v2_runs CREATE TABLE (Xav Paice)\n82e9c36c fix(hub,bridge,types): v2 command/dependency-update lifecycle and validation fixes (Xav Paice)\n8309f1af docs: remove ADR and v2-schema-reference from PR scope (Xav Paice)\n219ab192 chore: ignore .opencode/ directory and remove committed skill file (Xav Paice)\n1ae114f2 docs(skills): update v2 workflow skill with exec.run, dependency.update, and repository permissions (Xav Paice)\nee69cfaf hub: add test for v2 state transitions in message timeline (Xav Paice)\n7054af3f hub, web: show v2 workflow state transitions in the main chat timeline (Xav Paice)\nbc10a123 web: show v2 workflow run logs in chronological order with pagination (Xav Paice)\n656b71ab hub: merge v2 state transitions into run logs; show state entries in UI (Xav Paice)\nec7c378e workflowv2: allow engine to emit dependency.update.* command receipts (Xav Paice)\nab148659 v2 workspace: support per-repository permissions for GitHub access tokens (Xav Paice)\na6e13c10 feat(web): display 35 workflow-name chars and add create-agent picker scroll (Xav Paice)\ne07b8974 feat: v2 workflow history and logs (Xav Paice)\nf7bc2f42 feat(workflow-v2): manual trigger flag, command execution, and UI visibility (Xav Paice)\n0c280ee9 feat(workflow-v2): command and dependency-update effects (issue #622) (ElasticClaw Factory)\ncb4e7830 feat(AIEDEV-23): add comment_issue on_enter action for v1 pipelines (Dario Cabrera)",
+  },
   "2026.8.10": {
     version: "2026.8.10",
     date: "2026-08-10",

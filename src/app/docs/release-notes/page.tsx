@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.9.11",
+    date: "2026-09-11",
+    title: "Cron Schedules Power v2 Workflows",
+    summary: "Cron‑driven v2 workflows, GPT‑5.6 AI, tighter security, and a smoother UI—plus a slew of stability fixes.",
+  },
+  {
     version: "2026.8.10",
     date: "2026-08-10",
     title: "Durable Workflows, Smarter Models",
