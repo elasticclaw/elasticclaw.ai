@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { DocsPage, Section, Note, MermaidDiagram } from "@/components/docs-page";
 
 export const metadata: Metadata = { title: "Concepts" };
@@ -122,6 +123,41 @@ graph TD
             </p>
           </div>
         </div>
+      </Section>
+
+      <Section id="v2-determinism" title="Deterministic workflows (v2)">
+        <p className="text-zinc-400">
+          Workflows can use either the original v1 stage model or the newer v2
+          deterministic state machine. v2 workflows declare{" "}
+          <code>schema_version: 2</code>, an <code>initial_state</code>,{" "}
+          <code>states</code>, <code>transitions</code>, <code>commands</code>, and
+          durable <strong>effects</strong> such as <code>agent.task</code>,{" "}
+          <code>exec.run</code>, and <code>dependency.update</code>.
+        </p>
+        <p className="text-zinc-400">
+          In v2, chat text is never a control signal. The hub advances the
+          workflow based on verified facts from CI systems, source-control
+          connections, review systems, and effect receipts. CI and review
+          policies are named in the workflow and resolved against the paired
+          workspace v2.
+        </p>
+        <p className="text-sm text-zinc-400">
+          See{" "}
+          <Link
+            href="/docs/workflows#workflow-v2-schema"
+            className="text-cyan-400 hover:underline"
+          >
+            Workflows → v2 schema
+          </Link>{" "}
+          and{" "}
+          <Link
+            href="/docs/workspaces#workspace-v2-schema"
+            className="text-cyan-400 hover:underline"
+          >
+            Workspaces → v2 schema
+          </Link>{" "}
+          for authoring details.
+        </p>
       </Section>
 
       <Section title="Agent Lifecycle">

@@ -697,6 +697,317 @@ elasticclaw workflow logs triage 5f35f8f6-7a2a-4f32-bb50-6e0cbd53c6ef --workspac
         </p>
       </Section>
 
+      <Section id="workflow-v2-schema" title="Workflow v2 schema">
+        <p>
+          <code className="text-cyan-300">schema_version: 2</code> workflows
+          replace the transcript-driven v1 stage model with a deterministic state
+          machine. The workflow declares states, transitions, commands, CI/review
+          policies, delivery constraints, and cron triggers. Authority comes
+          from the paired workspace v2, so the workflow no longer embeds
+          repositories, credentials, or provider settings.
+        </p>
+        <Note>
+          v1 workflows remain fully supported. v2 is opt-in via{" "}
+          <code>schema_version: 2</code>.
+        </Note>
+
+        <h3 className="text-base font-semibold text-white pt-2">
+          Example v2 workflow
+        </h3>
+        <CodeBlock lang="yaml">{`schema_version: 2
+name: pull-request-delivery
+enabled: true
+initial_state: implementing
+
+states:
+  implementing:
+    description: Implement the change and open a verified pull request.
+    phase: build
+    on_enter:
+      effects:
+        - agent.task:
+            prompt: |
+              Implement the requested change in the workspace, commit the
+              result, and open a pull request. The workflow advances when the
+              source-control connection reports the verified PR.
+  awaiting_ci:
+    description: A verified pull request exists and CI is unresolved.
+    phase: pr
+    invariant:
+      pull_request:
+        state: open
+  fixing:
+    description: Address verified CI or review failures and push fixes.
+    phase: build
+    on_enter:
+      effects:
+        - agent.task:
+            prompt: |
+              Inspect the CI or review failures for the current PR, apply
+              fixes, commit, and push to the PR branch. The workflow advances
+              when the PR head changes.
+  awaiting_review:
+    description: CI policy is satisfied.
+    phase: review
+  ready_to_merge:
+    description: Ready.
+    phase: review
+  completed:
+    phase: done
+    terminal: true
+  cancelled:
+    phase: done
+    terminal: true
+
+transitions:
+  pr_opened:
+    from: implementing
+    on: pull_request.verified_open
+    when:
+      pull_request:
+        state: open
+    to: awaiting_ci
+
+  ci_satisfied:
+    from: awaiting_ci
+    on: ci.policy.evaluated
+    when:
+      ci:
+        policy: merge_ready
+        status: satisfied
+    to: awaiting_review
+
+  ci_failed:
+    from: awaiting_ci
+    on: ci.policy.evaluated
+    when:
+      ci:
+        policy: merge_ready
+        status: unsatisfied
+    to: fixing
+
+  fixes_pushed:
+    from: fixing
+    on: pull_request.head_changed
+    to: awaiting_ci
+
+  review_satisfied:
+    from: awaiting_review
+    on: review.policy.evaluated
+    when:
+      review:
+        policy: required_review
+        status: satisfied
+    to: ready_to_merge
+
+  review_unsatisfied:
+    from: awaiting_review
+    on: review.policy.evaluated
+    when:
+      review:
+        policy: required_review
+        status: unsatisfied
+    to: fixing
+
+  pull_request_merged:
+    from: ready_to_merge
+    on: pull_request.merged
+    to: completed
+
+commands:
+  cancel:
+    from: [implementing, awaiting_ci, fixing, awaiting_review, ready_to_merge]
+    to: cancelled
+    require_reason: true
+
+ci:
+  policies:
+    merge_ready:
+      all:
+        - pipeline: github-pr
+          checks: [lint, unit-tests]
+        - pipeline: depot-container
+          checks: [container-build]
+      satisfied_for: current_pr_head
+
+review:
+  policies:
+    required_review:
+      all:
+        - connection: github-reviews
+          approvals:
+            minimum: 1
+      invalidate_on_new_head: true
+
+delivery:
+  pull_requests:
+    required: true
+    minimum: 1
+    ci_policy: merge_ready
+    review_policy: required_review
+    completion: all_merged
+
+events:
+  ci.run.completed:
+    clauses:
+      - from: awaiting_ci
+        when:
+          all:
+            - pipeline:
+                equals: depot-container
+            - conclusion:
+                equals: failure
+        assert:
+          work.ci_failure_investigation_requested: true
+        effects:
+          - agent.task:
+              prompt: Investigate the Depot CI failure.`}</CodeBlock>
+
+        <p className="text-sm text-zinc-400 mt-2">
+          The workflow is triggered per delivery item (for example, a linked
+          issue or a manual start). Active build states such as{" "}
+          <code>implementing</code> and <code>fixing</code> start durable{" "}
+          <code>agent.task</code> effects via <code>on_enter</code>; waiting
+          states such as <code>awaiting_ci</code>, <code>awaiting_review</code>,
+          and <code>ready_to_merge</code> advance only on verified external
+          events.
+        </p>
+
+        <h3 className="text-base font-semibold text-white pt-2">
+          Core v2 concepts
+        </h3>
+        <div className="space-y-3 text-sm text-zinc-400">
+          <p>
+            <code className="text-cyan-300">states</code> — State machine
+            nodes. Every enabled state must declare a <code>phase</code> from{" "}
+            <code>setup</code>, <code>context</code>, <code>plan</code>,{" "}
+            <code>build</code>, <code>test</code>, <code>pr</code>,{" "}
+            <code>review</code>, or <code>done</code>. Terminal states set{" "}
+            <code>terminal: true</code>.
+          </p>
+          <p>
+            <code className="text-cyan-300">transitions</code> — Directed edges
+            between states. <code>from</code> is the source state (or list);{" "}
+            <code>on</code> is an event kind; <code>when</code> is a predicate
+            tree; <code>to</code> is the destination. Transitions for the same{" "}
+            <code>from</code> + <code>on</code> must have disjoint{" "}
+            <code>when</code> clauses.
+          </p>
+          <p>
+            <code className="text-cyan-300">commands</code> — Operator-initiated
+            transitions such as <code>cancel</code> or <code>retry</code>.
+          </p>
+          <p>
+            <code className="text-cyan-300">ci.policies</code> and{" "}
+            <code className="text-cyan-300">review.policies</code> — Named
+            policies referenced by delivery. CI policies list required pipeline
+            checks; review policies list required approvals.
+          </p>
+          <p>
+            <code className="text-cyan-300">delivery.pull_requests</code> —
+            Dynamic delivery constraints. The hub verifies every PR through the
+            workspace source-control connection before it becomes visible to the
+            state machine.
+          </p>
+          <p>
+            <code className="text-cyan-300">events</code> — Custom event
+            definitions. Each event kind has ordered clauses matched by{" "}
+            <code>from</code> state + <code>when</code> predicate.
+          </p>
+        </div>
+
+        <h3 className="text-base font-semibold text-white pt-2">
+          Effects and facts
+        </h3>
+        <p>
+          v2 workflows act through durable <strong>effects</strong> instead of
+          chat markers. Allowed effects include:
+        </p>
+        <div className="space-y-2 text-sm text-zinc-400">
+          <p>
+            <code className="text-cyan-300">agent.task</code> — Start a durable
+            agent task with a prompt.
+          </p>
+          <p>
+            <code className="text-cyan-300">exec.run</code> — Run a shell command
+            in the workspace. Requires the execution provider to grant{" "}
+            <code>execute_command</code>.
+          </p>
+          <p>
+            <code className="text-cyan-300">dependency.update</code> — Run a
+            deterministic dependency update pass. Requires the execution provider
+            to grant <code>dependency_update</code> and a repository with{" "}
+            <code>permissions: write</code>.
+          </p>
+          <p>
+            <code className="text-cyan-300">ci.trigger</code>,{" "}
+            <code className="text-cyan-300">ci.retry</code>,{" "}
+            <code className="text-cyan-300">ci.cancel</code> — CI pipeline
+            actions. The CI connection must not have restricted the required
+            capability.
+          </p>
+          <p>
+            <code className="text-cyan-300">issue.comment</code> — Post a comment
+            through a configured issue tracker connection.
+          </p>
+        </div>
+        <p className="text-sm text-zinc-400 mt-3">
+          Effects and hub adapters write <strong>facts</strong> into protected
+          namespaces (<code>ci.*</code>, <code>pull_request.*</code>,{" "}
+          <code>review.*</code>, <code>effects.*</code>,{" "}
+          <code>workflow.*</code>, <code>operator.*</code>,{" "}
+          <code>exec.*</code>). Workflows may only write{" "}
+          <code>work.*</code> or <code>custom.*</code> facts with{" "}
+          <code>assert</code> or <code>set</code>.
+        </p>
+
+        <h3 className="text-base font-semibold text-white pt-2">
+          Predicate language
+        </h3>
+        <p>
+          <code>when</code> and <code>invariant</code> clauses support a small,
+          deterministic set of operators:
+        </p>
+        <div className="space-y-2 text-sm text-zinc-400">
+          <p>
+            <code className="text-cyan-300">equals</code>,{" "}
+            <code className="text-cyan-300">not_equals</code>,{" "}
+            <code className="text-cyan-300">in</code>,{" "}
+            <code className="text-cyan-300">not_in</code>,{" "}
+            <code className="text-cyan-300">exists</code>
+          </p>
+          <p>
+            <code className="text-cyan-300">all</code> (conjunction) and{" "}
+            <code className="text-cyan-300">any</code> (disjunction)
+          </p>
+        </div>
+        <Note>
+          Text markers such as <code>[DONE]</code> and{" "}
+          <code>message_contains</code> are never trusted as control signals in
+          v2. Use explicit events, transitions, and commands instead.
+        </Note>
+
+        <h3 className="text-base font-semibold text-white pt-2">
+          Converting from v1 to v2
+        </h3>
+        <p>
+          Use the CLI conversion command to draft a v2 workspace or workflow.
+          Review warnings and pair-validate the workspace + workflow before
+          enabling.
+        </p>
+        <CodeBlock lang="bash">{`elasticclaw workspace convert .elasticclaw/workspaces/my-ws
+elasticclaw workflow convert ./wf.yaml --workspace ./ws -o wf.v2.yaml`}</CodeBlock>
+        <p className="text-sm text-zinc-400 mt-2">
+          The converter produces a draft with warnings. Common mappings: v1{" "}
+          <code>provider</code>/<code>nix</code>/<code>docker</code> move to{" "}
+          <code>execution</code>; v1 <code>stages</code> become v2{" "}
+          <code>states</code>; v1 <code>entry: true</code> becomes{" "}
+          <code>initial_state</code>; v1 <code>dependency_updates</code> becomes
+          the <code>dependency.update</code> effect; v1 cron triggers map 1:1 to
+          v2 <code>trigger.cron</code>.
+        </p>
+      </Section>
+
       <Section title="CLI commands">
         <CodeBlock lang="bash">{`elasticclaw workspace create --name my-app
 elasticclaw workspace push my-app

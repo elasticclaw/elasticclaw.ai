@@ -133,40 +133,103 @@ stages:
 
       <Section title="Manual runs">
         <p>
-          Cron workflows can be triggered manually from the API when the cron
+          Cron workflows can be triggered manually from the CLI when the cron
           scheduler is available. Manual runs use the same workflow definition
           and run history as scheduled runs.
         </p>
-        <CodeBlock lang="bash">{`curl -X POST \\
-  "$ELASTICCLAW_URL/api/workspaces/engineering/workflows/dependency-maintenance/cron/trigger" \\
-  -H "Authorization: Bearer $ELASTICCLAW_TOKEN"`}</CodeBlock>
+        <CodeBlock lang="bash">{`elasticclaw workflow trigger dependency-maintenance --workspace engineering --cron`}</CodeBlock>
         <Note>
           Disabled workflows cannot be triggered by cron. Set{" "}
           <code>enabled: false</code> to pause a scheduled workflow.
         </Note>
       </Section>
 
-      <Section title="Run history and next run">
+      <Section title="Run history">
         <p>
           ElasticClaw records cron workflow runs with status, result, claw ID,
           timestamps, and run context.
         </p>
-        <CodeBlock lang="bash">{`curl \\
-  "$ELASTICCLAW_URL/api/workspaces/engineering/workflows/dependency-maintenance/cron/runs?limit=20" \\
-  -H "Authorization: Bearer $ELASTICCLAW_TOKEN"
-
-curl \\
-  "$ELASTICCLAW_URL/api/workspaces/engineering/workflows/dependency-maintenance/cron/next" \\
-  -H "Authorization: Bearer $ELASTICCLAW_TOKEN"
-
-# Or use the CLI
-elasticclaw workflow runs dependency-maintenance --workspace engineering --limit 20
+        <CodeBlock lang="bash">{`elasticclaw workflow runs dependency-maintenance --workspace engineering --limit 20
 elasticclaw workflow logs dependency-maintenance <run-id> --workspace engineering`}</CodeBlock>
         <p>
           Run statuses include <code>pending</code>, <code>running</code>,
           <code>completed</code>, <code>failed</code>, <code>skipped</code>,
           <code>timed_out</code>, and <code>canceled</code>.
         </p>
+      </Section>
+
+      <Section id="v2-cron" title="Cron triggers in v2 workflows">
+        <p>
+          v2 workflows declare cron triggers under a top-level{" "}
+          <code>trigger</code> block. The syntax is similar to v1, but the
+          workflow must be <code>enabled: true</code> and uses v2 states and
+          transitions instead of stages.
+        </p>
+        <CodeBlock lang="yaml">{`schema_version: 2
+name: dependency-maintenance
+enabled: true
+initial_state: update_dependencies
+
+trigger:
+  cron:
+    schedule: "0 9 * * 1"
+    timezone: "America/Chicago"
+    overlap_policy: skip
+    timeout: 2h
+
+states:
+  update_dependencies:
+    description: Inspect manifests, apply safe updates, and open a grouped PR if needed.
+    phase: build
+    on_enter:
+      effects:
+        - dependency.update:
+            ecosystems: [go, npm]
+            include_major: false
+        - agent.task:
+            prompt: |
+              If dependency.update produced changes, commit them, run tests,
+              and open one grouped PR. If no updates were needed, finish
+              without opening a PR.
+  pr_open:
+    description: Grouped dependency update PR is open.
+    phase: pr
+    terminal: true
+  no_updates:
+    description: No dependency updates were necessary.
+    phase: done
+    terminal: true
+
+transitions:
+  dependency_pr_opened:
+    from: update_dependencies
+    on: pull_request.verified_open
+    when:
+      pull_request:
+        state: open
+    to: pr_open
+
+commands:
+  skip:
+    from: [update_dependencies]
+    to: no_updates
+    require_reason: false`}</CodeBlock>
+        <p className="text-sm text-zinc-400 mt-2">
+          <code>overlap_policy</code> supports <code>skip</code> (default) and{" "}
+          <code>parallel</code>. v1 <code>queue</code> is converted to{" "}
+          <code>skip</code> with a warning. In v2, state descriptions are
+          metadata; the real work starts via <code>on_enter.effects</code>. The
+          example above can complete via a verified PR or the <code>skip</code>{" "}
+          command when no updates are needed. Invoke the command from the CLI:
+        </p>
+        <CodeBlock lang="bash">{`# Trigger a cron workflow manually
+elasticclaw workflow trigger dependency-maintenance --workspace engineering --cron
+
+# Invoke the skip command while the run is in update_dependencies
+elasticclaw workflow command dependency-maintenance skip --workspace engineering
+
+# View cron run history (including skipped ticks)
+elasticclaw workflow runs dependency-maintenance --workspace engineering --cron`}</CodeBlock>
       </Section>
 
       <Section title="Recommended patterns">

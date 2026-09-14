@@ -42,8 +42,9 @@ export default function DocsOverviewPage() {
             <h3 className="font-semibold text-zinc-100">Workflows</h3>
             <p className="mt-1 text-sm text-zinc-400">
               Workstream definitions that decide when to start work, which
-              workspace to use, what access to grant, and which stages drive
-              the work through PR review, CI, merge, and cleanup.
+              workspace to use, what access to grant, and which stages or v2
+              deterministic states drive the work through PR review, CI, merge,
+              and cleanup.
             </p>
           </div>
           <div className="rounded-lg border border-zinc-800 bg-zinc-900/45 p-4">

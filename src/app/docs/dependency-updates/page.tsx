@@ -232,6 +232,97 @@ stages:
     terminal: true`}</CodeBlock>
       </Section>
 
+      <Section id="v2-dependency-update" title="dependency.update effect in v2 workflows">
+        <p>
+          In v2 workflows the equivalent of v1{" "}
+          <code>dependency_updates</code> is the{" "}
+          <code className="text-cyan-300">dependency.update</code> effect. It
+          supports the same ecosystem, path, allow/ignore, and grouping options
+          as v1. The effect requires:
+        </p>
+        <ul className="list-disc list-inside space-y-1 text-sm text-zinc-400">
+          <li>
+            The workspace execution provider grants{" "}
+            <code>dependency_update</code> capability.
+          </li>
+          <li>
+            The target repository is declared with{" "}
+            <code>permissions: write</code> in the workspace.
+          </li>
+        </ul>
+        <CodeBlock lang="yaml">{`schema_version: 2
+name: dependency-update
+enabled: true
+initial_state: update_dependencies
+
+states:
+  update_dependencies:
+    description: Apply safe dependency updates.
+    phase: build
+    on_enter:
+      effects:
+        - dependency.update:
+            ecosystems: [go, npm]
+            paths: ["."]
+            include_major: false
+            separate_major: true
+            separate_security: true
+            separate_runtime: true
+            allow: ["*"]
+            ignore: ["example-package"]
+            exclude_paths: ["vendor", "**/legacy/**"]
+            timeout: 30m
+        - agent.task:
+            prompt: |
+              If dependency.update produced changes, review them, run tests,
+              commit, and open one grouped PR. If no updates were needed,
+              finish without opening a PR.
+  pr_open:
+    description: Grouped dependency update PR is open.
+    phase: pr
+    terminal: true
+  no_updates:
+    description: No dependency updates were necessary.
+    phase: done
+    terminal: true
+
+transitions:
+  dependency_pr_opened:
+    from: update_dependencies
+    on: pull_request.verified_open
+    when:
+      pull_request:
+        state: open
+    to: pr_open
+  no_updates_found:
+    from: update_dependencies
+    on: exec.dependency_update.completed
+    when:
+      exec.dependency_update:
+        files_changed:
+          equals: 0
+    to: no_updates
+
+commands:
+  skip:
+    from: [update_dependencies]
+    to: no_updates
+    require_reason: false`}</CodeBlock>
+        <p className="text-sm text-zinc-400 mt-2">
+          When the effect completes, the hub writes protected facts under{" "}
+          <code>exec.dependency_update.*</code> (for example{" "}
+          <code>exec.dependency_update.files_changed</code>,{" "}
+          <code>exec.dependency_update.updates</code>, and{" "}
+          <code>exec.dependency_update.commands</code>). Transitions can read
+          these facts but cannot write them. Chat markers such as{" "}
+          <code>[DONE]</code> are not control signals in v2; advancement is
+          driven by verified source-control events and facts. When no updates
+          are found, the workflow transitions automatically based on the{" "}
+          <code>exec.dependency_update.files_changed</code> fact. The{" "}
+          <code>skip</code> command provides an operator override.
+        </p>
+      </Section>
+
       <Section title="Failure behavior">
         <p>
           The stage fails when required package manager tooling is missing or a

@@ -118,7 +118,12 @@ elasticclaw workspace list                # list server workspaces
 elasticclaw workspace push my-workspace    # push workspace files to server
 elasticclaw workspace push my-workspace --path ./custom/my-workspace  # push from a specific directory
 elasticclaw workspace rm my-workspace      # remove from server
-elasticclaw workspace show my-workspace    # show workspace config`}</CodeBlock>
+elasticclaw workspace show my-workspace    # show workspace config
+
+# Convert a v1 workspace to v2 (draft)
+elasticclaw workspace convert .elasticclaw/workspaces/my-workspace
+elasticclaw workspace convert ./elasticclaw-config.yaml --to 2 -o v2.yaml
+elasticclaw workspace convert ./ws --in-place`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
           Use <code>--path</code> with <code>workspace push</code> to publish a
           workspace from a directory outside the default{" "}
@@ -131,7 +136,18 @@ elasticclaw workspace show my-workspace    # show workspace config`}</CodeBlock>
         <CodeBlock lang="bash">{`elasticclaw workflow push --workspace my-workspace .elasticclaw/workflows
 elasticclaw workflow list --workspace my-workspace
 elasticclaw workflow show triage --workspace my-workspace
-elasticclaw workflow trigger triage --workspace my-workspace --input key=value`}</CodeBlock>
+elasticclaw workflow trigger triage --workspace my-workspace --input key=value
+
+# Convert a v1 workflow to v2 (draft)
+elasticclaw workflow convert examples/workflows/github-issue.yaml
+elasticclaw workflow convert ./wf.yaml --workspace ./ws -o wf.v2.yaml
+elasticclaw workflow convert ./github-issue.yaml --in-place
+
+# Trigger a v2 cron workflow manually
+elasticclaw workflow trigger dependency-maintenance --workspace engineering --cron
+
+# Invoke a v2 workflow command
+elasticclaw workflow command dependency-maintenance skip --workspace engineering`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
           <code>workflow show</code> prints the raw workflow YAML as it is stored
           on the server.
@@ -140,11 +156,15 @@ elasticclaw workflow trigger triage --workspace my-workspace --input key=value`}
 
       <Section id="workflow-runs" title="elasticclaw workflow runs">
         <p>Show recent execution history for a workflow.</p>
-        <CodeBlock lang="bash">{`elasticclaw workflow runs triage --workspace my-workspace --limit 20`}</CodeBlock>
+        <CodeBlock lang="bash">{`elasticclaw workflow runs triage --workspace my-workspace --limit 20
+
+# List cron run history (including skipped ticks) for a v2 cron workflow
+elasticclaw workflow runs dependency-maintenance --workspace engineering --cron --limit 20`}</CodeBlock>
         <p className="text-sm text-zinc-400 mt-2">
           Lists runs for cron and manual triggers, including status, trigger type,
           timestamps, result, and linked agent ID. Use <code>--limit</code> to
-          control how many runs are returned (default 50, max 200).
+          control how many runs are returned (default 50, max 200). For v2 cron
+          workflows, add <code>--cron</code> to view scheduled run history.
         </p>
       </Section>
 

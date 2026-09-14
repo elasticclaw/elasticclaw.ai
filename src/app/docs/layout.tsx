@@ -55,6 +55,10 @@ const NAV_ITEMS: NavItem[] = [
     label: "Workspaces",
     children: [
       { href: "/docs/workspaces", label: "Workspace Config" },
+      {
+        href: "/docs/workspaces#workspace-v2-schema",
+        label: "Workspace v2 schema",
+      },
       { href: "/docs/repository-instructions", label: "Repository Instructions" },
       { href: "/docs/secrets", label: "Secrets" },
     ],
@@ -71,6 +75,10 @@ const NAV_ITEMS: NavItem[] = [
       {
         href: "/docs/workflows#plan-approval",
         label: "Plan approval",
+      },
+      {
+        href: "/docs/workflows#workflow-v2-schema",
+        label: "Workflow v2 schema",
       },
       { href: "/docs/stages", label: "Stages" },
       { href: "/docs/stages#plan-gate", label: "Plan gates" },

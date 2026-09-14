@@ -274,6 +274,66 @@ export default function StagesPage() {
         </ol>
       </Section>
 
+      <Section id="v2-states" title="States and transitions in v2 workflows">
+        <p>
+          v2 workflows use <code>states</code> and <code>transitions</code>{" "}
+          instead of v1 stages. A state declares a <code>phase</code>{" "}
+          (for example <code>build</code>, <code>pr</code>,{" "}
+          <code>review</code>, or <code>done</code>) and may mark{" "}
+          <code>terminal: true</code>. Transitions declare the state graph with{" "}
+          <code>from</code>, <code>on</code> event, <code>when</code> predicate,
+          and <code>to</code>.
+        </p>
+        <CodeBlock lang="yaml">{`schema_version: 2
+name: pr-tracker
+enabled: true
+initial_state: implementing
+
+states:
+  implementing:
+    description: Work is in progress.
+    phase: build
+  awaiting_ci:
+    description: A verified PR exists and CI is unresolved.
+    phase: pr
+  completed:
+    phase: done
+    terminal: true
+  cancelled:
+    phase: done
+    terminal: true
+
+transitions:
+  pr_opened:
+    from: implementing
+    on: pull_request.verified_open
+    when:
+      pull_request:
+        state: open
+    to: awaiting_ci
+
+commands:
+  cancel:
+    from: [awaiting_ci]
+    to: cancelled
+    require_reason: false`}</CodeBlock>
+        <p className="text-sm text-zinc-400 mt-2">
+          v2 also adds <code>commands</code> for operator actions,{" "}
+          <code>events</code> clauses for provider-specific signals, and{" "}
+          <code>on_enter.effects</code> for durable actions such as{" "}
+          <code>agent.task</code>, <code>exec.run</code>, and{" "}
+          <code>dependency.update</code>. Chat markers like{" "}
+          <code>[DONE]</code> are not used as control signals. See{" "}
+          <Link
+            href="/docs/workflows#workflow-v2-schema"
+            className="text-cyan-400 hover:underline"
+          >
+            Workflows → v2 schema
+          </Link>{" "}
+          for the full reference.
+        </p>
+      </Section>
+
       <Note>
         Stages are pushed as part of workflow YAML. Edit the workflow file,
         then run <code>elasticclaw workflow push --workspace &lt;workspace&gt; &lt;file-or-dir&gt;</code>.

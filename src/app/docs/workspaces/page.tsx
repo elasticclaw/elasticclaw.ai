@@ -50,10 +50,185 @@ provider: replicated`}</CodeBlock>
         </div>
       </Section>
 
+      <Section id="workspace-v2-schema" title="Workspace v2 schema">
+        <p>
+          <code className="text-cyan-300">schema_version: 2</code> is a strict,
+          typed replacement for the v1 workspace format. It separates authority
+          (repositories, credentials, source-control and CI connections) from
+          workflow behavior, and it references secrets by name instead of
+          embedding values.
+        </p>
+        <CodeBlock lang="yaml">{`schema_version: 2
+name: engineering
+
+repositories:
+  primary:
+    provider: github
+    repository: elasticclaw/elasticclaw
+    permissions: write
+    source_control: github-production
+
+execution:
+  provider: daytona
+  nix: true
+  docker: true
+  tools:
+    - git
+    - gh
+
+credentials:
+  github_app:
+    secret: GITHUB_APP_PRIVATE_KEY
+  depot_token:
+    secret: DEPOT_TOKEN
+  linear_api_key:
+    secret: LINEAR_API_KEY
+
+source_control:
+  connections:
+    github-production:
+      provider: github
+      credentials: github_app
+
+ci:
+  connections:
+    github-actions:
+      provider: github_actions
+      source_control: github-production
+      credentials: github_app
+      capability_restrictions:
+        trigger_run: false
+        cancel_run: false
+    depot:
+      provider: depot
+      credentials: depot_token
+  pipelines:
+    github-pr:
+      connection: github-actions
+      repository: primary
+      workflow: ci.yml
+    depot-container:
+      connection: depot
+      repository: primary
+      project: elasticclaw
+      pipeline: container-build
+
+issue_trackers:
+  connections:
+    product-linear:
+      provider: linear
+      credentials: linear_api_key
+
+review_systems:
+  connections:
+    github-reviews:
+      provider: github
+      source_control: github-production
+
+knowledge:
+  sources:
+    engineering-principles:
+      type: workspace_files
+      scope: organization
+      required: true
+      paths: [ENGINEERING.md, PRODUCT.md]
+    repository-instructions:
+      type: repository_files
+      scope: repository
+      required: true
+      paths: [AGENTS.md]`}</CodeBlock>
+
+        <h3 className="text-base font-semibold text-white pt-2">
+          Referencing secrets
+        </h3>
+        <p>
+          v2 workspaces never embed secret values. Create the secret on the
+          server, then reference it by name in the workspace YAML.
+        </p>
+        <CodeBlock lang="bash">{`elasticclaw secret create GITHUB_APP_PRIVATE_KEY --workspace engineering \
+  --value "$GITHUB_APP_PRIVATE_KEY"
+
+# Reference the secret inside elasticclaw-config.yaml
+credentials:
+  github_app:
+    secret: GITHUB_APP_PRIVATE_KEY`}</CodeBlock>
+        <p className="text-sm text-zinc-400 mt-2">
+          The <code>credentials.*.secret</code> value is only the secret{" "}
+          <em>name</em>. The server resolves the actual value when the workspace
+          is assembled. Multi-line PEM blocks, token strings, or any other secret
+          material in the YAML are rejected by validation.
+        </p>
+
+        <h3 className="text-base font-semibold text-white pt-2">
+          Workspace v2 fields
+        </h3>
+        <div className="space-y-3 text-sm text-zinc-400">
+          <p>
+            <code className="text-cyan-300">schema_version</code> — Use{" "}
+            <code>2</code> or <code>v2</code>. Unknown top-level keys are
+            rejected.
+          </p>
+          <p>
+            <code className="text-cyan-300">repositories</code> — Named map of
+            repositories. Each entry sets <code>provider</code>,{" "}
+            <code>repository</code> (owner/repo), <code>permissions</code>{" "}
+            (<code>read</code> or <code>write</code>), optional{" "}
+            <code>source_control</code> connection, and optional{" "}
+            <code>checkout</code> (<code>ref</code>, <code>depth</code>).
+          </p>
+          <p>
+            <code className="text-cyan-300">execution</code> — Sandbox provider
+            and capability restrictions. <code>provider</code> names the
+            provider; <code>nix</code>/<code>docker</code> enable runtime setup;{" "}
+            <code>tools</code> lists required tooling. Use{" "}
+            <code>capability_restrictions</code> to narrow provider
+            capabilities, for example disabling <code>execute_command</code>{" "}
+            or <code>dependency_update</code>.
+          </p>
+          <p>
+            <code className="text-cyan-300">credentials</code> — Named map of
+            secret references. Each value uses <code>secret: NAME</code> where{" "}
+            <code>NAME</code> is a secret stored on the server. Never paste the
+            secret value into the YAML.
+          </p>
+          <p>
+            <code className="text-cyan-300">source_control</code> — Named
+            source-control connections (for example <code>github</code>) linked
+            to credentials.
+          </p>
+          <p>
+            <code className="text-cyan-300">ci</code> — CI connections (GitHub
+            Actions, Depot, Jenkins) and named pipelines that reference those
+            connections and workspace repositories.
+          </p>
+          <p>
+            <code className="text-cyan-300">issue_trackers</code> and{" "}
+            <code className="text-cyan-300">review_systems</code> — Named
+            connections for issue trackers (for example <code>linear</code>)
+            and review systems (for example <code>github</code>,{" "}
+            <code>greptile</code>).
+          </p>
+          <p>
+            <code className="text-cyan-300">knowledge</code> — Sources used for
+            context bundles: <code>workspace_files</code>,{" "}
+            <code>repository_files</code>, or <code>retrieval</code>. Paths must
+            be relative and must not contain <code>..</code>.
+          </p>
+        </div>
+        <Note>
+          Repository names, connection names, and credential names must match{" "}
+          <code>^[A-Za-z0-9][A-Za-z0-9_.-]*$</code>. Set{" "}
+          <code>permissions: write</code> on repositories that will receive
+          branches or pull requests from effects such as{" "}
+          <code>dependency.update</code>.
+        </Note>
+      </Section>
+
       <Section title="Push a workspace">
         <p>
-          Pushing a workspace publishes <code>elasticclaw-config.yaml</code> and
-          workspace files. Push workflow YAML separately into the workspace.
+          Pushing a workspace publishes <code>elasticclaw-config.yaml</code>{" "}
+          and workspace files. Push workflow YAML separately into the
+          workspace.
         </p>
         <CodeBlock lang="bash">{`elasticclaw workspace create --name my-app
 elasticclaw workspace push my-app
