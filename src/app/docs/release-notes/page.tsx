@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.10.12",
+    date: "2026-10-12",
+    title: "Intact Sessions, No Timeouts",
+    summary: "Session resilience, checkpoint hygiene, and new security controls land in this release.",
+  },
+  {
     version: "2026.8.10",
     date: "2026-08-10",
     title: "Durable Workflows, Smarter Models",
