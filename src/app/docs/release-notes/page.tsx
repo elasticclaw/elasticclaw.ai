@@ -15,6 +15,12 @@ interface Release {
 // Newest first.
 const RELEASES: Release[] = [
   {
+    version: "2026.10.28",
+    date: "2026-10-28",
+    title: "Lead Time, Unpacked",
+    summary: "New lead‑time split, approximate cost visibility, and tighter security make ElasticClaw sharper than ever.",
+  },
+  {
     version: "2026.8.10",
     date: "2026-08-10",
     title: "Durable Workflows, Smarter Models",
